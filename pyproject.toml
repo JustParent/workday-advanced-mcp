@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "workday-advanced-mcp"
+version = "0.1.0"
+description = "MCP server for Workday Web Services staffing and payment-election writes"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    # FastMCP lives under mcp.server.fastmcp, which the SDK removed in v2.
+    "mcp>=1.8.0,<2",
+    "httpx>=0.27.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23",
+    "respx>=0.21",
+]
+socks = ["httpx[socks]>=0.27.0"]
+lint = ["ruff>=0.6"]
+typecheck = ["mypy>=1.11", "pytest>=8.0.0", "respx>=0.21"]
+
+[project.scripts]
+workday-advanced-mcp = "workday_advanced_mcp:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/workday_advanced_mcp"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+# -ra surfaces skips, so a silently skipped suite is visible in CI output.
+addopts = "-ra --strict-markers --strict-config"
+
+[tool.ruff]
+# Match the package's minimum supported version, which is also the version the
+# Modal MCP sandbox runs, so no syntax that version lacks can slip in.
+target-version = "py312"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.mypy]
+# Deliberately non-strict: annotations are checked where they exist, but untyped
+# code is allowed, so this catches real mistakes without demanding full coverage.
+python_version = "3.12"
+files = ["src", "tests"]
+warn_unused_configs = true
+warn_redundant_casts = true

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      # setup-uv creates and activates .venv, so install into that.
+      - name: Install
+        run: uv pip install -e '.[lint,typecheck]'
+      - name: Lint
+        run: uv run --no-sync ruff check .
+      - name: Check formatting
+        run: uv run --no-sync ruff format --check .
+      - name: Type check
+        run: uv run --no-sync mypy
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.12 is what the Modal MCP sandbox image runs, and the only version
+        # this package supports. Kept as a matrix so adding one back is a
+        # one-line change.
+        python-version: ["3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      # setup-uv creates and activates .venv, so install into that.
+      - name: Install
+        run: uv pip install -e '.[test]'
+      - name: Test
+        run: uv run --no-sync pytest -q
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Build distributions
+        run: uv build
+      # Exercises the same uvx entry point used to run this server in production.
+      - name: Run from source checkout
+        run: uvx --from . workday-advanced-mcp --test
+      - name: Run from built wheel
+        run: uvx --from "$(ls dist/*.whl)" workday-advanced-mcp --test
