@@ -51,9 +51,9 @@ EVENT = soap_response(
             <wd:ID wd:type="WID">state-1</wd:ID>
           </wd:Event_State_Reference>
           <wd:Awaiting_Task_Data>
-            <wd:Awaiting_Task_Reference wd:Descriptor="Approval by Manager">
+            <wd:Task_Reference wd:Descriptor="Approval by Manager">
               <wd:ID wd:type="WID">task-1</wd:ID>
-            </wd:Awaiting_Task_Reference>
+            </wd:Task_Reference>
           </wd:Awaiting_Task_Data>
         </wd:Event_Detail_Data>
       </wd:Event>
@@ -76,6 +76,8 @@ ENROLLMENTS = soap_response(
             <wd:Payment_Election_Rule_Reference><wd:ID wd:type="WID">rule-1</wd:ID></wd:Payment_Election_Rule_Reference>
             <wd:Payment_Election_Data>
               <wd:Order>1</wd:Order>
+              <wd:Country_Reference><wd:ID wd:type="ISO_3166-1_Alpha-2_Code">GB</wd:ID></wd:Country_Reference>
+              <wd:Currency_Reference><wd:ID wd:type="Currency_ID">GBP</wd:ID></wd:Currency_Reference>
               <wd:Payment_Type_Reference><wd:ID wd:type="Payment_Type_ID">Direct_Deposit</wd:ID></wd:Payment_Type_Reference>
               <wd:Distribution_Balance>true</wd:Distribution_Balance>
               <wd:Worker_Bank_Account_Data>
@@ -213,7 +215,7 @@ async def test_get_event_reports_state_and_awaiting_tasks(server_factory) -> Non
         )
 
     assert event["state"] == "In Progress"
-    assert event["awaiting_tasks"] == ["Approval by Manager"]
+    assert event["awaiting_tasks"][0]["task"]["descriptor"] == "Approval by Manager"
 
 
 async def test_payment_elections_are_returned_masked(

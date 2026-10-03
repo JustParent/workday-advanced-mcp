@@ -7,7 +7,10 @@ identify the bank rather than the account and stay visible.
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import re
+import secrets
 from typing import Any
 
 # Element names (and result keys) whose values are masked everywhere.
@@ -17,12 +20,27 @@ SENSITIVE_FIELDS = frozenset(
         "Account_Number",
         "Bank_Account_Number",
         "IBAN",
+        "Roll_Number",
         "account_number",
         "iban",
+        "roll_number",
     }
 )
 
 _VISIBLE_TAIL = 4
+_FINGERPRINT_KEY = secrets.token_bytes(32)
+SECRET_FIELDS = frozenset(
+    {
+        "Password",
+        "Username",
+        "BinarySecurityToken",
+        "Nonce",
+        "password",
+        "client_secret",
+        "refresh_token",
+        "access_token",
+    }
+)
 
 
 def mask_account(value: str | None) -> str:
@@ -41,7 +59,12 @@ def account_fingerprint(value: str | None) -> str:
     holding the full value in a result.
     """
     text = re.sub(r"\s+", "", (value or "")).upper()
-    return f"{len(text)}:{text[-_VISIBLE_TAIL:]}" if text else ""
+    # A process-local keyed digest avoids both last-four collisions and exposing
+    # a brute-forceable hash of a short bank account number. Masked input cannot
+    # establish account identity.
+    if not text or any(c in text for c in "*•") or re.match(r"X{3,}", text):
+        return ""
+    return hmac.new(_FINGERPRINT_KEY, text.encode(), hashlib.sha256).hexdigest()
 
 
 def redact_data(data: Any) -> Any:
@@ -49,8 +72,10 @@ def redact_data(data: Any) -> Any:
     if isinstance(data, dict):
         return {
             key: (
-                mask_account(value if isinstance(value, str) else None)
-                if key in SENSITIVE_FIELDS and isinstance(value, str)
+                "[REDACTED]"
+                if key in SECRET_FIELDS
+                else mask_account(value if isinstance(value, str) else None)
+                if key in SENSITIVE_FIELDS
                 else redact_data(value)
             )
             for key, value in data.items()
@@ -68,6 +93,12 @@ _ELEMENT_RE = re.compile(
 
 def redact_xml(xml_text: str) -> str:
     """Mask sensitive element text in an envelope before it is logged or returned."""
+    xml_text = re.sub(
+        r"(<(?:\w+:)?(?:" + "|".join(sorted(SECRET_FIELDS)) + r")\b[^>]*>)(.*?)(</)",
+        lambda m: f"{m.group(1)}[REDACTED]{m.group(3)}",
+        xml_text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
     return _ELEMENT_RE.sub(
         lambda m: f"{m.group(1)}{mask_account(m.group(2))}{m.group(3)}", xml_text
     )

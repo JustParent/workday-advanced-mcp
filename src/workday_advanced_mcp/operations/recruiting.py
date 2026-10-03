@@ -96,7 +96,11 @@ def build_put_applicant_request(
             }
         ]
     if contact_data:
-        personal_data["Contact_Data"] = contact_data
+        personal_data["Contact_Data"] = {
+            key: contact_data[key]
+            for key in ("Phone_Data", "Email_Address_Data")
+            if key in contact_data
+        }
 
     return {"Applicant_Data": {"Personal_Data": personal_data}}
 

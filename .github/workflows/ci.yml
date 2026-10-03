@@ -41,7 +41,13 @@ jobs:
       - name: Install
         run: uv pip install -e '.[test]'
       - name: Test
-        run: uv run --no-sync pytest -q
+        run: uv run --no-sync pytest -q --cov=workday_advanced_mcp --cov-report=term-missing --cov-report=xml --cov-fail-under=95
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.python-version }}
+          path: coverage.xml
 
   build:
     runs-on: ubuntu-latest

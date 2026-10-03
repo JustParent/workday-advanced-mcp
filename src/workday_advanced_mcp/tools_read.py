@@ -20,6 +20,7 @@ from .client import (
     get_client,
 )
 from .operations import events, organizations, payment_elections, recruiting, workers
+from .pagination import at_entry_moment, entry_moment
 from .references import EMPLOYEE_ID, ORGANIZATION_TYPES, WID, WORKER_ID_TYPES
 from .registry import ToolRegistrar
 from .resolve import fetch_worker, scan_for_email
@@ -40,13 +41,19 @@ async def _paged(
     page_size: int = organizations.PAGE_SIZE,
 ) -> dict[str, Any]:
     """Page a list operation until the limit is reached or Workday runs out."""
+    if limit < 1:
+        raise ValueError("limit must be positive.")
     items: list[dict[str, Any]] = []
     page = 1
     truncated = False
+    moment = entry_moment()
 
     while True:
         result = await client.call(
-            service, operation, build(page, page_size), is_read=True
+            service,
+            operation,
+            at_entry_moment(build(page, page_size), moment),
+            is_read=True,
         )
         response = result.response(operation)
         entries = parse(response)
@@ -191,6 +198,8 @@ def register_read_tools(registrar: ToolRegistrar) -> None:
         organization_type: str = "Supervisory",
         query: str | None = None,
         limit: int = DEFAULT_LIMIT,
+        include_inactive: bool = False,
+        as_of_effective_date: str | None = None,
     ) -> Any:
         if organization_type not in ORGANIZATION_TYPES:
             raise ValueError(
@@ -202,7 +211,11 @@ def register_read_tools(registrar: ToolRegistrar) -> None:
             SERVICE_HUMAN_RESOURCES,
             organizations.GET_ORGANIZATIONS,
             build=lambda page, size: organizations.build_get_organizations_request(
-                organization_type, page, size
+                organization_type,
+                page,
+                size,
+                include_inactive=include_inactive,
+                as_of_effective_date=as_of_effective_date,
             ),
             parse=lambda response: organizations.parse_organizations(
                 response, organization_type
@@ -454,12 +467,13 @@ async def _scan_enrollments(
     from .references import extract_ids
 
     page = 1
+    moment = entry_moment()
     while page <= max_pages:
         request = payment_elections.build_get_enrollments_page(page)
         result = await client.call(
             SERVICE_CASH_MANAGEMENT,
             payment_elections.GET_ENROLLMENTS,
-            request,
+            at_entry_moment(request, moment),
             is_read=True,
         )
         response = result.response(payment_elections.GET_ENROLLMENTS)

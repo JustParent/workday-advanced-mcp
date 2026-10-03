@@ -1,0 +1,63 @@
+{
+  "Human_Resources": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Human_Resources/v44.2/Human_Resources.xsd",
+    "sha256": "5426f543adf084a09d59111ec3167c96940d7fb9b7fcbee1c187877ceb046670",
+    "request_elements": [
+      "Get_Workers_Request",
+      "Get_Organizations_Request",
+      "Get_Job_Profiles_Request",
+      "Get_Locations_Request",
+      "Organization_Add_Update",
+      "Organization_Inactivate",
+      "Worker_Event_History_Get",
+      "Maintain_Contact_Information_for_Person_Event_Request"
+    ]
+  },
+  "Staffing": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Staffing/v44.2/Staffing.xsd",
+    "sha256": "2c951cf87d60a21d4491454b840e691060e865f27608e47a912fad25f507953c",
+    "request_elements": [
+      "Change_Job_Request",
+      "Change_Organization_Assignments_Request",
+      "Hire_Employee_Request",
+      "Terminate_Employee_Request",
+      "Assign_Roles_Request",
+      "Get_Positions_Request",
+      "Create_Position_Request"
+    ]
+  },
+  "Recruiting": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Recruiting/v44.2/Recruiting.xsd",
+    "sha256": "86d1424cdab577249e693bc73314bd04bd5def0e26a867567661ec7d13fd058f",
+    "request_elements": [
+      "Get_Applicants_Request",
+      "Put_Applicant_Request"
+    ]
+  },
+  "Cash_Management": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Cash_Management/v44.2/Cash_Management.xsd",
+    "sha256": "317626e24b008a342f34b437bdcdc8feeffb372ec9e1b7d83bab8c545070fc2a",
+    "request_elements": [
+      "Get_Payment_Election_Enrollments_Request",
+      "Submit_Payment_Election_Enrollment_Request"
+    ]
+  },
+  "Integrations": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Integrations/v44.2/Integrations.xsd",
+    "sha256": "e967aabe3b4194e2702556c51490892a0b9d286c7a955952a6bf0f5fb1d86490",
+    "request_elements": [
+      "Get_Event_Details_Request",
+      "Get_References_Request",
+      "Cancel_Business_Process_Request",
+      "Rescind_Business_Process_Request"
+    ]
+  },
+  "Financial_Management": {
+    "source": "https://community.workday.com/sites/default/files/file-hosting/productionapi/Financial_Management/v44.2/Financial_Management.xsd",
+    "sha256": "0831366412a97628bac6a062aa93e71995ba8982efc9283dce3cbd6d64f3d2bf",
+    "request_elements": [
+      "Get_Journals_Request",
+      "Submit_Accounting_Journal_Request"
+    ]
+  }
+}

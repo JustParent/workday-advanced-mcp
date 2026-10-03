@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "workday-advanced-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for Workday Web Services staffing and payment-election writes"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -21,10 +21,12 @@ test = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23",
     "respx>=0.21",
+    "pytest-cov>=7",
+    "lxml>=5",
 ]
 socks = ["httpx[socks]>=0.27.0"]
 lint = ["ruff>=0.6"]
-typecheck = ["mypy>=1.11", "pytest>=8.0.0", "respx>=0.21"]
+typecheck = ["mypy>=1.11", "pytest>=8.0.0", "respx>=0.21", "lxml>=5"]
 
 [project.scripts]
 workday-advanced-mcp = "workday_advanced_mcp:main"
@@ -59,3 +61,12 @@ python_version = "3.12"
 files = ["src", "tests"]
 warn_unused_configs = true
 warn_redundant_casts = true
+
+[tool.coverage.run]
+branch = true
+source = ["workday_advanced_mcp"]
+patch = ["subprocess"]
+sigterm = true
+
+[tool.coverage.report]
+show_missing = true

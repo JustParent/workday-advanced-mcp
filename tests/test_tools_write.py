@@ -306,7 +306,11 @@ async def test_auto_complete_verifies_by_reading_the_worker_back(
         )
 
     outcome = result["results"][0]
-    assert outcome["verification"]["verified"] is True
+    assert outcome["verification"]["verified"] is False
+    assert (
+        outcome["verification"]["mismatches"]["supervisory_organization_id"]["actual"]
+        == "SUP-ENG"
+    )
     assert "supervisory_organization" in outcome["verification"]
 
 
@@ -489,6 +493,7 @@ async def test_unchanged_payment_elections_are_not_resubmitted(
                                 "bank_account": {
                                     "account_number": "12345678",
                                     "bank_id_number": "40-47-84",
+                                    "bank_name": "Example Bank",
                                 },
                             }
                         ],
@@ -525,19 +530,19 @@ async def test_preview_sends_nothing_to_workday(
         )
 
     assert staffing.call_count == 0
-    plan = result["plans"][0]
+    plan = result["result"]["results"][0]
     assert plan["changes"]["supervisory_organization_id"] == {
         "from": "SUP-ENG",
         "to": "SUP-NEW",
     }
-    assert plan["no_change"] is False
+    assert plan["would_submit"] is True
 
 
 async def test_preview_rejects_an_operation_it_cannot_plan(server_factory) -> None:
     result = await call_tool(
         server_factory(),
         "workday_preview_write",
-        {"operation": "workday_hire_employee"},
+        {"operation": "workday_not_a_tool"},
     )
     assert isinstance(result, str)
-    assert "Previewable operations" in result
+    assert "unknown write" in result

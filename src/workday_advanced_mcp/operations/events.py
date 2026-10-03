@@ -16,12 +16,11 @@ from typing import Any
 from ..references import (
     WID,
     as_list,
-    extract_descriptor,
     reference,
     summarize_reference,
 )
 
-OPERATION = "Get_Event_Details"
+OPERATION = "Get_Event_Detail"
 
 
 def build_get_event_request(event_id: str, id_type: str = WID) -> dict[str, Any]:
@@ -45,7 +44,18 @@ def parse_event(response: dict[str, Any]) -> dict[str, Any]:
 
     awaiting = detail.get("Awaiting_Task_Data")
     awaiting_tasks = [
-        extract_descriptor(task.get("Awaiting_Task_Reference") or task)
+        {
+            "task": summarize_reference(
+                task.get("Task_Reference") or task.get("Awaiting_Task_Reference")
+            ),
+            "status": summarize_reference(task.get("Task_Status_Reference")),
+            "assigned_at": task.get("Assignment_Date", ""),
+            "due_date": task.get("Due_Date", ""),
+            "awaiting_people": [
+                summarize_reference(p, preferred=("Employee_ID", WID))
+                for p in as_list(task.get("Awaiting_Person_Reference"))
+            ],
+        }
         for task in as_list(awaiting)
         if isinstance(task, dict)
     ]
@@ -62,5 +72,68 @@ def parse_event(response: dict[str, Any]) -> dict[str, Any]:
             detail.get("Initiating_Person_Reference")
         ).get("descriptor", ""),
         "creation_date": detail.get("Creation_Date") or "",
+        "completed_date": detail.get("Completed_Date") or "",
+        "due_date": detail.get("Due_Date") or "",
+        "state_reference": state,
+        "process_history": detail.get("Process_History_Data") or [],
+        "remaining_process": detail.get("Remaining_Process_Data") or [],
+        "sub_events": detail.get("Sub-Event") or [],
         "awaiting_tasks": [task for task in awaiting_tasks if task],
+    }
+
+
+def build_worker_history(
+    worker_id: str, updated_from: str | None = None, updated_through: str | None = None
+) -> dict[str, Any]:
+    from ..validation import iso_moment, required
+
+    request: dict[str, Any] = {
+        "Worker_Reference": {
+            "Employee_Reference": {
+                "Integration_ID_Reference": {
+                    "ID": {
+                        "@bsvc:System_ID": "WD-EMPLID",
+                        "#text": required(worker_id, "worker_id"),
+                    }
+                }
+            }
+        }
+    }
+    dates = {}
+    if updated_from:
+        dates["Updated_From"] = iso_moment(updated_from, "updated_from")
+    if updated_through:
+        dates["Updated_Through"] = iso_moment(updated_through, "updated_through")
+    if dates:
+        request["Event_Date_Range_Data"] = dates
+    return request
+
+
+def parse_worker_history(response: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "event_id": e.get("Event_ID", ""),
+            "description": e.get("Description", ""),
+            "type": e.get("Event_Type_Reference") or {},
+            "effective_date": e.get("Effective_Date", ""),
+            "completed_at": e.get("Completed_DateTime", ""),
+        }
+        for e in as_list(
+            (response.get("Worker_Event_History_Data") or {}).get("Event_Data")
+        )
+        if isinstance(e, dict)
+    ]
+
+
+def build_recovery(event_id: str, action: str, comment: str) -> dict[str, Any]:
+    from ..validation import required
+
+    if action not in {"cancel", "rescind"}:
+        raise ValueError("action must be cancel or rescind.")
+    return {
+        "Event_Reference": reference(WID, required(event_id, "event_id")),
+        f"{action.title()}_Business_Process_Data": {
+            "Comment": required(comment, "comment"),
+            "Suppress_Notifications": False,
+        },
     }

@@ -142,7 +142,7 @@ def fault_to_error(
             "workday_list_* tools and that every field the tenant's business process "
             "requires is supplied."
         )
-    elif "Authentication" in code or "invalid" in (fault_string or "").lower():
+    elif "authentication" in code.lower():
         message = (
             f"Workday could not authenticate {operation}: {detail} Check the "
             f"Integration "

@@ -20,6 +20,13 @@ READ_TOOLS = {
     "workday_list_pre_hires",
     "workday_get_payment_elections",
     "workday_get_event",
+    "workday_get_organization",
+    "workday_get_manager_organizations",
+    "workday_list_organization_workers",
+    "workday_list_positions",
+    "workday_get_worker_event_history",
+    "workday_get_write_status",
+    "workday_get_journal",
 }
 
 WRITE_TOOLS = {
@@ -29,12 +36,25 @@ WRITE_TOOLS = {
     "workday_change_organization_assignments",
     "workday_terminate_employee",
     "workday_set_payment_elections",
+    "workday_create_supervisory_organization",
+    "workday_inactivate_supervisory_organization",
+    "workday_update_supervisory_organization",
+    "workday_assign_organization_role",
+    "workday_create_position",
+    "workday_update_home_address",
+    "workday_recover_event",
+    "workday_submit_accounting_journal",
 }
 
 # Read-only, but it exists to precede a write, so it ships with the writes.
 PREVIEW_TOOL = "workday_preview_write"
 
-DESTRUCTIVE_TOOLS = {"workday_terminate_employee", "workday_set_payment_elections"}
+DESTRUCTIVE_TOOLS = WRITE_TOOLS - {
+    "workday_create_pre_hire",
+    "workday_hire_employee",
+    "workday_change_job",
+    "workday_change_organization_assignments",
+}
 
 
 async def _tool_names(mcp: FastMCP) -> set[str]:

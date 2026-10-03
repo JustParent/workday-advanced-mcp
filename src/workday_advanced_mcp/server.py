@@ -46,9 +46,15 @@ def build_server(
 
     mcp = FastMCP(SERVER_NAME)
     registrar = ToolRegistrar(mcp, enabled_tools)
+    from .tools_journals import register_journal_tools
+    from .tools_lifecycle import register_lifecycle_reads, register_lifecycle_writes
+
     register_read_tools(registrar)
+    register_lifecycle_reads(registrar)
+    register_journal_tools(registrar, read_only=read_only)
     if not read_only:
         register_write_tools(registrar)
+        register_lifecycle_writes(registrar)
     return mcp
 
 

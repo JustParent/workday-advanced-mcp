@@ -9,10 +9,10 @@ from __future__ import annotations
 from typing import Any
 
 from ..references import (
+    CONTINGENT_WORKER_ID,
     EMPLOYEE_ID,
     POSITION_ID,
     WID,
-    WORKER_ID_TYPES,
     as_list,
     extract_descriptor,
     extract_id,
@@ -33,6 +33,9 @@ GROUP_FULL = {
     "Include_Personal_Information": True,
     "Include_Employment_Information": True,
     "Include_Organizations": True,
+    "Include_Roles": True,
+    "Include_Management_Chain_Data": True,
+    "Include_Multiple_Managers_in_Management_Chain_Data": True,
 }
 
 
@@ -113,7 +116,7 @@ def _primary_job(worker_data: dict[str, Any]) -> dict[str, Any]:
             or job.get("@Primary_Job") == "1"
         ):
             return job
-    return jobs[0]
+    return jobs[0] if len(jobs) == 1 else {}
 
 
 def _emails(personal: dict[str, Any]) -> list[str]:
@@ -218,7 +221,7 @@ def summarize_worker(
     }
     if not summary["worker_id"]:
         # A contingent worker has no Employee_ID; fall back to whatever it has.
-        for id_type in WORKER_ID_TYPES:
+        for id_type in (EMPLOYEE_ID, CONTINGENT_WORKER_ID, WID):
             value = extract_id(worker_ref, id_type)
             if value:
                 summary["worker_id"] = value
@@ -243,13 +246,38 @@ def summarize_worker(
     if not detailed:
         return summary
 
+    from .lifecycle import parse_addresses
+
+    summary["addresses"] = (
+        parse_addresses((personal or {}).get("Contact_Data") or {})
+        if isinstance(personal, dict)
+        else []
+    )
+    chain = (worker_data.get("Management_Chain_Data") or {}).get(
+        "Worker_Supervisory_Management_Chain_Data"
+    ) or {}
+    summary["management_chain"] = [
+        {
+            "organization": summarize_reference(
+                item.get("Organization_Reference"),
+                preferred=("Organization_Reference_ID", WID),
+            ),
+            "managers": [
+                summarize_reference(manager, preferred=(EMPLOYEE_ID, WID))
+                for manager in as_list(item.get("Manager_Reference"))
+            ],
+        }
+        for item in as_list(chain.get("Management_Chain_Data"))
+        if isinstance(item, dict)
+    ]
+
     employment = worker_data.get("Employment_Data")
     if isinstance(employment, dict):
         status = employment.get("Worker_Status_Data")
         if isinstance(status, dict):
             summary["status"] = {
-                "active": str(status.get("Active", "")).lower() == "true",
-                "terminated": str(status.get("Terminated", "")).lower() == "true",
+                "active": xml_bool(status.get("Active")),
+                "terminated": xml_bool(status.get("Terminated")),
                 "hire_date": status.get("Hire_Date") or "",
                 "original_hire_date": status.get("Original_Hire_Date") or "",
                 "termination_date": status.get("Termination_Date") or "",
@@ -267,6 +295,14 @@ def summarize_worker(
             "position_title": position_data.get("Position_Title") or "",
             "business_title": position_data.get("Business_Title") or "",
             "start_date": position_data.get("Start_Date") or "",
+            "employee_type": summarize_reference(
+                position_data.get("Employee_Type_Reference"),
+                preferred=("Employee_Type_ID", WID),
+            ),
+            "position_time_type": summarize_reference(
+                position_data.get("Position_Time_Type_Reference"),
+                preferred=("Position_Time_Type_ID", WID),
+            ),
             "job_profile": summarize_reference(
                 (job_profile or {}).get("Job_Profile_Reference")
                 if isinstance(job_profile, dict)
@@ -322,4 +358,13 @@ def position_reference_for_write(
         position_id = str(position.get("position_id") or "").strip()
         if position_id:
             return position_id, POSITION_ID
+    return None
+
+
+def xml_bool(value: Any) -> bool | None:
+    """Retain the distinction between false and unavailable data."""
+    if str(value).lower() in ("true", "1"):
+        return True
+    if str(value).lower() in ("false", "0"):
+        return False
     return None
