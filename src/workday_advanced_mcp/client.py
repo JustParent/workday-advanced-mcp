@@ -20,6 +20,8 @@ from .auth import OAuthRefreshAuth, WorkdayAuth, build_auth
 from .config import Settings, load_settings
 from .errors import (
     WorkdayApiError,
+    WorkdayAuthError,
+    WorkdayFaultError,
     WorkdayTimeoutError,
     fault_to_error,
     raise_for_http_error,
@@ -37,6 +39,12 @@ SERVICE_HUMAN_RESOURCES = "Human_Resources"
 SERVICE_CASH_MANAGEMENT = "Cash_Management"
 SERVICE_INTEGRATIONS = "Integrations"
 SERVICE_RECRUITING = "Recruiting"
+SERVICE_FINANCIAL_MANAGEMENT = "Financial_Management"
+RESPONSE_ROOTS = {
+    "Add_Update_Organization": "Organization_Reference",
+    "Get_Worker_Event_History": "Worker_Event_History",
+    "Get_Event_Detail": "Get_Event_Details_Response",
+}
 
 MAX_READ_RETRIES = 2
 RETRYABLE_STATUSES = frozenset({429, 502, 503, 504})
@@ -53,9 +61,15 @@ class CallResult:
     request_xml: str
     """The envelope sent, with bank details masked. Safe to return to a caller."""
 
+    preview: bool = False
+    duplicate: bool = False
+    write_status: str = "submitted"
+    tracking_id: str = ""
+
     def response(self, operation: str) -> dict[str, Any]:
         """The ``<operation>_Response`` payload, or an empty mapping."""
-        value = self.body.get(f"{operation}_Response")
+        root = RESPONSE_ROOTS.get(operation, f"{operation}_Response")
+        value = self.body.get(root)
         return value if isinstance(value, dict) else {}
 
 
@@ -101,7 +115,7 @@ class WorkdayClient:
         retry_after = response.headers.get("Retry-After", "").strip()
         if retry_after:
             try:
-                return min(float(retry_after), MAX_RETRY_DELAY_SECONDS)
+                return max(0.0, min(float(retry_after), MAX_RETRY_DELAY_SECONDS))
             except ValueError:
                 pass
         return min(float(2**attempt), MAX_RETRY_DELAY_SECONDS)
@@ -116,6 +130,94 @@ class WorkdayClient:
         return envelope, headers
 
     async def call(
+        self,
+        service: str,
+        operation: str,
+        request_data: dict[str, Any],
+        *,
+        is_read: bool = False,
+    ) -> CallResult:
+        from .execution import WriteJournal, current_execution, stable_read_state
+
+        context = current_execution.get()
+        if is_read:
+            result = await self._send(service, operation, request_data, is_read=True)
+            if context is not None:
+                context.reads.append(
+                    [service, operation, stable_read_state(result.body)]
+                )
+            return result
+        # Standalone transport callers retain their behaviour. All MCP writes
+        # have an execution context installed by the registrar.
+        if context is None:
+            return await self._send(service, operation, request_data)
+        self.settings.require_ready()
+        scope = self.settings.endpoint_base + "/" + self.settings.api_version
+        journal = WriteJournal()
+        try:
+            context.state_token = journal.digest(
+                [scope, context.reads, context.arguments]
+            )
+            if (
+                context.expected_state_token
+                and context.writes == 0
+                and not hmac_compare(context.expected_state_token, context.state_token)
+            ):
+                raise ValueError(
+                    "Workday changed since preview; preview and approve again."
+                )
+            context.writes += 1
+            safe_xml = redact_xml(build_envelope(operation, request_data))
+            if context.preview:
+                return CallResult({}, safe_xml, preview=True, write_status="preview")
+            request_id = (
+                f"{context.request_id}:{context.writes}" if context.request_id else None
+            )
+            key, previous = journal.claim(scope, operation, request_data, request_id)
+            if previous:
+                return CallResult(
+                    previous["body"],
+                    safe_xml,
+                    duplicate=True,
+                    write_status=previous["status"],
+                    tracking_id=key,
+                )
+            try:
+                result = await self._send(service, operation, request_data)
+            except WorkdayAuthError:
+                journal.release(key)
+                raise
+            except WorkdayFaultError as exc:
+                code = (exc.fault_code or "").lower()
+                if (
+                    exc.validation_errors
+                    or "validation" in code
+                    or "authentication" in code
+                ):
+                    journal.release(key)
+                    raise
+                journal.finish(key, "unknown")
+                raise WorkdayApiError(
+                    f"Write outcome unknown (tracking_id={key}). "
+                    f"Reconcile the processing fault before retrying: {exc}"
+                ) from exc
+            except BaseException as exc:
+                # Even cancellation/process death must not allow a blind retry.
+                journal.finish(key, "unknown")
+                if isinstance(exc, Exception):
+                    raise WorkdayApiError(
+                        f"Write outcome unknown (tracking_id={key}). "
+                        "Check the worker's "
+                        f"event history before retrying. {exc}"
+                    ) from exc
+                raise
+            journal.finish(key, "submitted", result.body)
+            result.tracking_id = key
+            return result
+        finally:
+            journal.close()
+
+    async def _send(
         self,
         service: str,
         operation: str,
@@ -208,10 +310,23 @@ class WorkdayClient:
                 status_code=response.status_code,
             )
 
+        expected_root = RESPONSE_ROOTS.get(operation, f"{operation}_Response")
+        if expected_root not in parsed.body and not (
+            operation == "Inactivate_Organization" and not parsed.body
+        ):
+            raise WorkdayApiError(
+                f"Unexpected SOAP response to {operation}; expected {expected_root}."
+            )
         return CallResult(body=parsed.body, request_xml=redact_xml(envelope))
 
 
 _client: WorkdayClient | None = None
+
+
+def hmac_compare(left: str, right: str) -> bool:
+    import hmac
+
+    return hmac.compare_digest(left, right)
 
 
 def get_client() -> WorkdayClient:

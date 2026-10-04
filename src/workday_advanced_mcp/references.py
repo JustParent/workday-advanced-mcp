@@ -95,17 +95,19 @@ def _id_entries(ref: Any) -> list[dict[str, Any]]:
 def extract_id(ref: Any, id_type: str) -> str:
     """Pull one ID of the given type out of a parsed reference element."""
     for entry in _id_entries(ref):
-        if entry.get("@type") == id_type:
-            return str(entry.get("#text") or "")
+        if entry.get("@type", entry.get("type")) == id_type:
+            return str(entry.get("#text", entry.get("value")) or "")
     return ""
 
 
 def extract_ids(ref: Any) -> dict[str, str]:
     """Every ID on a parsed reference, keyed by its type."""
     return {
-        str(entry.get("@type")): str(entry.get("#text") or "")
+        str(entry.get("@type", entry.get("type"))): str(
+            entry.get("#text", entry.get("value")) or ""
+        )
         for entry in _id_entries(ref)
-        if entry.get("@type")
+        if entry.get("@type", entry.get("type"))
     }
 
 

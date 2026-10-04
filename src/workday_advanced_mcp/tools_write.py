@@ -39,8 +39,33 @@ from .references import (
 )
 from .registry import ToolRegistrar
 from .resolve import WorkerNotFound, assignments_by_type, describe_worker, fetch_worker
+from .validation import iso_date
 
 MAX_BATCH = 25
+
+
+def is_preview() -> bool:
+    from .execution import current_execution
+
+    context = current_execution.get()
+    return bool(context and context.preview)
+
+
+def job_values(worker: dict[str, Any]) -> dict[str, Any]:
+    position = worker.get("position") or {}
+    return {
+        "supervisory_organization_id": (
+            worker.get("supervisory_organization") or {}
+        ).get("id", ""),
+        "job_profile_id": (position.get("job_profile") or {}).get("id", ""),
+        "location_id": (position.get("location") or {}).get("id", ""),
+        "business_title": position.get("business_title", ""),
+        "position_title": position.get("position_title", ""),
+        "employee_type_id": (position.get("employee_type") or {}).get("id", ""),
+        "position_time_type_id": (position.get("position_time_type") or {}).get(
+            "id", ""
+        ),
+    }
 
 
 def _check_auto_complete(auto_complete: bool) -> None:
@@ -56,7 +81,9 @@ def _check_auto_complete(auto_complete: bool) -> None:
 def _require_batch(
     changes: list[dict[str, Any]] | None, what: str
 ) -> list[dict[str, Any]]:
-    entries = [c for c in (changes or []) if isinstance(c, dict)]
+    if not isinstance(changes, list) or any(not isinstance(c, dict) for c in changes):
+        raise ValueError(f"Every entry in {what} must be an object.")
+    entries = list(changes)
     if not entries:
         raise ValueError(f"No {what} were supplied.")
     if len(entries) > MAX_BATCH:
@@ -77,20 +104,72 @@ async def _submit(
     verify: Any = None,
 ) -> dict[str, Any]:
     """Send one business process and describe what came back."""
-    result = await client.call(service, operation, request, is_read=False)
+    from .errors import (
+        WorkdayApiError,
+        WorkdayAuthError,
+        WorkdayFaultError,
+        format_exception,
+    )
+    from .redact import redact_data
+
+    try:
+        result = await client.call(service, operation, request, is_read=False)
+    except Exception as exc:
+        return {
+            "submitted": False,
+            "operation": operation,
+            "error": format_exception(exc),
+            "outcome_unknown": isinstance(exc, WorkdayApiError)
+            and not isinstance(exc, (WorkdayAuthError, WorkdayFaultError)),
+        }
     response = result.response(operation)
     event = event_reference_from(response)
 
+    if result.preview:
+        from .execution import current_execution
+        from .redact import redact_data
+
+        context = current_execution.get()
+        return {
+            "submitted": False,
+            "would_submit": True,
+            "operation": operation,
+            "request": redact_data(request),
+            "request_xml": result.request_xml,
+            "state_token": context.state_token if context else "",
+        }
+
     submitted: dict[str, Any] = {
-        "submitted": True,
+        "submitted": result.write_status == "submitted",
+        "duplicate": result.duplicate,
+        "write_status": result.write_status,
+        "tracking_id": result.tracking_id,
         "operation": operation,
         "auto_complete": auto_complete,
         "event": event,
         "request_xml": result.request_xml,
+        "response": redact_data(response),
     }
 
-    if verify is None:
-        submitted["verification"] = _verification_note(auto_complete, event)
+    if result.write_status != "submitted":
+        submitted["verification"] = {
+            "verified": False,
+            "note": (
+                "A prior attempt is unresolved or still running. Reconcile its "
+                "tracking_id and Workday event history; no new write was sent."
+            ),
+        }
+        return submitted
+    if verify is None or result.duplicate:
+        submitted["verification"] = (
+            {
+                "verified": False,
+                "note": "Immediate organization maintenance; inspect the "
+                "organization to verify the result.",
+            }
+            if operation in {"Add_Update_Organization", "Inactivate_Organization"}
+            else _verification_note(auto_complete, event)
+        )
         return submitted
 
     try:
@@ -130,8 +209,7 @@ async def plan_change_organization_assignments(
     merge_with_current: bool = True,
 ) -> list[dict[str, Any]]:
     """Work out each worker's new organization assignment set."""
-    if not effective_date:
-        raise ValueError("effective_date is required (YYYY-MM-DD).")
+    iso_date(effective_date)
 
     plans: list[dict[str, Any]] = []
     for change in changes:
@@ -159,7 +237,13 @@ async def plan_change_organization_assignments(
                 "organization move is a job change - use workday_change_job."
             )
 
-        worker = await fetch_worker(client, worker_id, id_type, detailed=True)
+        worker = await fetch_worker(
+            client,
+            worker_id,
+            id_type,
+            detailed=True,
+            as_of_effective_date=effective_date,
+        )
         position = worker.get("position") or {}
         position_id = str(position.get("position_id") or "").strip()
         if not position_id:
@@ -212,8 +296,7 @@ async def plan_change_job(
     reason_id_type: str = EVENT_CLASSIFICATION_SUBCATEGORY_ID,
 ) -> list[dict[str, Any]]:
     """Resolve each worker and describe the job change to be submitted."""
-    if not effective_date:
-        raise ValueError("effective_date is required (YYYY-MM-DD).")
+    iso_date(effective_date)
     if not reason_id:
         raise ValueError(
             "reason_id is required. Resolve one with workday_list_reference_ids using "
@@ -226,7 +309,10 @@ async def plan_change_job(
         if not worker_id:
             raise ValueError("Each change needs a worker_id.")
         id_type = str(change.get("worker_id_type") or EMPLOYEE_ID)
-        worker = await fetch_worker(client, worker_id, id_type, detailed=True)
+        change_date = iso_date(str(change.get("effective_date") or effective_date))
+        worker = await fetch_worker(
+            client, worker_id, id_type, detailed=True, as_of_effective_date=change_date
+        )
 
         target = {
             key: str(change.get(key) or "").strip()
@@ -258,6 +344,10 @@ async def plan_change_job(
             "location_id": (position.get("location") or {}).get("id", ""),
             "business_title": position.get("business_title", ""),
             "position_title": position.get("position_title", ""),
+            "employee_type_id": (position.get("employee_type") or {}).get("id", ""),
+            "position_time_type_id": (position.get("position_time_type") or {}).get(
+                "id", ""
+            ),
         }
         diff = {
             key: {"from": current.get(key, ""), "to": value}
@@ -290,8 +380,7 @@ async def plan_terminate_employee(
     termination_date: str,
     primary_reason_id: str,
 ) -> dict[str, Any]:
-    if not termination_date:
-        raise ValueError("termination_date is required (YYYY-MM-DD).")
+    iso_date(termination_date, "termination_date")
     if not primary_reason_id:
         raise ValueError(
             "primary_reason_id is required. Resolve one with "
@@ -301,6 +390,11 @@ async def plan_terminate_employee(
 
     worker = await fetch_worker(client, worker_id, worker_id_type, detailed=True)
     status = worker.get("status") or {}
+    if status.get("active") is None or status.get("terminated") is None:
+        raise ValueError(
+            "Employment status is not visible; verify worker read "
+            "permissions before terminating."
+        )
     if status.get("terminated"):
         raise ValueError(
             f"{describe_worker(worker)} is already terminated in Workday"
@@ -326,6 +420,7 @@ async def plan_set_payment_elections(
     country: str,
     currency: str,
     rule_groups: list[dict[str, Any]],
+    merge_with_current: bool = False,
 ) -> dict[str, Any]:
     """Describe the replacement, including every election that would be lost.
 
@@ -363,8 +458,21 @@ async def plan_set_payment_elections(
     entries = payment_elections.enrollments_in(
         result.response(payment_elections.GET_ENROLLMENTS)
     )
+    complete = True
     if not entries:
-        entries, _complete = await _scan_enrollments(client, worker_wid, 5)
+        entries, complete = await _scan_enrollments(client, worker_wid, 5)
+    if not complete:
+        raise ValueError(
+            "Payment election scan is incomplete; refusing to replace an unknown set."
+        )
+    if merge_with_current:
+        rule_groups = payment_elections.merge_groups(entries, rule_groups)
+    request = payment_elections.build_submit_enrollment_request(
+        worker_wid=worker_wid,
+        country=country,
+        currency=currency,
+        rule_groups=rule_groups,
+    )
 
     current = [payment_elections.parse_enrollment(entry) for entry in entries]
     current_fingerprints = {
@@ -389,6 +497,16 @@ async def plan_set_payment_elections(
     new_fingerprints.discard("")
 
     removed = sorted(current_fingerprints - new_fingerprints)
+    desired = payment_elections.parse_enrollment(
+        {
+            "Payment_Election_Enrollment_Data": request[
+                "Payment_Election_Enrollment_Data"
+            ]
+        }
+    )
+    no_change = len(current) == 1 and payment_elections.same_enrollment(
+        current[0], desired
+    )
     return {
         "worker": worker,
         "worker_wid": worker_wid,
@@ -396,9 +514,10 @@ async def plan_set_payment_elections(
         "currency": currency,
         "current_enrollments": current,
         "accounts_removed": removed,
-        "replaces_existing": bool(removed),
-        "no_change": bool(current_fingerprints)
-        and current_fingerprints == new_fingerprints,
+        "replaces_existing": bool(current) and not no_change,
+        "no_change": no_change,
+        "scan_complete": complete,
+        "request": request,
     }
 
 
@@ -428,7 +547,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         )
 
         results: list[dict[str, Any]] = []
-        for plan in plans:
+        for index, plan in enumerate(plans):
             if plan["no_change"]:
                 results.append(
                     {
@@ -451,10 +570,21 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
 
             async def verify(plan: dict[str, Any] = plan) -> dict[str, Any]:
                 worker = await fetch_worker(
-                    client, plan["worker_id"], plan["worker_id_type"], detailed=True
+                    client,
+                    plan["worker_id"],
+                    plan["worker_id_type"],
+                    detailed=True,
+                    as_of_effective_date=plan["effective_date"],
                 )
+                actual = assignments_by_type(worker)
+                mismatches = {
+                    key: {"expected": expected, "actual": actual.get(key, [])}
+                    for key, expected in plan["new_assignments"].items()
+                    if sorted(actual.get(key, [])) != sorted(expected)
+                }
                 return {
-                    "verified": True,
+                    "verified": not mismatches,
+                    "mismatches": mismatches,
                     "organization_assignments": worker.get(
                         "organization_assignments", []
                     ),
@@ -476,6 +606,16 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
                 }
             )
             results.append(outcome)
+            if not outcome.get("submitted") and not outcome.get("would_submit"):
+                results.extend(
+                    {
+                        "worker_id": p["worker_id"],
+                        "submitted": False,
+                        "not_attempted": True,
+                    }
+                    for p in plans[index + 1 :]
+                )
+                break
 
         return {"count": len(results), "results": results}
 
@@ -515,7 +655,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         )
 
         results: list[dict[str, Any]] = []
-        for plan in plans:
+        for index, plan in enumerate(plans):
             if plan["no_change"]:
                 results.append(
                     {
@@ -547,10 +687,21 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
 
             async def verify(plan: dict[str, Any] = plan) -> dict[str, Any]:
                 worker = await fetch_worker(
-                    client, plan["worker_id"], plan["worker_id_type"], detailed=True
+                    client,
+                    plan["worker_id"],
+                    plan["worker_id_type"],
+                    detailed=True,
+                    as_of_effective_date=plan["effective_date"],
                 )
+                actual = job_values(worker)
+                mismatches = {
+                    key: {"expected": value, "actual": actual.get(key, "")}
+                    for key, value in plan["target"].items()
+                    if actual.get(key, "") != value
+                }
                 return {
-                    "verified": True,
+                    "verified": not mismatches,
+                    "mismatches": mismatches,
                     "supervisory_organization": worker.get(
                         "supervisory_organization", {}
                     ),
@@ -567,6 +718,16 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
             )
             outcome.update({"worker_id": plan["worker_id"], "changes": plan["changes"]})
             results.append(outcome)
+            if not outcome.get("submitted") and not outcome.get("would_submit"):
+                results.extend(
+                    {
+                        "worker_id": p["worker_id"],
+                        "submitted": False,
+                        "not_attempted": True,
+                    }
+                    for p in plans[index + 1 :]
+                )
+                break
 
         return {"count": len(results), "results": results}
 
@@ -632,9 +793,18 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
 
         async def verify() -> dict[str, Any]:
             worker = await fetch_worker(
-                client, worker_id, worker_id_type, detailed=True
+                client,
+                worker_id,
+                worker_id_type,
+                detailed=True,
+                as_of_effective_date=termination_date,
             )
-            return {"verified": True, "status": worker.get("status", {})}
+            status = worker.get("status", {})
+            return {
+                "verified": bool(status.get("terminated"))
+                and status.get("termination_date") == termination_date,
+                "status": status,
+            }
 
         outcome = await _submit(
             client,
@@ -715,14 +885,18 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
             email=email,
             phone=phone,
         )
-        result = await client.call(
-            SERVICE_RECRUITING, recruiting.PUT_APPLICANT, request, is_read=False
+        outcome = await _submit(
+            client,
+            SERVICE_RECRUITING,
+            recruiting.PUT_APPLICANT,
+            request,
+            auto_complete=False,
         )
-        response = result.response(recruiting.PUT_APPLICANT)
+        response = outcome.get("response", {})
         return {
-            "created": True,
+            **outcome,
+            "created": outcome.get("submitted", False) and not outcome.get("duplicate"),
             "pre_hire_wid": recruiting.applicant_wid_from_response(response),
-            "request_xml": result.request_xml,
         }
 
     registrar.add(
@@ -745,6 +919,8 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         organization_id: str,
         hire_date: str,
         pre_hire_wid: str | None = None,
+        former_worker_id: str | None = None,
+        position_id: str | None = None,
         first_name: str | None = None,
         last_name: str | None = None,
         email: str | None = None,
@@ -778,7 +954,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
                 existing = None
             if existing is not None:
                 status = existing.get("status") or {}
-                if status.get("active", True):
+                if not (former_worker_id and status.get("terminated")):
                     return {
                         "submitted": False,
                         "duplicate": True,
@@ -795,6 +971,8 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
             organization_id=organization_id,
             hire_date=hire_date,
             pre_hire_wid=pre_hire_wid,
+            former_worker_id=former_worker_id,
+            position_id=position_id,
             first_name=first_name,
             last_name=last_name,
             country_iso=country_iso,
@@ -814,8 +992,20 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         async def verify() -> dict[str, Any]:
             if not employee_id:
                 return {"verified": False, "note": "No employee_id to read back by."}
-            worker = await fetch_worker(client, employee_id, EMPLOYEE_ID, detailed=True)
-            return {"verified": True, "worker": worker}
+            worker = await fetch_worker(
+                client,
+                employee_id,
+                EMPLOYEE_ID,
+                detailed=True,
+                as_of_effective_date=hire_date,
+            )
+            return {
+                "verified": bool(worker.get("status", {}).get("active"))
+                and worker.get("status", {}).get("hire_date") == hire_date
+                and worker.get("supervisory_organization", {}).get("id")
+                == organization_id,
+                "worker": worker,
+            }
 
         return await _submit(
             client,
@@ -853,6 +1043,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         retain_unused_bank_accounts: bool = True,
         auto_complete: bool = False,
         comment: str | None = None,
+        merge_with_current: bool = False,
     ) -> Any:
         _check_auto_complete(auto_complete)
         client = get_client()
@@ -863,6 +1054,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
             country=country,
             currency=currency,
             rule_groups=rule_groups,
+            merge_with_current=merge_with_current,
         )
 
         if plan["no_change"]:
@@ -871,41 +1063,76 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
                 "no_change": True,
                 "note": "Workday already has exactly these payment elections.",
             }
-        if plan["replaces_existing"] and not confirm_replaces_existing:
+        if (
+            plan["replaces_existing"]
+            and not confirm_replaces_existing
+            and not is_preview()
+        ):
             return {
                 "submitted": False,
                 "requires_confirmation": True,
                 "accounts_removed": plan["accounts_removed"],
                 "current_enrollments": plan["current_enrollments"],
                 "note": (
-                    "Submitting payment elections replaces the worker's entire "
-                    "set, and "
-                    f"{len(plan['accounts_removed'])} existing account(s) are not in "
-                    "the set you passed, so they would be removed. Existing account "
-                    "numbers are masked and cannot be carried forward automatically. "
-                    "Include every election the worker should keep, then call again "
-                    "with confirm_replaces_existing set to true."
+                    "This changes an existing election set. Review all rules, amounts, "
+                    "currencies and accounts, then set confirm_replaces_existing. "
+                    "Masked accounts cannot establish equality or be carried forward."
                 ),
             }
 
-        request = payment_elections.build_submit_enrollment_request(
-            worker_wid=plan["worker_wid"],
-            country=country,
-            currency=currency,
-            rule_groups=rule_groups,
-            retain_unused_bank_accounts=retain_unused_bank_accounts,
-            auto_complete=auto_complete,
-            comment=comment,
+        request = plan["request"]
+        from .operations.common import financial_business_process_parameters
+
+        request["@bsvc:Retain_Unused_Worker_Bank_Accounts"] = str(
+            retain_unused_bank_accounts
+        ).lower()
+        request["Business_Process_Parameters"] = financial_business_process_parameters(
+            auto_complete=auto_complete, comment=comment
         )
+
+        async def verify() -> dict[str, Any]:
+            result = await client.call(
+                SERVICE_CASH_MANAGEMENT,
+                payment_elections.GET_ENROLLMENTS,
+                payment_elections.build_get_enrollments_by_reference(
+                    plan["worker_wid"]
+                ),
+                is_read=True,
+            )
+            entries = payment_elections.enrollments_in(
+                result.response(payment_elections.GET_ENROLLMENTS)
+            )
+            current = [payment_elections.parse_enrollment(entry) for entry in entries]
+            desired = payment_elections.parse_enrollment(
+                {
+                    "Payment_Election_Enrollment_Data": request[
+                        "Payment_Election_Enrollment_Data"
+                    ]
+                }
+            )
+            return {
+                "verified": len(current) == 1
+                and payment_elections.same_enrollment(current[0], desired),
+                "enrollments": current,
+                "note": "Masked account values cannot prove equality.",
+            }
+
         outcome = await _submit(
             client,
             SERVICE_CASH_MANAGEMENT,
             payment_elections.SUBMIT_ENROLLMENT,
             request,
             auto_complete=auto_complete,
+            verify=verify if auto_complete else None,
         )
         outcome.update(
-            {"worker": plan["worker"], "accounts_removed": plan["accounts_removed"]}
+            {
+                "worker": plan["worker"],
+                "accounts_removed": plan["accounts_removed"],
+                "current_enrollments": plan["current_enrollments"],
+                "requires_confirmation": plan["replaces_existing"]
+                and not confirm_replaces_existing,
+            }
         )
         return outcome
 
@@ -938,71 +1165,37 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
     async def workday_preview_write(
         operation: str, arguments: dict[str, Any] | None = None
     ) -> Any:
-        client = get_client()
-        args = dict(arguments or {})
+        from .execution import Execution, current_execution
+        from .redact import redact_data
+
         name = (operation or "").strip()
-
-        if name == "workday_change_organization_assignments":
-            plans = await plan_change_organization_assignments(
-                client,
-                changes=_require_batch(
-                    args.get("changes"), "organization assignment changes"
-                ),
-                effective_date=str(args.get("effective_date") or ""),
-                merge_with_current=bool(args.get("merge_with_current", True)),
-            )
-            return {"operation": name, "would_submit": True, "plans": plans}
-
-        if name == "workday_change_job":
-            plans = await plan_change_job(
-                client,
-                changes=_require_batch(args.get("changes"), "job changes"),
-                effective_date=str(args.get("effective_date") or ""),
-                reason_id=str(args.get("reason_id") or ""),
-            )
-            return {"operation": name, "would_submit": True, "plans": plans}
-
-        if name == "workday_terminate_employee":
-            plan = await plan_terminate_employee(
-                client,
-                worker_id=str(args.get("worker_id") or ""),
-                worker_id_type=str(args.get("worker_id_type") or EMPLOYEE_ID),
-                termination_date=str(args.get("termination_date") or ""),
-                primary_reason_id=str(args.get("primary_reason_id") or ""),
-            )
-            return {"operation": name, "would_submit": True, "plan": plan}
-
-        if name == "workday_set_payment_elections":
-            plan = await plan_set_payment_elections(
-                client,
-                worker_id=str(args.get("worker_id") or ""),
-                worker_id_type=str(args.get("worker_id_type") or EMPLOYEE_ID),
-                country=str(args.get("country") or ""),
-                currency=str(args.get("currency") or ""),
-                rule_groups=list(args.get("rule_groups") or []),
-            )
-            return {"operation": name, "would_submit": True, "plan": plan}
-
-        raise ValueError(
-            f"Cannot preview {operation!r}. Previewable operations: "
-            "workday_change_organization_assignments, workday_change_job, "
-            "workday_terminate_employee, workday_set_payment_elections."
-        )
+        fn = registrar.write_functions.get(name)
+        if fn is None:
+            raise ValueError(f"Cannot preview disabled or unknown write {name!r}.")
+        context = Execution(preview=True)
+        token = current_execution.set(context)
+        try:
+            result = await fn(**dict(arguments or {}))
+            return {
+                "operation": name,
+                "would_submit": context.writes > 0,
+                "state_token": context.state_token,
+                "result": redact_data(result),
+            }
+        finally:
+            current_execution.reset(token)
 
     registrar.add(
         workday_preview_write,
         name="workday_preview_write",
         title="Preview a Workday write",
         description=(
-            "Work out what a write would do without sending anything to Workday. Pass "
-            "the name of the write tool and the arguments you would give it; the "
-            "result "
-            "resolves the worker and every reference, and states the current value and "
-            "the new value for each field that would change, or that nothing would "
-            "change. Use it before any write so the person approving sees what will "
-            "happen. Covers workday_change_organization_assignments, "
-            "workday_change_job, workday_terminate_employee and "
-            "workday_set_payment_elections."
+            "Preview any enabled write tool using its exact name and arguments. "
+            "Runs the same validation, lookups and request builder without a "
+            "Workday write. Returns a redacted result, would_submit and state_token. "
+            "After approval, submit the same arguments with expected_state_token "
+            "to reject changed input or Workday state. References and business "
+            "rules are still subject to tenant validation."
         ),
         read_only=True,
         idempotent=True,

@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wd-wsdl="urn:com.workday/bsvc/Cash_Management" xmlns:wd="urn:com.workday/bsvc" xmlns:nyw="urn:com.netyourwork/aod" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+  <xsd:element name="Get_Payment_Election_Enrollments_Request" type="wd:Get_Payment_Election_Enrollments_RequestType"/>
+  <xsd:element name="Submit_Payment_Election_Enrollment_Request" type="wd:Submit_Payment_Election_Enrollment_RequestType"/>
+  <xsd:attribute name="version" type="xsd:string" wd:fixed="v44.2"/>
+  <xsd:simpleType name="WorkerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Payment_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CountryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CurrencyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Bank_Account_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Payment_Election_RuleReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Unique_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Payment_Election_EnrollableReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:complexType name="Payment_Election_DataType">
+    <xsd:sequence>
+      <xsd:element name="Order" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="6"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Payment_Election_Rule_Reference" type="wd:Payment_Election_RuleObjectType"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType"/>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType"/>
+      <xsd:element name="Payment_Type_Reference" type="wd:Payment_TypeObjectType"/>
+      <xsd:element name="Worker_Bank_Account_Data" type="wd:Worker_Bank_Account_WWS_DataType" minOccurs="0"/>
+      <xsd:choice>
+        <xsd:element name="Distribution_Amount" maxOccurs="1">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:decimal">
+              <xsd:totalDigits value="26"/>
+              <xsd:minInclusive value="0"/>
+              <xsd:fractionDigits value="6"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Distribution_Percentage" maxOccurs="1">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:decimal">
+              <xsd:totalDigits value="9"/>
+              <xsd:minInclusive value="0"/>
+              <xsd:fractionDigits value="6"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="Distribution_Balance" type="xsd:boolean" maxOccurs="1"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_Enrollment_for_Worker_DataType">
+    <xsd:sequence>
+      <xsd:element name="Role_ID_Reference" type="wd:Payment_Election_EnrollableObjectType"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType"/>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType"/>
+      <xsd:element name="Payment_Election_Rule_Group_Data" type="wd:Payment_Election_Rule_Group_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_Rule_Group_DataType">
+    <xsd:sequence>
+      <xsd:element name="Payment_Election_Rule_Reference" type="wd:Payment_Election_RuleObjectType"/>
+      <xsd:element name="Payment_Election_Data" type="wd:Payment_Election_DataType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Response_FilterType">
+    <xsd:sequence>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Page" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="12"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Count" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_Comment_DataType">
+    <xsd:sequence>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Financials_Business_Process_ParametersType">
+    <xsd:sequence>
+      <xsd:element name="Auto_Complete" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Comment_Data" type="wd:Business_Process_Comment_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_Enrollment_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Payment_Election_Enrollment_Reference" type="wd:Unique_IdentifierObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_Enrollment_Request_CriteriaType"/>
+  <xsd:complexType name="Payment_Election_Enrollment_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Reference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Payment_Election_Enrollments_RequestType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Request_References" type="wd:Payment_Election_Enrollment_Request_ReferencesType" minOccurs="0"/>
+        <xsd:element name="Request_Criteria" type="wd:Payment_Election_Enrollment_Request_CriteriaType" minOccurs="0"/>
+      </xsd:choice>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Payment_Election_Enrollment_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Submit_Payment_Election_Enrollment_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Business_Process_Parameters" type="wd:Financials_Business_Process_ParametersType" minOccurs="0"/>
+      <xsd:element name="Payment_Election_Enrollment_Data" type="wd:Payment_Election_Enrollment_for_Worker_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Retain_Unused_Worker_Bank_Accounts" type="xsd:boolean"/>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_Bank_Account_WWS_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType" minOccurs="0"/>
+      <xsd:element name="Bank_Account_Nickname" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Bank_Account_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Account_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Roll_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Account_Type_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Account_Type_Reference" type="wd:Bank_Account_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Bank_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="IBAN" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Bank_ID_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="BIC" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Branch_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Branch_ID_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Check_Digit" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:WorkerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Payment_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CountryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CurrencyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Bank_Account_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Bank_Account_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_RuleObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Payment_Election_RuleObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Unique_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_EnrollableObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Payment_Election_EnrollableObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:WorkerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Payment_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CountryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CurrencyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Bank_Account_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Bank_Account_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_RuleObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Payment_Election_RuleReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Unique_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Payment_Election_EnrollableObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Payment_Election_EnrollableReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+</xsd:schema>

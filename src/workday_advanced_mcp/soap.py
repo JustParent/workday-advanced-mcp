@@ -138,7 +138,10 @@ def build_envelope(
     security: dict[str, Any] | None = None,
     include_common_header: bool = True,
 ) -> str:
-    """Render ``<operation>_Request`` as a complete SOAP envelope."""
+    """Render the documented request root as a complete SOAP envelope."""
+    from .validation import validate_dates
+
+    validate_dates(request_data)
     envelope = ET.Element("soap:Envelope")
     envelope.set("xmlns:soap", SOAP_NS)
     envelope.set("xmlns:bsvc", BSVC_NS)
@@ -154,7 +157,13 @@ def build_envelope(
         _dict_to_xml(headers, ET.SubElement(envelope, "soap:Header"))
 
     body = ET.SubElement(envelope, "soap:Body")
-    _dict_to_xml({f"bsvc:{operation}_Request": add_bsvc_prefixes(request_data)}, body)
+    root = {
+        "Add_Update_Organization": "Organization_Add_Update",
+        "Inactivate_Organization": "Organization_Inactivate",
+        "Get_Worker_Event_History": "Worker_Event_History_Get",
+        "Get_Event_Detail": "Get_Event_Details_Request",
+    }.get(operation, f"{operation}_Request")
+    _dict_to_xml({f"bsvc:{root}": add_bsvc_prefixes(request_data)}, body)
 
     return f"{XML_DECLARATION}\n{ET.tostring(envelope, encoding='unicode')}"
 

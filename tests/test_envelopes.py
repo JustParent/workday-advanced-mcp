@@ -259,8 +259,8 @@ def test_hire_employee_order_matches_the_schema() -> None:
         "Organization_Reference",
         "Hire_Date",
         "Hire_Employee_Event_Data",
-        "Employee_ID",
     ]
+    assert find(data, "Hire_Employee_Event_Data/Employee_ID").text == "21055"
     assert child_order(find(data, "Hire_Employee_Event_Data/Position_Details")) == [
         "Job_Profile_Reference",
         "Location_Reference",
@@ -305,13 +305,13 @@ def test_business_process_parameters_default_to_tenant_approval_routing() -> Non
             effective_date="2026-04-01",
             reason_id="Transfer",
             supervisory_organization_id="SUP-NEW",
-            comment="Bob sync",
+            comment="Integration sync",
         ),
     )
     parameters = find(request, "Business_Process_Parameters")
     assert find(parameters, "Auto_Complete").text == "false"
     assert find(parameters, "Run_Now").text == "true"
-    assert "Bob sync" in (find(parameters, "Comment_Data/Comment").text or "")
+    assert "Integration sync" in (find(parameters, "Comment_Data/Comment").text or "")
 
 
 def test_put_applicant_requires_contact_data_shape() -> None:
@@ -386,10 +386,10 @@ def test_payment_election_submission_order_and_retain_attribute() -> None:
         "Distribution_Balance",
     ]
     assert child_order(find(election, "Worker_Bank_Account_Data")) == [
+        "Country_Reference",
+        "Account_Number",
         "Bank_Name",
         "Bank_ID_Number",
-        "Account_Number",
-        "Country_Reference",
     ]
 
 

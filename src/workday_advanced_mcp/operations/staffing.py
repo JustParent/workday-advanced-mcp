@@ -275,6 +275,9 @@ def build_hire_employee_request(
     organization_id: str,
     hire_date: str,
     pre_hire_wid: str | None = None,
+    former_worker_id: str | None = None,
+    former_worker_id_type: str = EMPLOYEE_ID,
+    position_id: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
     country_iso: str = "US",
@@ -293,23 +296,22 @@ def build_hire_employee_request(
 ) -> dict[str, Any]:
     """Hire a pre-hire into a supervisory organization.
 
-    Document order (matching the shape Harriet's first-party integration already
-    submits successfully in production):
+    Document order from the published Staffing v44.2 schema:
         Business_Process_Parameters
         Hire_Employee_Data
-            Applicant_Reference | Applicant_Data
+            Applicant_Reference | Applicant_Data | Former_Worker_Reference
             Organization_Reference
-            Job_Requisition_Reference
+            Position_Reference | Job_Requisition_Reference
             Hire_Date
             Hire_Employee_Event_Data
                 Employee_Type_Reference
                 Position_Details
                     Job_Profile_Reference
-                    Location_Reference
-                    Position_Time_Type_Reference
                     Position_Title
                     Business_Title
-            Employee_ID
+                    Location_Reference
+                    Position_Time_Type_Reference
+                Employee_ID
 
     A tenant whose Hire business process requires a compensation sub-process will
     leave an auto-completed hire incomplete; submit with auto_complete off so the
@@ -318,7 +320,20 @@ def build_hire_employee_request(
     from .recruiting import build_put_applicant_request
 
     hire_data: dict[str, Any] = {}
-    if pre_hire_wid:
+    if (
+        sum(bool(x) for x in (pre_hire_wid, former_worker_id, first_name or last_name))
+        != 1
+    ):
+        raise ValueError(
+            "Choose exactly one of pre_hire_wid, former_worker_id or a new name."
+        )
+    if position_id and job_requisition_id:
+        raise ValueError("Choose position_id or job_requisition_id, not both.")
+    if former_worker_id:
+        hire_data["Former_Worker_Reference"] = reference(
+            former_worker_id_type, former_worker_id
+        )
+    elif pre_hire_wid:
         hire_data["Applicant_Reference"] = reference(WID, pre_hire_wid)
     else:
         if not (first_name and last_name):
@@ -337,7 +352,9 @@ def build_hire_employee_request(
     hire_data["Organization_Reference"] = reference(
         organization_id_type_value, organization_id
     )
-    if job_requisition_id:
+    if position_id:
+        hire_data["Position_Reference"] = reference(POSITION_ID, position_id)
+    elif job_requisition_id:
         hire_data["Job_Requisition_Reference"] = reference(
             JOB_REQUISITION_ID, job_requisition_id
         )
@@ -359,18 +376,25 @@ def build_hire_employee_request(
     if business_title:
         position_details["Business_Title"] = business_title
 
+    position_order = (
+        "Job_Profile_Reference",
+        "Position_Title",
+        "Business_Title",
+        "Location_Reference",
+        "Position_Time_Type_Reference",
+    )
+    position_details = {
+        key: position_details[key] for key in position_order if key in position_details
+    }
     event_data: dict[str, Any] = {}
+    if employee_id:
+        event_data["Employee_ID"] = employee_id
     if employee_type_id:
         event_data["Employee_Type_Reference"] = reference(
             EMPLOYEE_TYPE_ID, employee_type_id
         )
-    if position_details:
-        event_data["Position_Details"] = position_details
-    # A pre-hire hire must carry the event element even when it is empty.
-    if pre_hire_wid or event_data:
-        hire_data["Hire_Employee_Event_Data"] = event_data
-    if employee_id:
-        hire_data["Employee_ID"] = employee_id
+    event_data["Position_Details"] = position_details
+    hire_data["Hire_Employee_Event_Data"] = event_data
 
     return {
         "Business_Process_Parameters": business_process_parameters(

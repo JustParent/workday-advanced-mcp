@@ -47,3 +47,13 @@ def event_reference_from(response: dict[str, Any]) -> dict[str, Any]:
             if summary:
                 return summary
     return {}
+
+
+def financial_business_process_parameters(
+    *, auto_complete: bool = False, comment: str | None = None
+) -> dict[str, Any]:
+    parameters = business_process_parameters(
+        auto_complete=auto_complete, comment=comment
+    )
+    parameters.pop("Run_Now")
+    return parameters

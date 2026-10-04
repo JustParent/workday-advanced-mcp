@@ -22,8 +22,8 @@ from mcp.types import LATEST_PROTOCOL_VERSION, TextContent
 SRC = str(Path(__file__).resolve().parent.parent / "src")
 STARTUP_TIMEOUT_SECONDS = 60
 
-TOTAL_TOOLS = 16
-READ_ONLY_TOOLS = 9
+TOTAL_TOOLS = 31
+READ_ONLY_TOOLS = 16
 
 # An unroutable address, so a tool call exercises the failure path without
 # reaching Workday. Port 9 (discard) refuses or drops connections immediately.

@@ -12,6 +12,7 @@ from typing import Any
 
 from .client import SERVICE_HUMAN_RESOURCES, WorkdayClient
 from .operations import workers
+from .pagination import at_entry_moment, entry_moment
 from .references import EMPLOYEE_ID, WORKER_ID_TYPES
 
 MAX_SCAN_PAGES = 20
@@ -77,6 +78,7 @@ async def scan_for_email(
         return [], True
 
     matches: list[dict[str, Any]] = []
+    moment = entry_moment()
     page = 1
     while page <= max_pages:
         request = workers.build_scan_request(
@@ -86,7 +88,10 @@ async def scan_for_email(
             exclude_inactive=not include_inactive,
         )
         result = await client.call(
-            SERVICE_HUMAN_RESOURCES, workers.OPERATION, request, is_read=True
+            SERVICE_HUMAN_RESOURCES,
+            workers.OPERATION,
+            at_entry_moment(request, moment),
+            is_read=True,
         )
         response = result.response(workers.OPERATION)
         entries = workers.workers_in(response)

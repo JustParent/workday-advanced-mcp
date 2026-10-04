@@ -37,6 +37,7 @@ class ToolRegistrar:
         self._mcp = mcp
         self._enabled = enabled
         self.registered: list[str] = []
+        self.write_functions: dict[str, Callable[..., Any]] = {}
 
     def allows(self, name: str) -> bool:
         return self._enabled is None or name in self._enabled
@@ -52,6 +53,13 @@ class ToolRegistrar:
         destructive: bool = False,
         idempotent: bool = False,
     ) -> None:
+        if not read_only:
+            from .execution import controlled
+
+            fn = controlled(fn)
+            # An allowlisted preview must never expose a disabled write tool.
+            if self.allows(name):
+                self.write_functions[name] = fn
         if not self.allows(name):
             return
         annotations = ToolAnnotations(

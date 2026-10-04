@@ -2,8 +2,8 @@
 
 Submit_Payment_Election_Enrollment **replaces** a worker's entire set of payment
 elections, so sending only the account that changed silently deletes the rest.
-Every write therefore starts from the current set and merges into it; the tool
-layer refuses to skip that read.
+Every write therefore reads the complete current set first. Optional merging
+requires readable, unmasked values for every account that must be carried forward.
 
 Account numbers are masked on the way out (see ``redact``); they are never
 returned to a caller or written to a log.
@@ -25,7 +25,7 @@ from ..references import (
     reference,
     summarize_reference,
 )
-from .common import business_process_parameters
+from .common import financial_business_process_parameters
 
 GET_ENROLLMENTS = "Get_Payment_Election_Enrollments"
 SUBMIT_ENROLLMENT = "Submit_Payment_Election_Enrollment"
@@ -34,14 +34,21 @@ PAGE_SIZE = 100
 
 # Worker_Bank_Account_Data children, in schema order.
 BANK_ACCOUNT_ELEMENTS = (
+    "Country_Reference",
+    "Currency_Reference",
     "Bank_Account_Nickname",
+    "Bank_Account_Name",
+    "Account_Number",
+    "Roll_Number",
+    "Account_Type_Code",
     "Account_Type_Reference",
     "Bank_Name",
-    "Bank_ID_Number",
-    "Account_Number",
     "IBAN",
+    "Bank_ID_Number",
     "BIC",
-    "Country_Reference",
+    "Branch_Name",
+    "Branch_ID_Number",
+    "Check_Digit",
 )
 
 
@@ -86,12 +93,23 @@ def _bank_account(data: Any) -> dict[str, Any]:
         return {}
     return {
         "nickname": data.get("Bank_Account_Nickname") or "",
-        "account_type": summarize_reference(data.get("Account_Type_Reference")).get(
-            "descriptor", ""
-        ),
+        "account_type": summarize_reference(
+            data.get("Account_Type_Reference"), preferred=("Bank_Account_Type_ID", WID)
+        ).get("id", ""),
+        "account_name": data.get("Bank_Account_Name") or "",
+        "roll_number_masked": mask_account(data.get("Roll_Number")),
+        "roll_fingerprint": account_fingerprint(data.get("Roll_Number")),
+        "currency": summarize_reference(
+            data.get("Currency_Reference"), preferred=(CURRENCY_ID, WID)
+        ).get("id", ""),
+        "branch_name": data.get("Branch_Name") or "",
+        "branch_id_number": data.get("Branch_ID_Number") or "",
+        "check_digit": data.get("Check_Digit") or "",
         "bank_name": data.get("Bank_Name") or "",
         "bank_id_number": data.get("Bank_ID_Number") or "",
         "account_number_masked": mask_account(data.get("Account_Number")),
+        "account_number_fingerprint": account_fingerprint(data.get("Account_Number")),
+        "iban_fingerprint": account_fingerprint(data.get("IBAN")),
         "account_fingerprint": account_fingerprint(
             data.get("Account_Number") or data.get("IBAN")
         ),
@@ -118,6 +136,13 @@ def parse_enrollment(enrollment: dict[str, Any]) -> dict[str, Any]:
             elections.append(
                 {
                     "order": election.get("Order") or "",
+                    "country": summarize_reference(
+                        election.get("Country_Reference"),
+                        preferred=(COUNTRY_ISO_ALPHA2, WID),
+                    ).get("id", ""),
+                    "currency": summarize_reference(
+                        election.get("Currency_Reference"), preferred=(CURRENCY_ID, WID)
+                    ).get("id", ""),
                     "payment_type": summarize_reference(
                         election.get("Payment_Type_Reference"),
                         preferred=(PAYMENT_TYPE_ID, WID),
@@ -128,7 +153,7 @@ def parse_enrollment(enrollment: dict[str, Any]) -> dict[str, Any]:
                     "distribution_balance": str(
                         election.get("Distribution_Balance") or ""
                     ).lower()
-                    == "true",
+                    in ("true", "1"),
                     "bank_account": _bank_account(
                         election.get("Worker_Bank_Account_Data")
                     ),
@@ -225,7 +250,7 @@ def build_submit_enrollment_request(
         "@bsvc:Retain_Unused_Worker_Bank_Accounts": (
             "true" if retain_unused_bank_accounts else "false"
         ),
-        "Business_Process_Parameters": business_process_parameters(
+        "Business_Process_Parameters": financial_business_process_parameters(
             auto_complete=auto_complete, comment=comment
         ),
         "Payment_Election_Enrollment_Data": {
@@ -292,12 +317,30 @@ def _build_bank_account(account: dict[str, Any]) -> dict[str, Any]:
         values["BIC"] = account["bic"]
     if account.get("country"):
         values["Country_Reference"] = reference(COUNTRY_ISO_ALPHA2, account["country"])
+    if account.get("currency"):
+        values["Currency_Reference"] = reference(CURRENCY_ID, account["currency"])
+    for key, element in {
+        "account_name": "Bank_Account_Name",
+        "roll_number": "Roll_Number",
+        "branch_name": "Branch_Name",
+        "branch_id_number": "Branch_ID_Number",
+        "check_digit": "Check_Digit",
+    }.items():
+        if account.get(key):
+            values[element] = account[key]
 
     if not (values.get("Account_Number") or values.get("IBAN")):
         raise ValueError(
             "A bank account needs either account_number (with bank_id_number) or iban."
         )
-    return values
+    for key in ("account_number", "iban", "roll_number"):
+        if account.get(key) and not account_fingerprint(str(account[key])):
+            raise ValueError(f"{key} is masked; supply the full value before writing.")
+    if values.get("Account_Number") and not (
+        values.get("Bank_ID_Number") or values.get("IBAN")
+    ):
+        raise ValueError("account_number requires bank_id_number or iban.")
+    return {key: values[key] for key in BANK_ACCOUNT_ELEMENTS if key in values}
 
 
 def _distribution(election: dict[str, Any]) -> dict[str, Any]:
@@ -306,15 +349,21 @@ def _distribution(election: dict[str, Any]) -> dict[str, Any]:
     percentage = election.get("distribution_percentage")
     balance = election.get("distribution_balance")
 
-    chosen = [v for v in (amount, percentage, balance) if v not in (None, "", False)]
-    if len(chosen) > 1:
+    chosen = (
+        int(amount not in (None, ""))
+        + int(percentage not in (None, ""))
+        + int(balance is True)
+    )
+    if chosen != 1:
         raise ValueError(
             "An election takes exactly one of distribution_amount, "
             "distribution_percentage or distribution_balance."
         )
     if amount not in (None, ""):
+        _positive_decimal(amount, "distribution_amount")
         return {"Distribution_Amount": amount}
     if percentage not in (None, ""):
+        _positive_decimal(percentage, "distribution_percentage", maximum=100)
         return {"Distribution_Percentage": percentage}
     if balance:
         return {"Distribution_Balance": True}
@@ -322,3 +371,131 @@ def _distribution(election: dict[str, Any]) -> dict[str, Any]:
         "An election needs distribution_balance: true, or a distribution_amount or "
         "distribution_percentage."
     )
+
+
+def _positive_decimal(value: Any, name: str, maximum: int | None = None) -> None:
+    from decimal import Decimal, InvalidOperation
+
+    try:
+        number = Decimal(str(value))
+        if not number.is_finite() or number <= 0 or (maximum and number > maximum):
+            raise ValueError(f"{name} is out of range.")
+    except InvalidOperation as exc:
+        raise ValueError(f"{name} must be numeric.") from exc
+
+
+def same_enrollment(current: dict[str, Any], desired: dict[str, Any]) -> bool:
+    """Compare the entire election, only when account identity is provable."""
+    from decimal import Decimal
+
+    def normalize(value: Any, key: str = "") -> Any:
+        if isinstance(value, dict):
+            if "id_type" in value:
+                return [value.get("id_type"), value.get("id")]
+            return {k: normalize(v, k) for k, v in value.items() if k != "worker"}
+        if isinstance(value, list):
+            return [normalize(v) for v in value]
+        if (
+            key in {"order", "distribution_amount", "distribution_percentage"}
+            and value != ""
+        ):
+            return str(Decimal(str(value)).normalize())
+        return value
+
+    for enrollment in (current, desired):
+        for group in enrollment.get("rule_groups", []):
+            for election in group.get("elections", []):
+                account = election.get("bank_account")
+                if account and not account.get("account_fingerprint"):
+                    return False
+                if account and any(
+                    account.get(f"{key}_masked")
+                    and not account.get(f"{fingerprint}_fingerprint")
+                    for key, fingerprint in [
+                        ("account_number", "account_number"),
+                        ("iban", "iban"),
+                        ("roll_number", "roll"),
+                    ]
+                ):
+                    return False
+    return normalize(current) == normalize(desired)
+
+
+def merge_groups(
+    entries: list[dict[str, Any]], incoming: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Carry forward untouched rule groups only when full bank values are readable.
+
+    There is no bank-account reference field in the v44.2 election input schema.
+    Never manufacture full numbers from masked read responses.
+    """
+    replacement_ids = {str(g.get("payment_election_rule_id", "")) for g in incoming}
+    merged = list(incoming)
+    from ..references import extract_ids
+
+    for entry in entries:
+        data = entry.get("Payment_Election_Enrollment_Data") or {}
+        for group in as_list(data.get("Payment_Election_Rule_Group_Data")):
+            ref = summarize_reference(group.get("Payment_Election_Rule_Reference"))
+            if replacement_ids.intersection(
+                extract_ids(group.get("Payment_Election_Rule_Reference")).values()
+            ):
+                continue
+            elections = []
+            for raw in as_list(group.get("Payment_Election_Data")):
+                parsed = parse_enrollment(
+                    {
+                        "Payment_Election_Enrollment_Data": {
+                            "Payment_Election_Rule_Group_Data": {
+                                "Payment_Election_Data": raw
+                            }
+                        }
+                    }
+                )["rule_groups"][0]["elections"][0]
+                bank = raw.get("Worker_Bank_Account_Data") or {}
+                account = {
+                    key: bank.get(element)
+                    for key, element in {
+                        "nickname": "Bank_Account_Nickname",
+                        "account_name": "Bank_Account_Name",
+                        "account_number": "Account_Number",
+                        "roll_number": "Roll_Number",
+                        "bank_name": "Bank_Name",
+                        "iban": "IBAN",
+                        "bank_id_number": "Bank_ID_Number",
+                        "bic": "BIC",
+                        "branch_name": "Branch_Name",
+                        "branch_id_number": "Branch_ID_Number",
+                        "check_digit": "Check_Digit",
+                    }.items()
+                    if bank.get(element)
+                }
+                if bank:
+                    account.update(
+                        account_type_id=parsed["bank_account"]["account_type"],
+                        country=parsed["bank_account"]["country"],
+                        currency=parsed["bank_account"]["currency"],
+                    )
+                    _build_bank_account(account)  # refuses masked/missing values
+                election = {
+                    key: parsed[key] for key in ("order", "country", "currency")
+                }
+                election["payment_type_id"] = parsed["payment_type"].get("id", "")
+                for key in (
+                    "distribution_amount",
+                    "distribution_percentage",
+                    "distribution_balance",
+                ):
+                    if parsed[key] not in ("", False):
+                        election[key] = parsed[key]
+                if bank:
+                    election["bank_account"] = account
+                elections.append(election)
+            merged.append(
+                {
+                    "payment_election_rule_id": ref.get("id"),
+                    "payment_election_rule_id_type": ref.get("id_type"),
+                    "elections": elections,
+                }
+            )
+    return merged
