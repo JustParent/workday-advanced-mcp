@@ -34,8 +34,8 @@ AUTH_MODE_OAUTH = "oauth"
 # tenant that works there works here.
 DEFAULT_API_VERSION = "v44.2"
 # Must stay well below the host's per-RPC sandbox timeout (the README's Harriet
-# config uses the 300 maximum) so a slow call returns a structured error instead of
-# the RPC dying mid-write.
+# config uses 240) so a slow call returns a structured error instead of the RPC
+# dying mid-write.
 DEFAULT_HTTP_TIMEOUT = 90.0
 
 _TRUTHY = {"1", "true", "yes", "on"}
