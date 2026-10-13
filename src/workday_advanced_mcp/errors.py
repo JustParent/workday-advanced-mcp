@@ -9,7 +9,13 @@ from __future__ import annotations
 
 import httpx
 
-from .config import ENV_ISU_PASSWORD, ENV_ISU_USERNAME, ConfigError
+from .config import (
+    ENV_CLIENT_ID,
+    ENV_ISU_PASSWORD,
+    ENV_ISU_USERNAME,
+    ENV_REFRESH_TOKEN,
+    ConfigError,
+)
 
 __all__ = [
     "ConfigError",
@@ -85,7 +91,14 @@ class WorkdayTimeoutError(WorkdayApiError):
     """The call timed out. For a write this is ambiguous, never retry blindly."""
 
 
-def auth_error_message(service: str, status: int) -> str:
+def auth_error_message(service: str, status: int, *, oauth: bool = False) -> str:
+    if status == 401 and oauth:
+        return (
+            "Workday rejected the OAuth access token (401) even after a new one was "
+            f"issued. Check that {ENV_REFRESH_TOKEN} has not been revoked or "
+            f"regenerated, that the API client in {ENV_CLIENT_ID} is still active "
+            "and that the Workday account the token was issued for is active."
+        )
     if status == 401:
         return (
             "Workday rejected the credentials (401). Check that "
@@ -94,21 +107,30 @@ def auth_error_message(service: str, status: int) -> str:
             "not locked out. Do not retry: repeated failures lock the ISU."
         )
     hint = DOMAIN_HINTS.get(service, "the relevant Workday security domains")
+    scope = (
+        " Also include those functional areas in the API client's scope."
+        if oauth
+        else ""
+    )
     return (
         f"Workday denied access (403) to the {service} service. Grant the Integration "
-        f"System User's security group: {hint}. Activate pending security policy "
-        f"changes "
+        f"System User's security group: {hint}.{scope} Activate pending security "
+        "policy changes "
         "afterwards. If the tenant restricts API access by IP, also allow this "
         "server's "
         "outbound address (set WORKDAY_PROXY_URL to route through a fixed IP)."
     )
 
 
-def raise_for_http_error(response: httpx.Response, *, service: str) -> None:
+def raise_for_http_error(
+    response: httpx.Response, *, service: str, oauth: bool = False
+) -> None:
     """Raise for a transport-level failure that is not a SOAP fault."""
     status = response.status_code
     if status in (401, 403):
-        raise WorkdayAuthError(auth_error_message(service, status), status_code=status)
+        raise WorkdayAuthError(
+            auth_error_message(service, status, oauth=oauth), status_code=status
+        )
     if status == 404:
         raise WorkdayApiError(
             f"Workday returned 404 for the {service} endpoint. Check WORKDAY_HOST, "

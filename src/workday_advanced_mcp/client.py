@@ -258,7 +258,11 @@ class WorkdayClient:
         # A credential or permission failure is more actionable than anything in
         # the body, and Workday often sends one with no body at all.
         if response.status_code in (401, 403):
-            raise_for_http_error(response, service=service)
+            raise_for_http_error(
+                response,
+                service=service,
+                oauth=isinstance(self._auth, OAuthRefreshAuth),
+            )
 
         parsed = parse_envelope(response.text)
         # Workday reports validation failures as a SOAP fault with HTTP 500, so a
