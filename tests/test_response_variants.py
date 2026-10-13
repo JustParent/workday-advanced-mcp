@@ -355,11 +355,10 @@ async def test_processing_fault_is_not_safe_to_retry(server_factory, worker_resp
         route = respx.post(service_url("Staffing")).mock(
             return_value=httpx.Response(500, text=fault)
         )
-        server = server_factory()
-        first = await call_tool(server, "workday_change_job", JOB)
-        second = await call_tool(server, "workday_change_job", JOB)
-    assert first["results"][0]["outcome_unknown"] is True
-    assert second["results"][0]["write_status"] == "unknown" and route.call_count == 1
+        result = await call_tool(server_factory(), "workday_change_job", JOB)
+    outcome = result["results"][0]
+    assert outcome["outcome_unknown"] is True and route.call_count == 1
+    assert "Write outcome unknown" in outcome["error"]
 
 
 def test_invalid_batch_entries_are_rejected_before_planning():
@@ -381,5 +380,5 @@ def test_diagnostics_cover_installation_without_leaking_secrets(
     main()
     output = capsys.readouterr().out
     assert "isu-password" not in output
-    assert f"Registered tools ({16 if read_only else 31})" in output
+    assert f"Registered tools ({15 if read_only else 30})" in output
     assert "Credentials: configured" in output

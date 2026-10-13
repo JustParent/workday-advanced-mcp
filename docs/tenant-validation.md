@@ -78,14 +78,15 @@ implementation tenant before enabling production writes.
 | Payments | Expenses/payroll rules, currencies/types, account formats, full-field visibility for merging and BP routing. |
 | Recovery | Visible tasks/awaiting people, cancel/rescind eligibility/dependencies and compensating roles. |
 | Finance, if enabled | Journal source, ledger, account WIDs, worktags, period rules, stable IDs, approval/posting. |
-| Deployment | Persistent journal, one coordinated writer, allowlist/read-only mode, secrets and host timeout. |
+| Deployment | Host-side duplicate suppression and approval records, allowlist/read-only mode, secrets, outbound IP and host timeout. |
 
 ## Acceptance scenarios
 
 1. Promote a worker to manager: create the org under the correct parent, assign
    manager/expense roles, move reports and verify real expense approval routing.
-2. Repeat the source event while the BP awaits approval, including after an MCP
-   restart; confirm no second submission.
+2. Repeat the source event while the BP awaits approval, including after the
+   sandbox is recycled; confirm the host sends no second submission. Preview in
+   one sandbox and submit the approval in another.
 3. Reparent a managed org, reject cycles and preserve the intended membership;
    include future-effective changes.
 4. Create/approve a position before hire; rehire without a duplicate person.
@@ -98,8 +99,9 @@ implementation tenant before enabling production writes.
    masked/incomplete unsafe merges and confirm payroll elections survive.
 8. Change business data after approval and confirm stale-token rejection. Repeat
    with only a later query timestamp and confirm the unchanged plan proceeds.
-9. Lose a write response, restart and reconcile through journal/history. Exercise
-   eligible and ineligible cancel/rescind cases without blind retries.
+9. Lose a write response, recycle the sandbox and reconcile through event
+   history. Exercise eligible and ineligible cancel/rescind cases without blind
+   retries.
 10. Fail batch item two; retain item one's event and mark later items unattempted.
     Resume after reconciliation and fresh approval.
 11. If finance is enabled, submit a balanced journal once and reconcile its

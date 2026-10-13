@@ -236,15 +236,6 @@ def register_lifecycle_reads(registrar: ToolRegistrar) -> None:
             ),
         }
 
-    async def workday_get_write_status(tracking_id: str) -> Any:
-        from .execution import WriteJournal
-
-        journal = WriteJournal()
-        try:
-            return journal.get(tracking_id)
-        finally:
-            journal.close()
-
     for fn, description in [
         (
             workday_get_organization,
@@ -277,13 +268,6 @@ def register_lifecycle_reads(registrar: ToolRegistrar) -> None:
             (
                 "Discover worker event IDs by update window, including recovery "
                 "after a timeout with no returned event ID."
-            ),
-        ),
-        (
-            workday_get_write_status,
-            (
-                "Read the durable submission journal by tracking_id; unknown "
-                "outcomes must be reconciled in Workday before any retry."
             ),
         ),
     ]:
@@ -420,7 +404,7 @@ def register_lifecycle_writes(registrar: ToolRegistrar) -> None:
                 ),
             }
         )
-        if outcome.get("submitted") and not outcome.get("duplicate"):
+        if outcome.get("submitted"):
             try:
                 actual = await fetch_organization(
                     client, organization_id, effective_date

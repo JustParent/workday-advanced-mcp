@@ -49,7 +49,7 @@ def service_url(service: str) -> str:
 
 
 @pytest.fixture(autouse=True)
-def clean_environment(monkeypatch: pytest.MonkeyPatch, tmp_path) -> Iterator[None]:
+def clean_environment(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     """Start each test from the base tenant configuration and a fresh client."""
     from workday_advanced_mcp.client import reset_client
 
@@ -57,7 +57,6 @@ def clean_environment(monkeypatch: pytest.MonkeyPatch, tmp_path) -> Iterator[Non
         monkeypatch.delenv(name, raising=False)
     for name, value in BASE_ENV.items():
         monkeypatch.setenv(name, value)
-    monkeypatch.setenv("WORKDAY_STATE_PATH", str(tmp_path / "writes.sqlite3"))
     reset_client()
     yield
     reset_client()

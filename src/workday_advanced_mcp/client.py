@@ -62,9 +62,6 @@ class CallResult:
     """The envelope sent, with bank details masked. Safe to return to a caller."""
 
     preview: bool = False
-    duplicate: bool = False
-    write_status: str = "submitted"
-    tracking_id: str = ""
 
     def response(self, operation: str) -> dict[str, Any]:
         """The ``<operation>_Response`` payload, or an empty mapping."""
@@ -137,7 +134,7 @@ class WorkdayClient:
         *,
         is_read: bool = False,
     ) -> CallResult:
-        from .execution import WriteJournal, current_execution, stable_read_state
+        from .execution import current_execution, stable_read_state, state_token
 
         context = current_execution.get()
         if is_read:
@@ -153,69 +150,46 @@ class WorkdayClient:
             return await self._send(service, operation, request_data)
         self.settings.require_ready()
         scope = self.settings.endpoint_base + "/" + self.settings.api_version
-        journal = WriteJournal()
+        context.state_token = state_token(
+            self.settings, [scope, context.reads, context.arguments]
+        )
+        if (
+            context.expected_state_token
+            and context.writes == 0
+            and not hmac_compare(context.expected_state_token, context.state_token)
+        ):
+            raise ValueError(
+                "Workday or the arguments changed since preview, or the credential "
+                "was rotated; preview and approve again."
+            )
+        context.writes += 1
+        safe_xml = redact_xml(build_envelope(operation, request_data))
+        if context.preview:
+            return CallResult({}, safe_xml, preview=True)
+        # This server never retries a write and keeps no record of one: the host
+        # owns duplicate suppression, so an ambiguous failure is reported as
+        # unknown for it to reconcile.
         try:
-            context.state_token = journal.digest(
-                [scope, context.reads, context.arguments]
-            )
+            return await self._send(service, operation, request_data)
+        except WorkdayAuthError:
+            raise
+        except WorkdayFaultError as exc:
+            code = (exc.fault_code or "").lower()
             if (
-                context.expected_state_token
-                and context.writes == 0
-                and not hmac_compare(context.expected_state_token, context.state_token)
+                exc.validation_errors
+                or "validation" in code
+                or "authentication" in code
             ):
-                raise ValueError(
-                    "Workday changed since preview; preview and approve again."
-                )
-            context.writes += 1
-            safe_xml = redact_xml(build_envelope(operation, request_data))
-            if context.preview:
-                return CallResult({}, safe_xml, preview=True, write_status="preview")
-            request_id = (
-                f"{context.request_id}:{context.writes}" if context.request_id else None
-            )
-            key, previous = journal.claim(scope, operation, request_data, request_id)
-            if previous:
-                return CallResult(
-                    previous["body"],
-                    safe_xml,
-                    duplicate=True,
-                    write_status=previous["status"],
-                    tracking_id=key,
-                )
-            try:
-                result = await self._send(service, operation, request_data)
-            except WorkdayAuthError:
-                journal.release(key)
                 raise
-            except WorkdayFaultError as exc:
-                code = (exc.fault_code or "").lower()
-                if (
-                    exc.validation_errors
-                    or "validation" in code
-                    or "authentication" in code
-                ):
-                    journal.release(key)
-                    raise
-                journal.finish(key, "unknown")
-                raise WorkdayApiError(
-                    f"Write outcome unknown (tracking_id={key}). "
-                    f"Reconcile the processing fault before retrying: {exc}"
-                ) from exc
-            except BaseException as exc:
-                # Even cancellation/process death must not allow a blind retry.
-                journal.finish(key, "unknown")
-                if isinstance(exc, Exception):
-                    raise WorkdayApiError(
-                        f"Write outcome unknown (tracking_id={key}). "
-                        "Check the worker's "
-                        f"event history before retrying. {exc}"
-                    ) from exc
-                raise
-            journal.finish(key, "submitted", result.body)
-            result.tracking_id = key
-            return result
-        finally:
-            journal.close()
+            raise WorkdayApiError(
+                "Write outcome unknown. Reconcile the processing fault in Workday "
+                f"before retrying: {exc}"
+            ) from exc
+        except Exception as exc:
+            raise WorkdayApiError(
+                "Write outcome unknown. Check the worker's event history before "
+                f"retrying. {exc}"
+            ) from exc
 
     async def _send(
         self,

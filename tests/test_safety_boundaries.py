@@ -23,7 +23,7 @@ from workday_advanced_mcp.errors import (
     format_exception,
     raise_for_http_error,
 )
-from workday_advanced_mcp.execution import Execution, WriteJournal, current_execution
+from workday_advanced_mcp.execution import Execution, current_execution
 from workday_advanced_mcp.operations import lifecycle, payment_elections, staffing
 from workday_advanced_mcp.redact import redact_data
 from workday_advanced_mcp.references import reference
@@ -318,28 +318,6 @@ async def test_exact_organization_read_never_guesses(server_factory, entries, ne
     assert needle in result
 
 
-async def test_request_id_cannot_be_reused_for_another_payload(
-    server_factory, worker_response
-):
-    with respx.mock:
-        respx.post(HR).mock(return_value=httpx.Response(200, text=worker_response))
-        route = respx.post(STAFFING).mock(
-            return_value=httpx.Response(200, text=staffing_response("Change_Job"))
-        )
-        server = server_factory()
-        await call_tool(
-            server, "workday_change_job", {**JOB, "request_id": "source-change-1"}
-        )
-        result = await call_tool(
-            server,
-            "workday_change_job",
-            {**JOB, "request_id": "source-change-1", "reason_id": "Other"},
-        )
-    assert (
-        "different payload" in result["results"][0]["error"] and route.call_count == 1
-    )
-
-
 async def test_validation_fault_can_be_corrected_and_resubmitted(
     server_factory, worker_response
 ):
@@ -360,7 +338,8 @@ async def test_validation_fault_can_be_corrected_and_resubmitted(
     assert second["results"][0]["submitted"] is True and route.call_count == 2
 
 
-async def test_task_cancellation_retains_an_unknown_write_claim(monkeypatch):
+async def test_task_cancellation_reaches_the_host(monkeypatch):
+    """A cancelled write is the host's to reconcile, so it must not be swallowed."""
     token = current_execution.set(Execution(arguments=["test", {}]))
     client = WorkdayClient()
     try:
@@ -371,14 +350,6 @@ async def test_task_cancellation_retains_an_unknown_write_claim(monkeypatch):
         monkeypatch.setattr(client, "_send", cancelled)
         with pytest.raises(asyncio.CancelledError):
             await client.call("Staffing", "Change_Job", {})
-        journal = WriteJournal()
-        try:
-            assert (
-                journal.db.execute("SELECT status FROM writes").fetchone()[0]
-                == "unknown"
-            )
-        finally:
-            journal.close()
     finally:
         current_execution.reset(token)
         await client.aclose()
@@ -514,9 +485,3 @@ def test_remaining_builder_choices_and_validation():
             effective_date=DATE,
             address={"country": "GB", "lines": {"wrong": "line"}},
         )
-    journal = WriteJournal()
-    try:
-        with pytest.raises(ValueError):
-            journal.get("missing")
-    finally:
-        journal.close()
