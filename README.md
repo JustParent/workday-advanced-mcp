@@ -119,7 +119,7 @@ For a host using sandboxed MCP subprocess configuration:
     "workday-advanced-mcp"
   ],
   "sandbox_runtime": "python",
-  "sandbox_timeout": "300",
+  "sandbox_timeout": "240",
   "sandbox_static_egress_ip": true,
   "auth_type": "none",
   "sandbox_env": {
@@ -132,8 +132,9 @@ For a host using sandboxed MCP subprocess configuration:
 ```
 
 A single tool can make several Workday calls of up to `WORKDAY_HTTP_TIMEOUT`
-seconds each, so give the host its longest per-call timeout; a host that kills a
-call mid-write leaves its outcome unknown. If the host supports `$SECRET_KEY`
+seconds each, and a host that kills a call mid-write leaves its outcome unknown.
+Give the host the longest per-call timeout its outer deadlines allow: in Harriet,
+240 keeps the bridge's extra 30 seconds inside the 300-second job deadline. If the host supports `$SECRET_KEY`
 substitution, put the ISU password in the secret field rather than directly in
 configuration. With a static egress IP, allow that address in the tenant's
 authentication policy.
