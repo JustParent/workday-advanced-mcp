@@ -140,10 +140,7 @@ async def _submit(
         }
 
     submitted: dict[str, Any] = {
-        "submitted": result.write_status == "submitted",
-        "duplicate": result.duplicate,
-        "write_status": result.write_status,
-        "tracking_id": result.tracking_id,
+        "submitted": True,
         "operation": operation,
         "auto_complete": auto_complete,
         "event": event,
@@ -151,16 +148,7 @@ async def _submit(
         "response": redact_data(response),
     }
 
-    if result.write_status != "submitted":
-        submitted["verification"] = {
-            "verified": False,
-            "note": (
-                "A prior attempt is unresolved or still running. Reconcile its "
-                "tracking_id and Workday event history; no new write was sent."
-            ),
-        }
-        return submitted
-    if verify is None or result.duplicate:
+    if verify is None:
         submitted["verification"] = (
             {
                 "verified": False,
@@ -895,7 +883,7 @@ def register_write_tools(registrar: ToolRegistrar) -> None:
         response = outcome.get("response", {})
         return {
             **outcome,
-            "created": outcome.get("submitted", False) and not outcome.get("duplicate"),
+            "created": outcome.get("submitted", False),
             "pre_hire_wid": recruiting.applicant_wid_from_response(response),
         }
 

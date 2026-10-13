@@ -32,10 +32,24 @@ DOMAIN_HINTS = {
         "Assignments, "
         "Termination)"
     ),
-    "Human_Resources": ("Worker Data: Public Worker Reports and Set Up: Organization"),
-    "Cash_Management": "Worker Data: Payment Elections",
-    "Recruiting": "Manage: Pre-Hire Process",
-    "Integrations": "Integration Build and Integration Event",
+    "Human_Resources": (
+        "Worker Data: Public Worker Reports, Manage: Organization Integration, "
+        "Put access to Manage: Organization Update Integration for organization "
+        "changes, and the Contact Change business process for home addresses"
+    ),
+    "Cash_Management": (
+        "Worker Data: Payroll Interface (Payment Elections) or Worker Data: Payroll "
+        "(Payment Elections), Manage: Payment Election, and the Payment Election "
+        "Enrollment Event business process for changes"
+    ),
+    "Recruiting": (
+        "Manage: Pre-Hire Process and Pre-Hire Process Data: Name and Contact "
+        "Information"
+    ),
+    "Integrations": (
+        "View All on the event's business process security policy, plus Cancel or "
+        "Rescind there to recover one"
+    ),
 }
 
 

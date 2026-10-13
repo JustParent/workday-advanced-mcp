@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import asyncio
 import copy
 import json
-import re
 
 import httpx
 import pytest
@@ -251,38 +249,70 @@ async def test_partial_batch_keeps_successful_event_and_stops(
     assert result["results"][2]["not_attempted"] is True
 
 
-async def test_pending_write_is_deduplicated_across_server_restarts(
+async def test_preview_token_is_accepted_by_a_fresh_sandbox(
     server_factory, worker_response
+):
+    """Harriet may preview in one sandbox and submit the approval in another."""
+    with respx.mock:
+        mock_worker(worker_response)
+        route = respx.post(STAFFING).mock(
+            return_value=httpx.Response(200, text=staffing_response("Change_Job"))
+        )
+        preview = await call_tool(
+            server_factory(),
+            "workday_preview_write",
+            {"operation": "workday_change_job", "arguments": JOB},
+        )
+        reset_client()
+        result = await call_tool(
+            server_factory(),
+            "workday_change_job",
+            {**JOB, "expected_state_token": preview["state_token"]},
+        )
+    assert result["results"][0]["submitted"] is True and route.call_count == 1
+
+
+async def test_rotated_credential_invalidates_a_preview(
+    server_factory, worker_response, set_env
 ):
     with respx.mock:
         mock_worker(worker_response)
         route = respx.post(STAFFING).mock(
             return_value=httpx.Response(200, text=staffing_response("Change_Job"))
         )
-        first = await call_tool(server_factory(), "workday_change_job", JOB)
-        reset_client()
-        second = await call_tool(server_factory(), "workday_change_job", JOB)
-    assert route.call_count == 1
-    assert second["results"][0]["duplicate"] is True
-    assert second["results"][0]["event"] == first["results"][0]["event"]
+        preview = await call_tool(
+            server_factory(),
+            "workday_preview_write",
+            {"operation": "workday_change_job", "arguments": JOB},
+        )
+        set_env(WORKDAY_ISU_PASSWORD="rotated")
+        result = await call_tool(
+            server_factory(),
+            "workday_change_job",
+            {**JOB, "expected_state_token": preview["state_token"]},
+        )
+    assert "preview and approve again" in result["results"][0]["error"]
+    assert route.call_count == 0
 
 
-async def test_concurrent_writes_share_an_atomic_claim(server_factory, worker_response):
-    async def submit(request):
-        await asyncio.sleep(0.01)
-        return httpx.Response(200, text=staffing_response("Change_Job"))
-
+async def test_server_keeps_no_write_record_between_calls(
+    server_factory, worker_response
+):
+    """Duplicate suppression belongs to the host; the server holds no state."""
     with respx.mock:
         mock_worker(worker_response)
-        route = respx.post(STAFFING).mock(side_effect=submit)
-        results = await asyncio.gather(
-            *(call_tool(server_factory(), "workday_change_job", JOB) for _ in range(2))
+        route = respx.post(STAFFING).mock(
+            return_value=httpx.Response(200, text=staffing_response("Change_Job"))
         )
-    assert route.call_count == 1
-    assert sum(r["results"][0]["duplicate"] for r in results) == 1
+        server = server_factory()
+        for _ in range(2):
+            result = await call_tool(server, "workday_change_job", JOB)
+            assert result["results"][0]["submitted"] is True
+    assert route.call_count == 2
+    assert "tracking_id" not in result["results"][0]
 
 
-async def test_timeout_is_durable_and_never_blindly_retried(
+async def test_timeout_is_reported_unknown_and_never_retried(
     server_factory, worker_response
 ):
     with respx.mock:
@@ -290,19 +320,10 @@ async def test_timeout_is_durable_and_never_blindly_retried(
         route = respx.post(STAFFING).mock(
             side_effect=httpx.ReadTimeout("Lost response")
         )
-        first = await call_tool(server_factory(), "workday_change_job", JOB)
-        key = re.search(r"tracking_id=([a-f0-9]+)", first["results"][0]["error"]).group(
-            1
-        )
-        status = await call_tool(
-            server_factory(), "workday_get_write_status", {"tracking_id": key}
-        )
-        reset_client()
-        second = await call_tool(server_factory(), "workday_change_job", JOB)
-    assert first["results"][0]["outcome_unknown"] is True
-    assert status["status"] == "unknown"
-    assert second["results"][0]["write_status"] == "unknown"
-    assert route.call_count == 1
+        result = await call_tool(server_factory(), "workday_change_job", JOB)
+    outcome = result["results"][0]
+    assert outcome["outcome_unknown"] is True and route.call_count == 1
+    assert "event history" in outcome["error"]
 
 
 @pytest.mark.parametrize("change", ["none", "state", "arguments", "query_clock"])

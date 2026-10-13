@@ -25,7 +25,6 @@ READ_TOOLS = {
     "workday_list_organization_workers",
     "workday_list_positions",
     "workday_get_worker_event_history",
-    "workday_get_write_status",
     "workday_get_journal",
 }
 
