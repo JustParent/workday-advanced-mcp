@@ -89,6 +89,43 @@ async def test_oauth_mode_sends_a_bearer_token(set_env) -> None:
     assert "scope=soap_api" in token_route.calls[0].request.content.decode()
 
 
+@pytest.mark.parametrize(
+    "status,needle,absent",
+    [
+        (401, "WORKDAY_REFRESH_TOKEN", "WORKDAY_ISU_PASSWORD"),
+        (403, "API client's scope", "WORKDAY_ISU_PASSWORD"),
+    ],
+)
+async def test_oauth_auth_failures_name_the_oauth_credentials(
+    set_env, status, needle, absent
+) -> None:
+    set_env(
+        WORKDAY_AUTH_MODE="oauth",
+        WORKDAY_ISU_PASSWORD=None,
+        WORKDAY_CLIENT_ID="client-id",
+        WORKDAY_CLIENT_SECRET="client-secret",
+        WORKDAY_REFRESH_TOKEN="refresh-token",
+    )
+    settings = load_settings()
+    with respx.mock:
+        respx.post(settings.token_url).mock(
+            return_value=httpx.Response(
+                200, json={"access_token": "tok", "expires_in": 3600}
+            )
+        )
+        respx.post(STAFFING_URL).mock(return_value=httpx.Response(status))
+        client = WorkdayClient(
+            settings, auth=OAuthRefreshAuth(settings), sleep=_noop_sleep
+        )
+        try:
+            with pytest.raises(WorkdayAuthError) as excinfo:
+                await client.call(SERVICE_STAFFING, "Get_Workers", {}, is_read=True)
+        finally:
+            await client.aclose()
+
+    assert needle in str(excinfo.value) and absent not in str(excinfo.value)
+
+
 async def test_a_validation_fault_names_what_workday_rejected() -> None:
     with respx.mock:
         respx.post(STAFFING_URL).mock(
