@@ -59,6 +59,9 @@ need permissions beyond the original worker/payment integration. The
 
 ISU credentials and OAuth refresh tokens are supported. Repeated failed ISU
 sign-ins can lock an account; the server does not retry authentication failures.
+Workday answers a failed sign-in with little detail (HTTP 500 and `invalid
+username or password`), so before trying again check the tenant ID, whether the
+password was reset or expired, and the tenant's authentication policy.
 For IP-restricted tenants, allow the deployment's outbound address or use a
 fixed-egress proxy.
 
@@ -66,8 +69,8 @@ fixed-egress proxy.
 
 | Environment variable | Required | Description |
 | --- | --- | --- |
-| `WORKDAY_HOST` | yes | API host, e.g. `wd3-impl-services1.workday.com`. Tenant URLs are accepted; only the hostname is used. |
-| `WORKDAY_TENANT` | yes | Tenant ID; inferred from a pasted URL when omitted. |
+| `WORKDAY_HOST` | yes | API host, e.g. `wd3-impl-services1.workday.com` or `impl-services1.wd103.myworkday.com`. Tenant URLs are accepted; only the hostname is used. |
+| `WORKDAY_TENANT` | yes | Tenant ID; inferred from a pasted URL when omitted. A bare hostname carries no tenant, so set this whenever `WORKDAY_HOST` is not a full tenant URL. |
 | `WORKDAY_AUTH_MODE` | no | `isu` (default) or `oauth`. A complete OAuth trio with no ISU password selects OAuth. |
 | `WORKDAY_ISU_USERNAME` | ISU | ISU name; `@tenant` is appended if missing. |
 | `WORKDAY_ISU_PASSWORD` | ISU | ISU password. |

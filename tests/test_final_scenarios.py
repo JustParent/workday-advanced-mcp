@@ -9,7 +9,7 @@ import httpx
 import pytest
 import respx
 
-from conftest import call_tool, service_url, soap_response
+from conftest import call_tool, service_url, soap_auth_fault, soap_response
 from test_lifecycle import DATE, HOME, HR, org, org_response, with_addresses
 from test_regressions import JOB, PAYMENT, payment_response
 from test_schema_contracts import assert_schema
@@ -202,7 +202,11 @@ async def test_termination_refuses_hidden_employment_state(
     assert "not visible" in result
 
 
-@pytest.mark.parametrize("status,body", [(401, ""), (200, "not XML")])
+@pytest.mark.parametrize(
+    "status,body",
+    [(401, ""), (500, soap_auth_fault()), (200, "not XML")],
+    ids=["http-401", "authentication-fault", "malformed-body"],
+)
 async def test_failed_response_preserves_write_safety(
     server_factory, worker_response, status, body
 ):

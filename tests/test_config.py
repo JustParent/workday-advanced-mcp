@@ -23,10 +23,78 @@ def test_host_accepts_a_pasted_tenant_url() -> None:
     assert tenant_from_url(url) == "acme_preview"
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        # The address Workday lists for a WSDL under Public Web Services.
+        "https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2",
+        "https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2?wsdl",
+        # The same address with the ccx context root dropped.
+        "https://impl-services1.wd103.myworkday.com/service/acme_preview/Human_Resources/v48.0",
+        "https://impl-services1.wd103.myworkday.com/ccx/oauth2/acme_preview/token",
+        "https://impl.wd103.myworkday.com/acme_preview/d/home.htmld",
+    ],
+)
+def test_tenant_is_read_from_the_tenant_segment_of_any_workday_url(url: str) -> None:
+    assert tenant_from_url(url) == "acme_preview"
+
+
+def test_a_pasted_web_service_address_configures_host_and_tenant(set_env) -> None:
+    set_env(
+        WORKDAY_HOST="https://impl-services1.wd103.myworkday.com/service/acme_preview/Human_Resources/v48.0",
+        WORKDAY_TENANT=None,
+    )
+    settings = load_settings()
+    assert settings.host == "impl-services1.wd103.myworkday.com"
+    assert settings.tenant == "acme_preview"
+    assert settings.qualified_isu_username == "isu_harriet@acme_preview"
+
+
+def test_a_bare_hostname_has_no_tenant() -> None:
+    assert tenant_from_url("impl-services1.wd103.myworkday.com") == ""
+
+
 def test_host_accepts_a_bare_hostname() -> None:
     assert parse_workday_host("wd3-impl-services1.workday.com:443/x") == (
         "wd3-impl-services1.workday.com"
     )
+
+
+@pytest.mark.parametrize(
+    "host",
+    [
+        "wd3-impl-services1.workday.com",
+        # Newer data centres serve web services from myworkday.com.
+        "impl-services1.wd103.myworkday.com",
+        "services1.wd3.myworkday.com",
+    ],
+)
+def test_genuine_workday_hosts_are_not_warned_about(
+    set_env, monkeypatch: pytest.MonkeyPatch, capsys, host: str
+) -> None:
+    monkeypatch.setattr("workday_advanced_mcp.config._warned_hosts", set())
+    set_env(WORKDAY_HOST=host)
+    load_settings()
+    assert capsys.readouterr().err == ""
+
+
+@pytest.mark.parametrize(
+    "host",
+    [
+        "workday.example.com",
+        "workday.com.evil.example",
+        "evilworkday.com",
+        "evilmyworkday.com",
+        "myworkday.com.evil.example",
+    ],
+)
+def test_other_hosts_are_still_warned_about(
+    set_env, monkeypatch: pytest.MonkeyPatch, capsys, host: str
+) -> None:
+    monkeypatch.setattr("workday_advanced_mcp.config._warned_hosts", set())
+    set_env(WORKDAY_HOST=host)
+    load_settings()
+    assert "Workday credentials will be sent there" in capsys.readouterr().err
 
 
 def test_tenant_is_inferred_from_a_pasted_url(set_env) -> None:

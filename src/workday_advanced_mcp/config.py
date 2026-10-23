@@ -38,6 +38,13 @@ DEFAULT_API_VERSION = "v44.2"
 # dying mid-write.
 DEFAULT_HTTP_TIMEOUT = 90.0
 
+# Workday serves web services from workday.com and, in newer data centres, from
+# myworkday.com (for example ``impl-services1.wd103.myworkday.com``).
+WORKDAY_DOMAINS = (".workday.com", ".myworkday.com")
+
+# Path prefixes after which a Workday web-service or OAuth address names its tenant.
+_SERVICE_PATH_PREFIXES = (("ccx", "service"), ("ccx", "oauth2"), ("service",))
+
 _TRUTHY = {"1", "true", "yes", "on"}
 
 # Hosts already warned about, so repeated settings reads stay quiet.
@@ -66,18 +73,23 @@ def parse_workday_host(raw: str) -> str:
 
 
 def tenant_from_url(raw: str) -> str:
-    """The tenant in a pasted Workday URL: the first path segment, if any.
+    """The tenant in a pasted Workday URL.
 
-    ``https://wd3-impl.workday.com/acme_preview/d/home.htmld`` -> ``acme_preview``.
-    Mirrors how the first-party integration parses ``Integration.domain``.
+    A tenant UI address carries it first:
+    ``https://wd3-impl.workday.com/acme_preview/d/home.htmld`` -> ``acme_preview``,
+    which mirrors how the first-party integration parses ``Integration.domain``.
+    A web-service address, such as the WSDL address listed under Public Web
+    Services, carries it after the service path instead:
+    ``https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/...``.
     """
     s = (raw or "").strip()
     if "://" not in s and not s.startswith("//"):
         s = f"https://{s}"
-    path = urlparse(s).path.strip("/")
-    if not path:
-        return ""
-    return path.split("/")[0]
+    segments = [part for part in urlparse(s).path.split("/") if part]
+    for prefix in _SERVICE_PATH_PREFIXES:
+        if tuple(segments[: len(prefix)]) == prefix and len(segments) > len(prefix):
+            return segments[len(prefix)]
+    return segments[0] if segments else ""
 
 
 def _env(name: str) -> str:
@@ -207,11 +219,12 @@ def load_settings() -> Settings:
     host = parse_workday_host(raw_host)
     tenant = _env(ENV_TENANT) or tenant_from_url(raw_host)
 
-    if host and not host.endswith(".workday.com") and host not in _warned_hosts:
+    if host and not host.endswith(WORKDAY_DOMAINS) and host not in _warned_hosts:
         _warned_hosts.add(host)
         print(
             f"warning: {ENV_HOST} resolves to {host!r}, which is not a "
-            "*.workday.com host. Workday credentials will be sent there.",
+            "*.workday.com or *.myworkday.com host. Workday credentials will be "
+            "sent there.",
             file=sys.stderr,
         )
 

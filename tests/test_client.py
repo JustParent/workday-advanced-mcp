@@ -10,7 +10,7 @@ import httpx
 import pytest
 import respx
 
-from conftest import service_url, soap_fault, soap_response
+from conftest import service_url, soap_auth_fault, soap_fault, soap_response
 from workday_advanced_mcp.auth import IsuAuth, OAuthRefreshAuth
 from workday_advanced_mcp.client import SERVICE_STAFFING, WorkdayClient
 from workday_advanced_mcp.config import load_settings
@@ -124,6 +124,63 @@ async def test_oauth_auth_failures_name_the_oauth_credentials(
             await client.aclose()
 
     assert needle in str(excinfo.value) and absent not in str(excinfo.value)
+
+
+async def test_an_authentication_fault_is_never_retried_and_names_what_to_check() -> (
+    None
+):
+    """Workday sends bad credentials as HTTP 500 with a fault, not as a 401."""
+    with respx.mock:
+        route = respx.post(STAFFING_URL).mock(
+            return_value=httpx.Response(500, text=soap_auth_fault())
+        )
+        client = _client()
+        try:
+            with pytest.raises(WorkdayFaultError) as excinfo:
+                await client.call(SERVICE_STAFFING, "Get_Workers", {}, is_read=True)
+        finally:
+            await client.aclose()
+
+    assert route.call_count == 1
+    message = str(excinfo.value)
+    assert "invalid username or password" in message
+    # A wrong tenant, a reset password and an IP restriction all look like this.
+    for needle in ("WORKDAY_TENANT", "authentication policy", "Do not retry"):
+        assert needle in message
+
+
+async def test_an_oauth_authentication_fault_names_the_oauth_credentials(
+    set_env,
+) -> None:
+    set_env(
+        WORKDAY_AUTH_MODE="oauth",
+        WORKDAY_ISU_PASSWORD=None,
+        WORKDAY_CLIENT_ID="client-id",
+        WORKDAY_CLIENT_SECRET="client-secret",
+        WORKDAY_REFRESH_TOKEN="refresh-token",
+    )
+    settings = load_settings()
+    with respx.mock:
+        respx.post(settings.token_url).mock(
+            return_value=httpx.Response(
+                200, json={"access_token": "tok", "expires_in": 3600}
+            )
+        )
+        respx.post(STAFFING_URL).mock(
+            return_value=httpx.Response(500, text=soap_auth_fault())
+        )
+        client = WorkdayClient(
+            settings, auth=OAuthRefreshAuth(settings), sleep=_noop_sleep
+        )
+        try:
+            with pytest.raises(WorkdayFaultError) as excinfo:
+                await client.call(SERVICE_STAFFING, "Get_Workers", {}, is_read=True)
+        finally:
+            await client.aclose()
+
+    message = str(excinfo.value)
+    assert "WORKDAY_REFRESH_TOKEN" in message
+    assert "WORKDAY_ISU_PASSWORD" not in message
 
 
 async def test_a_validation_fault_names_what_workday_rejected() -> None:

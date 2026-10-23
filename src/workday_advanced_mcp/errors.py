@@ -11,9 +11,11 @@ import httpx
 
 from .config import (
     ENV_CLIENT_ID,
+    ENV_CLIENT_SECRET,
     ENV_ISU_PASSWORD,
     ENV_ISU_USERNAME,
     ENV_REFRESH_TOKEN,
+    ENV_TENANT,
     ConfigError,
 )
 
@@ -122,6 +124,29 @@ def auth_error_message(service: str, status: int, *, oauth: bool = False) -> str
     )
 
 
+def auth_fault_advice(*, oauth: bool = False) -> str:
+    """What to check after Workday faults an authentication.
+
+    Workday sends bad credentials as HTTP 500 with a fault that says only
+    "invalid username or password". A wrong tenant, a reset or expired password
+    and a sign-in the authentication policy blocks all read the same.
+    """
+    if oauth:
+        return (
+            f"Check {ENV_CLIENT_ID}, {ENV_CLIENT_SECRET} and {ENV_REFRESH_TOKEN}, "
+            "that the API client is active and that the refresh token has not been "
+            "revoked or regenerated. Do not retry."
+        )
+    return (
+        f"Check that {ENV_ISU_USERNAME} and {ENV_ISU_PASSWORD} belong to an active "
+        f"Integration System User in the tenant named by {ENV_TENANT} (it signs in "
+        "as user@tenant), that its password has not expired or been reset and that "
+        "it is not locked out. If the tenant's authentication policy limits "
+        "sign-in by IP address, allow this server's outbound address too. Do not "
+        "retry: repeated failures lock the ISU."
+    )
+
+
 def raise_for_http_error(
     response: httpx.Response, *, service: str, oauth: bool = False
 ) -> None:
@@ -167,6 +192,7 @@ def fault_to_error(
     fault_string: str | None,
     validation_errors: list[str],
     status_code: int | None,
+    oauth: bool = False,
 ) -> WorkdayFaultError:
     """Turn a parsed SOAP fault into an actionable exception."""
     detail = "; ".join(validation_errors) or (fault_string or "").strip()
@@ -180,9 +206,8 @@ def fault_to_error(
         )
     elif "authentication" in code.lower():
         message = (
-            f"Workday could not authenticate {operation}: {detail} Check the "
-            f"Integration "
-            "System User credentials and that the user is not locked out. Do not retry."
+            f"Workday could not authenticate {operation}: {detail} "
+            f"{auth_fault_advice(oauth=oauth)}"
         )
     else:
         reason = detail or code or "no detail"

@@ -222,7 +222,7 @@ async def test_stdout_carries_only_json_rpc() -> None:
         assert message.get("jsonrpc") == "2.0", f"not a JSON-RPC message: {text!r}"
 
     # The diagnostics really did happen, just on the correct stream.
-    assert b"not a *.workday.com host" in stderr
+    assert b"not a *.workday.com or *.myworkday.com host" in stderr
 
 
 def test_console_script_entry_point_is_declared() -> None:

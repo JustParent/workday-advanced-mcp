@@ -118,6 +118,25 @@ def soap_fault(faultstring: str, *validation_messages: str) -> str:
     )
 
 
+def soap_auth_fault() -> str:
+    """Workday's answer to credentials it rejects: HTTP 500 and an authentication fault.
+
+    Captured from a live implementation tenant on 2026-10-22, identical on v44.2
+    and v48.0. It is not an HTTP 401, and "invalid username or password" is the
+    only reason given.
+    """
+    return (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">'
+        "<SOAP-ENV:Body>"
+        '<SOAP-ENV:Fault xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" '
+        'xmlns:wd="urn:com.workday/bsvc">'
+        "<faultcode>SOAP-ENV:Client.authenticationError</faultcode>"
+        "<faultstring>invalid username or password</faultstring>"
+        "</SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>"
+    )
+
+
 WORKER_XML = """
 <wd:Response_Data>
   <wd:Worker>

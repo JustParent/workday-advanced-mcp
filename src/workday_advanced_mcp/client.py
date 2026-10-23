@@ -277,6 +277,7 @@ class WorkdayClient:
                 fault_string=parsed.fault.string,
                 validation_errors=parsed.fault.validation_errors,
                 status_code=response.status_code,
+                oauth=isinstance(self._auth, OAuthRefreshAuth),
             )
 
         raise_for_http_error(response, service=service)
