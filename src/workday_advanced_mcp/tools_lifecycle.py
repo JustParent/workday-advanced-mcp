@@ -12,6 +12,7 @@ from .client import (
     WorkdayClient,
     get_client,
 )
+from .errors import WorkdayNotFoundError
 from .operations import events, lifecycle, organizations, workers
 from .pagination import at_entry_moment, entry_moment
 from .references import reference
@@ -27,17 +28,21 @@ async def fetch_organization(
     effective_date: str | None = None,
     required: bool = True,
 ) -> dict[str, Any]:
-    result = await client.call(
-        SERVICE_HUMAN_RESOURCES,
-        organizations.GET_ORGANIZATIONS,
-        organizations.build_get_organization(
-            organization_id, as_of_effective_date=effective_date
-        ),
-        is_read=True,
-    )
-    found = organizations.parse_organizations(
-        result.response(organizations.GET_ORGANIZATIONS), "Supervisory"
-    )
+    try:
+        result = await client.call(
+            SERVICE_HUMAN_RESOURCES,
+            organizations.GET_ORGANIZATIONS,
+            organizations.build_get_organization(
+                organization_id, as_of_effective_date=effective_date
+            ),
+            is_read=True,
+        )
+    except WorkdayNotFoundError:
+        found: list[dict[str, Any]] = []
+    else:
+        found = organizations.parse_organizations(
+            result.response(organizations.GET_ORGANIZATIONS), "Supervisory"
+        )
     if len(found) > 1:
         raise ValueError("Organization reference returned more than one match.")
     if not found:
@@ -200,13 +205,21 @@ def register_lifecycle_reads(registrar: ToolRegistrar) -> None:
             exclude_filled=exclude_filled,
         )
         moment = entry_moment(as_of_entry_datetime)
-        result = await get_client().call(
-            SERVICE_STAFFING,
-            "Get_Positions",
-            at_entry_moment(request, moment),
-            is_read=True,
-        )
-        response = result.response("Get_Positions")
+        try:
+            result = await get_client().call(
+                SERVICE_STAFFING,
+                "Get_Positions",
+                at_entry_moment(request, moment),
+                is_read=True,
+            )
+        except WorkdayNotFoundError:
+            # An exact position id that Workday does not hold lists nothing, but an
+            # unknown organization is a mistake the caller has to see.
+            if not position_id:
+                raise
+            response: dict[str, Any] = {}
+        else:
+            response = result.response("Get_Positions")
         return {
             "positions": lifecycle.parse_positions(response),
             "page": page,

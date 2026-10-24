@@ -1,0 +1,2656 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:wd="urn:com.workday/bsvc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+  <xsd:element name="Get_Applicants_Request" type="wd:Get_Applicants_RequestType"/>
+  <xsd:element name="Put_Applicant_Request" type="wd:Put_Applicant_RequestType"/>
+  <xsd:attribute name="version" type="xsd:string" wd:fixed="v48.0"/>
+  <xsd:simpleType name="RichText">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="RoleReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Additional_Name_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Military_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Citizenship_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="AuthorityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="OrganizationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Language_ProficiencyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="LanguageReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="EthnicityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Marital_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="GenderReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Instant_Messenger_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="WorkerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Language_Ability_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="ApplicantReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="DegreeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Field_of_StudyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="School_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Applicant_SourceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="License_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Visa_ID_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Custom_ID_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Work_Experience_QualificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Work_Experience_RatingReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CompetencyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Proficiency_Rating_BehaviorReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Training_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Phone_Device_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Applicant_ResumeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_BehaviorReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CountryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_RegionReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_Predefined_Person_Name_Component_ValueReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="DisabilityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="ReligionReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Worker_DocumentReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="National_ID_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Unique_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_SubregionReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Hukou_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="External_Field_and_Parameter_Initialization_ProviderReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Position_ElementReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Integration_Document_FieldReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Certification_QualificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="AwardReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Professional_Affiliation_QualificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="TrainingReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Education_QualificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Internal_Project_ExperienceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_History_QualificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Position_GroupReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="SchoolReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CertificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Document_Category__All_ReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Degree_CompletedReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Common_Boolean_EnumerationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Government_ID_Type__All_ReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="License_ID_Type__All_ReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Passport_ID_Type__All_ReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Background_Check_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_History_CompanyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Political_AffiliationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Address_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Military_Service_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Military_RankReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Disability_GradeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Disability_Certification_AuthorityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Disability_Certification_BasisReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Disability_Status_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Military_Service_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="National_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Government_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Passport_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Visa_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="License_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Custom_Identifier_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Former_WorkerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_Behavior_TenantedReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Social_Benefits_LocalityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Specialty_ParentReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Specialty_ChildReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="LGBT_IdentificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Professional_Affiliation_Relationship_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Professional_Affiliation_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Professional_Affiliation_Type__All_ReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_CityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Relative_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Relative_Name_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Award_and_Activity_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Gender_IdentityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Sexual_OrientationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="PronounReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Email_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Blood_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Phone_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Common_Yes_NoReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Web_Address_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Instant_Messenger_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Ethnicity_DetailsReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Aboriginal_Indigenous_DetailsReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Aboriginal_Indigenous_Identification_SelectionReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Veterans_PreferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Uniform_Service_Reserve_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Military_Discharge_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_and_NationalityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Personal_Information_Configurable_Field_InterfaceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:complexType name="External_Integration_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:IDType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="IDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="System_ID" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Response_FilterType">
+    <xsd:sequence>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Page" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="12"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Count" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Name_DataType">
+    <xsd:sequence>
+      <xsd:element name="Legal_Name_Data" type="wd:Legal_Name_DataType" minOccurs="0"/>
+      <xsd:element name="Preferred_Name_Data" type="wd:Preferred_Name_DataType" minOccurs="0"/>
+      <xsd:element name="Additional_Name_Data" type="wd:Additional_Name_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Legal_Name_DataType">
+    <xsd:sequence>
+      <xsd:element name="Name_Detail_Data" type="wd:Person_Name_Detail_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Name_Detail_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType"/>
+      <xsd:element name="Prefix_Data" type="wd:Person_Name_Prefix_DataType" minOccurs="0"/>
+      <xsd:element name="First_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Middle_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Secondary_Last_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Tertiary_Last_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Local_Name_Detail_Data" type="wd:Local_Person_Name_Detail_DataType" minOccurs="0"/>
+      <xsd:element name="Suffix_Data" type="wd:Person_Name_Suffix_DataType" minOccurs="0"/>
+      <xsd:element name="Full_Name_for_Singapore_and_Malaysia" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Formatted_Name" type="xsd:string"/>
+    <xsd:attribute name="Reporting_Name" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Name_Prefix_DataType">
+    <xsd:sequence>
+      <xsd:element name="Title_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Title_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Salutation_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Name_Suffix_DataType">
+    <xsd:sequence>
+      <xsd:element name="Social_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Social_Suffix_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Academic_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Hereditary_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Honorary_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Professional_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Religious_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+      <xsd:element name="Royal_Suffix_Reference" type="wd:Country_Predefined_Person_Name_Component_ValueObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Preferred_Name_DataType">
+    <xsd:sequence>
+      <xsd:element name="Name_Detail_Data" type="wd:Person_Name_Detail_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Additional_Name_DataType">
+    <xsd:sequence>
+      <xsd:element name="Name_Detail_Data" type="wd:Person_Name_Detail_DataType"/>
+      <xsd:element name="Name_Type_Reference" type="wd:Additional_Name_TypeObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Universal_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Name_Data" type="wd:Person_Name_DataType" minOccurs="0"/>
+      <xsd:element name="Personal_Information_Data" type="wd:Personal_Information_Common_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Identification_Data" type="wd:Person_Identification_DataType" minOccurs="0"/>
+      <xsd:element name="Contact_Data" type="wd:Contact_Information_DataType" minOccurs="0"/>
+      <xsd:element name="Tobacco_Use" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Military_Service_DataType">
+    <xsd:sequence>
+      <xsd:element name="Status_Reference" type="wd:Military_StatusObjectType"/>
+      <xsd:element name="Discharge_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Status_Begin_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Military_Service_Type_Reference" type="wd:Military_Service_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Military_Rank_Reference" type="wd:Military_RankObjectType" minOccurs="0"/>
+      <xsd:element name="Notes" type="wd:RichText" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Military_Service_Reference" type="wd:Military_Service_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="Military_Discharge_Type_Reference" type="wd:Military_Discharge_TypeObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Identification_DataType">
+    <xsd:sequence>
+      <xsd:element name="National_ID" type="wd:National_IDType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Government_ID" type="wd:Government_IDType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Visa_ID" type="wd:Visa_IDType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Passport_ID" type="wd:Passport_IDType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="License_ID" type="wd:License_IDType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Custom_ID" type="wd:Custom_IDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Qualification_DataType">
+    <xsd:sequence>
+      <xsd:element name="External_Job_History" type="wd:Job_HistoryType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Competency" type="wd:Competency_Achievement_Data__v10_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Certification" type="wd:Certification_AchievementType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Training" type="wd:TrainingType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Award_and_Activity" type="wd:Award_and_ActivityType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Organization_Membership" type="wd:Professional_Affiliation_SkillType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Education" type="wd:EducationType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Work_Experience" type="wd:Work_Experience_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Language" type="wd:Language_Achievement_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Internal_Project_Experience" type="wd:Internal_Project_ExperienceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contact_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Address_Data" type="wd:Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Phone_Data" type="wd:Phone_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Email_Address_Data" type="wd:Email_Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Instant_Messenger_Data" type="wd:Instant_Messenger_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Web_Address_Data" type="wd:Web_Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Last_Modified" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Address_Line_Data" type="wd:Address_Line_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Municipality" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Country_City_Reference" type="wd:Country_CityObjectType" minOccurs="0"/>
+      <xsd:element name="Submunicipality_Data" type="wd:Submunicipality_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Country_Region_Reference" type="wd:Country_RegionObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Region_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Subregion_Data" type="wd:Subregion_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Postal_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Number_of_Days" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="1"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Municipality_Local" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Address_Reference" type="wd:Address_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="Address_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Formatted_Address" type="xsd:string"/>
+    <xsd:attribute name="Address_Format_Type" type="xsd:string"/>
+    <xsd:attribute name="Defaulted_Business_Site_Address" type="xsd:boolean"/>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+    <xsd:attribute name="Effective_Date" type="xsd:date"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_ISO_Code" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="International_Phone_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Extension" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Device_Type_Reference" type="wd:Phone_Device_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Phone_Reference" type="wd:Phone_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Area_Code" type="xsd:string"/>
+    <xsd:attribute name="Tenant_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="International_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Phone_Number_Without_Area_Code" type="xsd:string"/>
+    <xsd:attribute name="National_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="E164_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Workday_Traditional_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Email_Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Email_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Email_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Email_Reference" type="wd:Email_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Instant_Messenger_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Instant_Messenger_Type_Reference" type="wd:Instant_Messenger_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Instant_Messenger_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Instant_Messenger_Reference" type="wd:Instant_Messenger_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Web_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Web_Address_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Web_Address_Reference" type="wd:Web_Address_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Address_Line_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Descriptor" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Submunicipality_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Address_Component_Name" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Subregion_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Descriptor" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Method_Usage_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Type_Data" type="wd:Communication_Usage_Type_DataType" maxOccurs="unbounded"/>
+      <xsd:element name="Use_For_Reference" type="wd:Communication_Usage_BehaviorObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Use_For_Tenanted_Reference" type="wd:Communication_Usage_Behavior_TenantedObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Public" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Type_DataType">
+    <xsd:sequence>
+      <xsd:element name="Type_Reference" type="wd:Communication_Usage_TypeObjectType"/>
+    </xsd:sequence>
+    <xsd:attribute name="Primary" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="National_IDType">
+    <xsd:sequence>
+      <xsd:element name="National_ID_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="National_ID_Data" type="wd:National_ID_DataType" minOccurs="0"/>
+      <xsd:element name="National_ID_Shared_Reference" type="wd:National_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Government_IDType">
+    <xsd:sequence>
+      <xsd:element name="Government_ID_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="Government_ID_Data" type="wd:Government_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Government_ID_Shared_Reference" type="wd:Government_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_IDType">
+    <xsd:sequence>
+      <xsd:element name="Visa_ID_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="Visa_ID_Data" type="wd:Visa_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Visa_ID_Shared_Reference" type="wd:Visa_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_IDType">
+    <xsd:sequence>
+      <xsd:element name="Passport_ID_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="Passport_ID_Data" type="wd:Passport_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Passport_ID_Shared_Reference" type="wd:Passport_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="License_IDType">
+    <xsd:sequence>
+      <xsd:element name="License_ID_Reference" type="wd:License_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="License_ID_Data" type="wd:License_ID_DataType" minOccurs="0"/>
+      <xsd:element name="License_ID_Shared_Reference" type="wd:License_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_IDType">
+    <xsd:sequence>
+      <xsd:element name="Custom_ID_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="Custom_ID_Data" type="wd:Custom_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Custom_ID_Shared_Reference" type="wd:Custom_Identifier_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="National_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:National_ID_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verification_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Series" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Issuing_Agency" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verified_By_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:Visa_ID_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verification_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verified_By_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Government_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:Government_ID_Type__All_ObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verification_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verified_by_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:Passport_ID_Type__All_ObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verification_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verified_By_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="License_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:License_ID_Type__All_ObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Region_Reference" type="wd:Country_RegionObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Region_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Authority_Reference" type="wd:AuthorityObjectType" minOccurs="0"/>
+      <xsd:element name="License_Class" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verification_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Verified_By_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="ID_Type_Reference" type="wd:Custom_ID_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Organization_ID_Reference" type="wd:OrganizationObjectType" minOccurs="0"/>
+      <xsd:element name="Custom_Description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Job_HistoryType">
+    <xsd:sequence>
+      <xsd:element name="Job_History_Reference" type="wd:Job_History_QualificationObjectType" minOccurs="0"/>
+      <xsd:element name="Job_History_Data" type="wd:Job_History_Achievement_DataType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Certification_AchievementType">
+    <xsd:sequence>
+      <xsd:element name="Certification_Reference" type="wd:Certification_QualificationObjectType" minOccurs="0"/>
+      <xsd:element name="Certification_Data" type="wd:Certification_Achievement_DataType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="TrainingType">
+    <xsd:sequence>
+      <xsd:element name="Training_Reference" type="wd:TrainingObjectType" minOccurs="0"/>
+      <xsd:element name="Training_Data" type="wd:Training_Achievement_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_SkillType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Professional_Affiliation_Reference" type="wd:Professional_Affiliation_QualificationObjectType" minOccurs="0"/>
+      <xsd:element name="Organization_Professional_Affiliation_Data" type="wd:Professional_Affiliation_Organization_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Job_History_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Job_History_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Job_History" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Job_Title" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Company" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Job_History_Company_Reference" type="wd:Job_History_CompanyObjectType" minOccurs="0"/>
+      <xsd:element name="Start_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Responsibilities_and_Achievements" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Location" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Job_Reference" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Contact" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Competency_Achievement_Data__v10_Type">
+    <xsd:sequence>
+      <xsd:element name="Competency_Level_Behavior_Reference" type="wd:Proficiency_Rating_BehaviorObjectType" minOccurs="0"/>
+      <xsd:element name="Competency_Level_Behavior_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Assessment_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Assessed_On" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Assessed_By_Person_Reference" type="wd:RoleObjectType" minOccurs="0"/>
+      <xsd:element name="Assessed_By_Worker_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Competency_Reference" type="wd:CompetencyObjectType"/>
+      <xsd:element name="Competency_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Certification_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Certification_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Certification" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Certification_Reference" type="wd:CertificationObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Certification_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Issuer" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Certification_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Issued_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Expiration_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Examination_Score" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Examination_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Specialty_Achievement_Data" type="wd:Specialty_Achievement_Data_with_DatesType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Worker_Document_Data" type="wd:Certification_Attachment_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Training_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Training_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Training" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Training" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Training_Type_Reference" type="wd:Training_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Completion_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Training_Duration" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_Organization_DataType">
+    <xsd:sequence>
+      <xsd:element name="Professional_Affiliation_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Professional_Affiliation" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Professional_Affiliation_Reference" type="wd:Professional_Affiliation_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="Professional_Affiliation" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Professional_Affiliation_Type_Reference" type="wd:Professional_Affiliation_Type__All_ObjectType" minOccurs="0"/>
+      <xsd:element name="Affiliation" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Professional_Affiliation_Relationship_Type_Reference" type="wd:Professional_Affiliation_Relationship_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Begin_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Contact_Information_Data" type="wd:Contact_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Experience_DataType">
+    <xsd:sequence>
+      <xsd:element name="Experience_Reference" type="wd:Work_Experience_QualificationObjectType" minOccurs="0"/>
+      <xsd:element name="Remove_Experience" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Experience_Rating_Reference" type="wd:Work_Experience_RatingObjectType" minOccurs="0"/>
+      <xsd:element name="Experience_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Applicants_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Applicant_Request_ReferencesType" minOccurs="0"/>
+      <xsd:element name="Request_Criteria" type="wd:Applicant_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Applicant_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Applicant_Reference" type="wd:ApplicantObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Reference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Personal_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Show_All_Personal_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Recruiting_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Qualification_Profile" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Resume" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Background_Check" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_External_Integration_ID_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Pre-Hire_Data_WWSType">
+    <xsd:sequence>
+      <xsd:element name="Applicant_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Personal_Data" type="wd:Personal_Information_DataType" minOccurs="0"/>
+      <xsd:element name="Qualification_Data" type="wd:Person_Qualification_DataType" minOccurs="0"/>
+      <xsd:element name="Recruiting_Data" type="wd:Recruiting_DataType" minOccurs="0"/>
+      <xsd:element name="Resume_Data" type="wd:Pre-Hire_Resume_DataType" minOccurs="0"/>
+      <xsd:element name="Background_Check_Data" type="wd:Background_Check_Overall_Status_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="External_Integration_ID_Data" type="wd:External_Integration_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Document_Field_Result_Data" type="wd:Document_Field_Result_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Attachment_Data_WWSType">
+    <xsd:sequence>
+      <xsd:element name="File_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="File" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="FileName" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Recruiting_DataType">
+    <xsd:sequence>
+      <xsd:element name="Applicant_Entered_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Applicant_Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Eligible_For_Hire_Reference" type="wd:Common_Yes_NoObjectType" minOccurs="0"/>
+      <xsd:element name="Eligible_for_Rehire_Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Applicant_Has_Marked_as_No_Show_Reference" type="wd:Common_Boolean_EnumerationObjectType" minOccurs="0"/>
+      <xsd:element name="Applicant_Source_Reference" type="wd:Applicant_SourceObjectType" minOccurs="0"/>
+      <xsd:element name="Referred_by_Worker_Reference" type="wd:WorkerObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Positions_Considered_for_Reference" type="wd:Position_GroupObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Pre-Hire_Resume_Detail_DataType">
+    <xsd:sequence>
+      <xsd:element name="Resume_Reference" type="wd:Applicant_ResumeObjectType" minOccurs="0"/>
+      <xsd:element name="Resume_Data" type="wd:Attachment_Data_WWSType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Pre-Hire_Resume_DataType">
+    <xsd:sequence>
+      <xsd:element name="Resume" type="wd:Pre-Hire_Resume_Detail_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Put_Applicant_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Applicant_Reference" type="wd:ApplicantObjectType" minOccurs="0"/>
+      <xsd:element name="Applicant_Data" type="wd:Pre-Hire_Data_WWSType"/>
+    </xsd:sequence>
+    <xsd:attribute name="Add_Only" type="xsd:boolean"/>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+      <xsd:element name="Former_Worker_Reference" type="wd:Former_WorkerObjectType" minOccurs="0"/>
+      <xsd:element name="Email_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Field_And_Parameter_Criteria_Data" type="wd:Field_And_Parameter_Criteria_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Field_And_Parameter_Criteria_DataType">
+    <xsd:sequence>
+      <xsd:element name="Provider_Reference" type="wd:External_Field_and_Parameter_Initialization_ProviderObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Document_Field_Result_DataType">
+    <xsd:sequence>
+      <xsd:element name="Field_Reference" type="wd:Integration_Document_FieldObjectType" minOccurs="0"/>
+      <xsd:element name="Value" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Language_Ability_DataType">
+    <xsd:sequence>
+      <xsd:element name="Language_Proficiency_Reference" type="wd:Language_ProficiencyObjectType" minOccurs="0"/>
+      <xsd:element name="Language_Ability_Type_Reference" type="wd:Language_Ability_TypeObjectType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Language_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Language_Reference" type="wd:LanguageObjectType"/>
+      <xsd:element name="Remove_Language" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Native_Language" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Language_Ability" type="wd:Language_AbilityType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Assessed_On" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Note" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Assessed_by_Worker_Reference" type="wd:RoleObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Language_AbilityType">
+    <xsd:sequence>
+      <xsd:element name="Language_Ability_Data" type="wd:Language_Ability_DataType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Internal_Project_ExperienceType">
+    <xsd:sequence>
+      <xsd:element name="Internal_Project_Experience_Reference" type="wd:Internal_Project_ExperienceObjectType" minOccurs="0"/>
+      <xsd:element name="Internal_Project_Experience_Data" type="wd:Internal_Project_Experience_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Internal_Project_Experience_DataType">
+    <xsd:sequence>
+      <xsd:element name="Internal_Project_Experience_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Internal_Project_Experience" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Internal_Project" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Start_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Project_Leader" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="EducationType">
+    <xsd:sequence>
+      <xsd:element name="Education_Reference" type="wd:Education_QualificationObjectType" minOccurs="0"/>
+      <xsd:element name="Education_Data" type="wd:Education_Achievement_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Education_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Education_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Education" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="School_Reference" type="wd:SchoolObjectType" minOccurs="0"/>
+      <xsd:element name="School_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="School_Type_Reference" type="wd:School_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Location" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Degree_Reference" type="wd:DegreeObjectType" minOccurs="0"/>
+      <xsd:element name="Degree_Completed_Reference" type="wd:Degree_CompletedObjectType" minOccurs="0"/>
+      <xsd:element name="Date_Degree_Received" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Field_Of_Study_Reference" type="wd:Field_of_StudyObjectType" minOccurs="0"/>
+      <xsd:element name="Grade_Average" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="First_Year_Attended" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Year_Attended" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Is_Highest_Level_of_Education" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="First_Day_Attended" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Day_Attended" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Education_Attachment_Data" type="wd:Education_Attachment_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Local_Person_Name_Detail_DataType">
+    <xsd:sequence>
+      <xsd:element name="First_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Middle_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Secondary_Last_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="First_Name_2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Middle_Name_2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Name_2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Secondary_Last_Name_2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Local_Name" type="xsd:string"/>
+    <xsd:attribute name="Local_Script" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Background_Check_Overall_Status_DataType">
+    <xsd:sequence>
+      <xsd:element name="Status_Date" type="xsd:date" maxOccurs="1"/>
+      <xsd:element name="Status_Reference" type="wd:Background_Check_StatusObjectType"/>
+      <xsd:element name="Status_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Person_Disability_Status_DataType">
+    <xsd:sequence>
+      <xsd:element name="Disability_Reference" type="wd:DisabilityObjectType"/>
+      <xsd:element name="Disability_Status_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Date_Known" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Grade_Reference" type="wd:Disability_GradeObjectType" minOccurs="0"/>
+      <xsd:element name="Disability_Degree" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="8"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Disability_Remaining_Capacity" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="8"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:element name="Disability_Certification_Authority_Reference" type="wd:Disability_Certification_AuthorityObjectType" minOccurs="0"/>
+        <xsd:element name="Disability_Certification_Authority" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      </xsd:choice>
+      <xsd:element name="Disability_Certified_At" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Certification_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Certification_Basis_Reference" type="wd:Disability_Certification_BasisObjectType" minOccurs="0"/>
+      <xsd:element name="Disability_Severity_Recognition_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_FTE_Toward_Quota" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="13"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="1"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Disability_Work_Restrictions" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Accommodations_Requested" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Accommodations_Provided" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Rehabilitation_Requested" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disability_Rehabilitation_Provided" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Note" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worker_Document_Reference" type="wd:Worker_DocumentObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Disability_Status_Reference" type="wd:Disability_Status_ReferenceObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Certification_Attachment_DataType">
+    <xsd:sequence>
+      <xsd:element name="File_Name" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="File" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Document_Category_Reference" type="wd:Document_Category__All_ObjectType"/>
+      <xsd:element name="Content_Type" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="80"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Relative_Name_DataType">
+    <xsd:sequence>
+      <xsd:element name="Relative_Name_Reference_Reference" type="wd:Relative_Name_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="Relative_Type_Reference" type="wd:Relative_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Name_Detail_Data" type="wd:Person_Name_Detail_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Award_and_Activity_Achievement_DataType">
+    <xsd:sequence>
+      <xsd:element name="Award_and_Activity_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Award_and_Activity" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Award_and_Activity_Type_Reference" type="wd:Award_and_Activity_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Title" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Sponsor_Issuer" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Start_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Description" type="wd:RichText" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="URL" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Related_Position_Reference" type="wd:Position_ElementObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Award_and_ActivityType">
+    <xsd:sequence>
+      <xsd:element name="Award_and_Activity_Reference" type="wd:AwardObjectType" minOccurs="0"/>
+      <xsd:element name="Award_and_Activity_Data" type="wd:Award_and_Activity_Achievement_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_For_Country_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType"/>
+      <xsd:element name="Country_Personal_Information_Data" type="wd:Country_Personal_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Specialty_Achievement_Data_with_DatesType">
+    <xsd:sequence>
+      <xsd:element name="Specialty_Reference" type="wd:Specialty_ParentObjectType" minOccurs="0"/>
+      <xsd:element name="Start_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="End_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Subspecialty_Reference" type="wd:Specialty_ChildObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Common_DataType">
+    <xsd:sequence>
+      <xsd:element name="Personal_Information_For_Country_Data" type="wd:Personal_Information_For_Country_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Birth_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Date_of_Death" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Country_of_Birth_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Region_of_Birth_Reference" type="wd:Country_RegionObjectType" minOccurs="0"/>
+      <xsd:element name="Region_of_Birth_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="City_of_Birth" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="City_of_Birth_Reference" type="wd:Country_CityObjectType" minOccurs="0"/>
+      <xsd:element name="Citizenship_Status_Reference" type="wd:Citizenship_StatusObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Primary_Nationality_Reference" type="wd:Country_and_NationalityObjectType" minOccurs="0"/>
+      <xsd:element name="Additional_Nationalities_Reference" type="wd:Country_and_NationalityObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Last_Medical_Exam_Valid_To" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Last_Medical_Exam_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Medical_Exam_Notes" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Blood_Type_Reference" type="wd:Blood_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Military_Service_Data" type="wd:Person_Military_Service_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Sexual_Orientation_Reference" type="wd:Sexual_OrientationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Gender_Identity_Reference" type="wd:Gender_IdentityObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Pronoun_Reference" type="wd:PronounObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Non_Country_Specific_Section_Data" type="wd:Non_Country_Specific_Configurable_Section_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Country_Personal_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Marital_Status_Reference" type="wd:Marital_StatusObjectType" minOccurs="0"/>
+      <xsd:element name="Marital_Status_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Religion_Reference" type="wd:ReligionObjectType" minOccurs="0"/>
+      <xsd:element name="Disability_Status_Data" type="wd:Person_Disability_Status_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Ethnicity_Reference" type="wd:EthnicityObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Race_Ethnicity_Details_Reference" type="wd:Ethnicity_DetailsObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Ethnicity_Visual_Survey_Reference" type="wd:EthnicityObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Hispanic_or_Latino" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Hispanic_or_Latino_Visual_Survey" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Aboriginal_Indigenous_Identification_Reference" type="wd:Aboriginal_Indigenous_Identification_SelectionObjectType" minOccurs="0"/>
+      <xsd:element name="Aboriginal_Indigenous_Identification_Details_Reference" type="wd:Aboriginal_Indigenous_DetailsObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Hukou_Region_Reference" type="wd:Country_RegionObjectType" minOccurs="0"/>
+      <xsd:element name="Hukou_Subregion_Reference" type="wd:Country_SubregionObjectType" minOccurs="0"/>
+      <xsd:element name="Hukou_Locality" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Hukou_Postal_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Hukou_Type_Reference" type="wd:Hukou_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Local_Hukou" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Native_Region_Reference" type="wd:Country_RegionObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Native_Region_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Personnel_File_Agency_for_Person" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Political_Affiliation_Reference" type="wd:Political_AffiliationObjectType" minOccurs="0"/>
+      <xsd:element name="Social_Benefits_Locality_Reference" type="wd:Social_Benefits_LocalityObjectType" minOccurs="0"/>
+      <xsd:element name="Relative_Name_Information_Data" type="wd:Relative_Name_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Sexual_Orientation_and_Gender_Identity_Reference" type="wd:LGBT_IdentificationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Gender_Reference" type="wd:GenderObjectType" minOccurs="0"/>
+      <xsd:element name="Reporting_Gender_Reference" type="wd:GenderObjectType" minOccurs="0"/>
+      <xsd:element name="Veterans_Preference_Reference" type="wd:Veterans_PreferenceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Veterans_Preference_For_RIF_Reference" type="wd:Common_Boolean_EnumerationObjectType" minOccurs="0"/>
+      <xsd:element name="Selective_Service_Registration_Reference" type="wd:Common_Boolean_EnumerationObjectType" minOccurs="0"/>
+      <xsd:element name="Disabled_Veteran_Leave_Date_Reference" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Active_Military_Uniformed_Service_Reference" type="wd:Common_Boolean_EnumerationObjectType" minOccurs="0"/>
+      <xsd:element name="Uniform_Service_Reserve_Status_Reference" type="wd:Uniform_Service_Reserve_StatusObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Specific_Section_Data" type="wd:Country_Specific_Configurable_Section_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Education_Attachment_DataType">
+    <xsd:sequence>
+      <xsd:element name="File_Name" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="File" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Document_Category_Reference" type="wd:Document_Category__All_ObjectType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Configurable_Field_Section_2_DataType">
+    <xsd:sequence>
+      <xsd:element name="Field_1_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_2_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_3_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Country_Specific_Configurable_Section_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Specific_Section_1_Data" type="wd:Personal_Information_Configurable_Field_Section_1_DataType" minOccurs="0"/>
+      <xsd:element name="Country_Specific_Section_2_Data" type="wd:Personal_Information_Configurable_Field_Section_2_DataType" minOccurs="0"/>
+      <xsd:element name="Country_Specific_Section_3_Data" type="wd:Personal_Information_Configurable_Field_Section_3_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Non_Country_Specific_Configurable_Section_DataType">
+    <xsd:sequence>
+      <xsd:element name="Non_Country_Specific_Section_1_Data" type="wd:Personal_Information_Configurable_Field_Section_1_DataType" minOccurs="0"/>
+      <xsd:element name="Non_Country_Specific_Section_2_Data" type="wd:Personal_Information_Configurable_Field_Section_2_DataType" minOccurs="0"/>
+      <xsd:element name="Non_Country_Specific_Section_3_Data" type="wd:Personal_Information_Configurable_Field_Section_3_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Configurable_Field_Section_1_DataType">
+    <xsd:sequence>
+      <xsd:element name="Field_1_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_2_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_3_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Configurable_Field_Section_3_DataType">
+    <xsd:sequence>
+      <xsd:element name="Field_1_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_2_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_3_Reference" type="wd:Personal_Information_Configurable_Field_InterfaceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RoleObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:RoleReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Additional_Name_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Additional_Name_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Military_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Military_StatusReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Citizenship_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Citizenship_StatusReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="AuthorityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:AuthorityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:OrganizationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Language_ProficiencyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Language_ProficiencyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="LanguageObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:LanguageReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="EthnicityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:EthnicityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Marital_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Marital_StatusReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="GenderObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:GenderReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Instant_Messenger_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:WorkerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Language_Ability_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Language_Ability_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ApplicantObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:ApplicantReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="DegreeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:DegreeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Field_of_StudyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Field_of_StudyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="School_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:School_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_SourceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Applicant_SourceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="License_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:License_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_ID_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Visa_ID_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_ID_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Custom_ID_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Experience_QualificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Work_Experience_QualificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Experience_RatingObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Work_Experience_RatingReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CompetencyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CompetencyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Proficiency_Rating_BehaviorObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Proficiency_Rating_BehaviorReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Training_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Training_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Device_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Phone_Device_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_ResumeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Applicant_ResumeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_BehaviorObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_BehaviorReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CountryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_RegionObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_RegionReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_Predefined_Person_Name_Component_ValueObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_Predefined_Person_Name_Component_ValueReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="DisabilityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:DisabilityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ReligionObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:ReligionReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_DocumentObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Worker_DocumentReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="National_ID_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:National_ID_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Unique_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_SubregionObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_SubregionReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Hukou_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Hukou_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="External_Field_and_Parameter_Initialization_ProviderObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:External_Field_and_Parameter_Initialization_ProviderReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Position_ElementObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Position_ElementReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Integration_Document_FieldObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Integration_Document_FieldReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Certification_QualificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Certification_QualificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="AwardObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:AwardReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_QualificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Professional_Affiliation_QualificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="TrainingObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:TrainingReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Education_QualificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Education_QualificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Internal_Project_ExperienceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Internal_Project_ExperienceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_History_QualificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_History_QualificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Position_GroupObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Position_GroupReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="SchoolObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:SchoolReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CertificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CertificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Document_Category__All_ObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Document_Category__All_ReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Degree_CompletedObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Degree_CompletedReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Common_Boolean_EnumerationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Common_Boolean_EnumerationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Government_ID_Type__All_ObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Government_ID_Type__All_ReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="License_ID_Type__All_ObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:License_ID_Type__All_ReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_ID_Type__All_ObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Passport_ID_Type__All_ReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Background_Check_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Background_Check_StatusReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_History_CompanyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_History_CompanyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Political_AffiliationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Political_AffiliationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Address_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Address_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Service_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Military_Service_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Military_RankObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Military_RankReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_GradeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Disability_GradeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Certification_AuthorityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Disability_Certification_AuthorityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Certification_BasisObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Disability_Certification_BasisReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Status_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Disability_Status_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Service_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Military_Service_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="National_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:National_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Government_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Government_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Passport_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Visa_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="License_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:License_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_Identifier_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Custom_Identifier_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Former_WorkerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Former_WorkerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Behavior_TenantedObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_Behavior_TenantedReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Social_Benefits_LocalityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Social_Benefits_LocalityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Specialty_ParentObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Specialty_ParentReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Specialty_ChildObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Specialty_ChildReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="LGBT_IdentificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:LGBT_IdentificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_Relationship_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Professional_Affiliation_Relationship_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Professional_Affiliation_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_Type__All_ObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Professional_Affiliation_Type__All_ReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_CityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_CityReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Relative_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Relative_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Relative_Name_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Relative_Name_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Award_and_Activity_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Award_and_Activity_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Gender_IdentityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Gender_IdentityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Sexual_OrientationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Sexual_OrientationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="PronounObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:PronounReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Email_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Email_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Blood_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Blood_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Phone_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Common_Yes_NoObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Common_Yes_NoReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Web_Address_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Instant_Messenger_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Ethnicity_DetailsObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Ethnicity_DetailsReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Aboriginal_Indigenous_DetailsObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Aboriginal_Indigenous_DetailsReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Aboriginal_Indigenous_Identification_SelectionObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Aboriginal_Indigenous_Identification_SelectionReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Veterans_PreferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Veterans_PreferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Uniform_Service_Reserve_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Uniform_Service_Reserve_StatusReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Discharge_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Military_Discharge_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_and_NationalityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_and_NationalityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Configurable_Field_InterfaceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Personal_Information_Configurable_Field_InterfaceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="RoleObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:RoleObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Additional_Name_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Additional_Name_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Military_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Military_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Citizenship_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Citizenship_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="AuthorityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:AuthorityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:OrganizationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Language_ProficiencyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Language_ProficiencyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="LanguageObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:LanguageObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="EthnicityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:EthnicityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Marital_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Marital_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="GenderObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:GenderObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Instant_Messenger_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:WorkerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Language_Ability_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Language_Ability_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="ApplicantObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:ApplicantObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="DegreeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:DegreeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Field_of_StudyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Field_of_StudyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="School_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:School_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_SourceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Applicant_SourceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="License_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:License_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_ID_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Visa_ID_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_ID_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Custom_ID_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Experience_QualificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Work_Experience_QualificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Experience_RatingObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Work_Experience_RatingObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CompetencyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CompetencyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Proficiency_Rating_BehaviorObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Proficiency_Rating_BehaviorObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Training_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Training_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Device_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Phone_Device_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Applicant_ResumeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Applicant_ResumeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_BehaviorObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_BehaviorObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CountryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_RegionObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_RegionObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_Predefined_Person_Name_Component_ValueObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_Predefined_Person_Name_Component_ValueObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="DisabilityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:DisabilityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="ReligionObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:ReligionObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_DocumentObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Worker_DocumentObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="National_ID_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:National_ID_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Unique_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_SubregionObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_SubregionObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Hukou_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Hukou_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="External_Field_and_Parameter_Initialization_ProviderObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:External_Field_and_Parameter_Initialization_ProviderObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Position_ElementObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Position_ElementObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Integration_Document_FieldObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Integration_Document_FieldObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Certification_QualificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Certification_QualificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="AwardObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:AwardObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_QualificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Professional_Affiliation_QualificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="TrainingObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:TrainingObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Education_QualificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Education_QualificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Internal_Project_ExperienceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Internal_Project_ExperienceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_History_QualificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_History_QualificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Position_GroupObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Position_GroupObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="SchoolObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:SchoolObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CertificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CertificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Document_Category__All_ObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Document_Category__All_ObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Degree_CompletedObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Degree_CompletedObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Common_Boolean_EnumerationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Common_Boolean_EnumerationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Government_ID_Type__All_ObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Government_ID_Type__All_ObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="License_ID_Type__All_ObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:License_ID_Type__All_ObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_ID_Type__All_ObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Passport_ID_Type__All_ObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Background_Check_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Background_Check_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_History_CompanyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_History_CompanyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Political_AffiliationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Political_AffiliationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Address_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Address_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Service_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Military_Service_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Military_RankObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Military_RankObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_GradeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Disability_GradeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Certification_AuthorityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Disability_Certification_AuthorityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Certification_BasisObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Disability_Certification_BasisObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Disability_Status_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Disability_Status_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Service_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Military_Service_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="National_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:National_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Government_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Government_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Passport_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Passport_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Visa_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Visa_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="License_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:License_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Custom_Identifier_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Custom_Identifier_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Former_WorkerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Former_WorkerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Behavior_TenantedObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_Behavior_TenantedObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Social_Benefits_LocalityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Social_Benefits_LocalityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Specialty_ParentObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Specialty_ParentObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Specialty_ChildObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Specialty_ChildObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="LGBT_IdentificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:LGBT_IdentificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_Relationship_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Professional_Affiliation_Relationship_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Professional_Affiliation_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Professional_Affiliation_Type__All_ObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Professional_Affiliation_Type__All_ObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_CityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_CityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Relative_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Relative_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Relative_Name_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Relative_Name_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Award_and_Activity_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Award_and_Activity_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Gender_IdentityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Gender_IdentityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Sexual_OrientationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Sexual_OrientationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="PronounObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:PronounObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Email_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Email_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Blood_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Blood_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Phone_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Common_Yes_NoObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Common_Yes_NoObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Web_Address_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Instant_Messenger_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Ethnicity_DetailsObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Ethnicity_DetailsObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Aboriginal_Indigenous_DetailsObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Aboriginal_Indigenous_DetailsObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Aboriginal_Indigenous_Identification_SelectionObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Aboriginal_Indigenous_Identification_SelectionObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Veterans_PreferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Veterans_PreferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Uniform_Service_Reserve_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Uniform_Service_Reserve_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Military_Discharge_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Military_Discharge_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_and_NationalityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_and_NationalityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Personal_Information_Configurable_Field_InterfaceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Personal_Information_Configurable_Field_InterfaceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

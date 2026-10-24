@@ -8,7 +8,7 @@ import httpx
 import pytest
 import respx
 
-from conftest import call_tool, service_url
+from conftest import call_tool, service_url, soap_unknown_id_fault
 from test_regressions import xml_response
 from test_schema_contracts import assert_schema
 from test_tools_read import EVENT
@@ -76,7 +76,14 @@ def org_response(*entries, pages=1):
     )
 
 
-def org_router(existing=None):
+ORG_XPATH = (
+    "/bsvc:Get_Organizations_Request[1]/bsvc:Request_References[1]"
+    "/bsvc:Organization_Reference[1]"
+)
+
+
+def org_router(existing=None, unknown_as_fault=False):
+    """A tenant's organizations. A live tenant faults an id it does not hold."""
     orgs = copy.deepcopy(existing or {"TOP": org()})
     writes = []
 
@@ -104,6 +111,11 @@ def org_router(existing=None):
         data = body["Get_Organizations_Request"]
         refs = data.get("Request_References", {})
         identifier = refs.get("Organization_Reference", {}).get("ID", {}).get("#text")
+        if unknown_as_fault and identifier and identifier not in orgs:
+            fault = soap_unknown_id_fault(
+                identifier, "Organization_Reference_ID", ORG_XPATH
+            )
+            return httpx.Response(500, text=fault)
         entries = (
             [orgs[identifier]]
             if identifier in orgs
@@ -140,6 +152,19 @@ async def test_create_manager_org_inserts_under_correct_superior_and_reads_back(
     assert writes[0]["Superior_Organization_Reference"]["ID"]["#text"] == "TOP"
     assert writes[0]["Position_Management_Enabled"] == "true"
     assert result["response"]["Integration_ID_Reference"]
+
+
+async def test_create_proceeds_when_workday_faults_the_unknown_new_id(server_factory):
+    """The existence check for the new id must not block the create it guards."""
+    handler, writes = org_router(unknown_as_fault=True)
+    with respx.mock:
+        respx.post(HR).mock(side_effect=handler)
+        result = await call_tool(
+            server_factory(), "workday_create_supervisory_organization", CREATE
+        )
+    assert result["submitted"] is True
+    assert result["verification"]["verified"] is True
+    assert writes[0]["Organization_Reference_ID"] == "NEW"
 
 
 async def test_create_never_overwrites_existing_org(server_factory):

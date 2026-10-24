@@ -8,7 +8,7 @@ requires readable, unmasked values for every account that must be carried forwar
 Account numbers are masked on the way out (see ``redact``); they are never
 returned to a caller or written to a log.
 
-Schema reference: Workday Web Services v44.2, Cash_Management service.
+Schema reference: Workday Web Services v44.2 and v48.0, Cash_Management service.
 """
 
 from __future__ import annotations
@@ -426,7 +426,8 @@ def merge_groups(
 ) -> list[dict[str, Any]]:
     """Carry forward untouched rule groups only when full bank values are readable.
 
-    There is no bank-account reference field in the v44.2 election input schema.
+    There is no bank-account reference field in the election input schema
+    (checked for v44.2 and v48.0).
     Never manufacture full numbers from masked read responses.
     """
     replacement_ids = {str(g.get("payment_election_rule_id", "")) for g in incoming}

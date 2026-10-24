@@ -10,7 +10,13 @@ import httpx
 import pytest
 import respx
 
-from conftest import service_url, soap_auth_fault, soap_fault, soap_response
+from conftest import (
+    service_url,
+    soap_auth_fault,
+    soap_fault,
+    soap_response,
+    soap_unknown_id_fault,
+)
 from workday_advanced_mcp.auth import IsuAuth, OAuthRefreshAuth
 from workday_advanced_mcp.client import SERVICE_STAFFING, WorkdayClient
 from workday_advanced_mcp.config import load_settings
@@ -181,6 +187,46 @@ async def test_an_oauth_authentication_fault_names_the_oauth_credentials(
     message = str(excinfo.value)
     assert "WORKDAY_REFRESH_TOKEN" in message
     assert "WORKDAY_ISU_PASSWORD" not in message
+
+
+async def test_an_unknown_id_is_a_not_found_error() -> None:
+    from workday_advanced_mcp.errors import WorkdayNotFoundError
+
+    fault = soap_unknown_id_fault(
+        "NOPE",
+        "Employee_ID",
+        "/bsvc:Get_Workers_Request[1]/bsvc:Request_References[1]/bsvc:Worker_Reference[1]",
+    )
+    with respx.mock:
+        respx.post(STAFFING_URL).mock(return_value=httpx.Response(500, text=fault))
+        client = _client()
+        try:
+            with pytest.raises(WorkdayNotFoundError) as excinfo:
+                await client.call(SERVICE_STAFFING, "Get_Workers", {}, is_read=True)
+        finally:
+            await client.aclose()
+
+    assert isinstance(excinfo.value, WorkdayFaultError)
+    assert "'NOPE' is not a valid ID value" in str(excinfo.value)
+
+
+async def test_other_validation_faults_are_not_not_found_errors() -> None:
+    from workday_advanced_mcp.errors import WorkdayNotFoundError
+
+    with respx.mock:
+        respx.post(STAFFING_URL).mock(
+            return_value=httpx.Response(
+                500, text=soap_fault("Validation error", "Effective Date is required")
+            )
+        )
+        client = _client()
+        try:
+            with pytest.raises(WorkdayFaultError) as excinfo:
+                await client.call(SERVICE_STAFFING, "Get_Workers", {}, is_read=True)
+        finally:
+            await client.aclose()
+
+    assert not isinstance(excinfo.value, WorkdayNotFoundError)
 
 
 async def test_a_validation_fault_names_what_workday_rejected() -> None:

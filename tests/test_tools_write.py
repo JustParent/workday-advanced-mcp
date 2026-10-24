@@ -9,7 +9,7 @@ from __future__ import annotations
 import httpx
 import respx
 
-from conftest import call_tool, service_url, soap_response
+from conftest import call_tool, service_url, soap_response, soap_unknown_id_fault
 from workday_advanced_mcp.client import (
     SERVICE_CASH_MANAGEMENT,
     SERVICE_HUMAN_RESOURCES,
@@ -336,6 +336,35 @@ async def test_hiring_somebody_who_already_exists_is_refused(
     assert result["duplicate"] is True
     assert result["submitted"] is False
     assert staffing.call_count == 0
+
+
+async def test_hiring_a_new_employee_id_is_not_blocked_by_the_duplicate_lookup(
+    server_factory,
+) -> None:
+    """A live tenant faults the lookup of an employee id it does not hold."""
+    fault = soap_unknown_id_fault(
+        "21001",
+        "Employee_ID",
+        "/bsvc:Get_Workers_Request[1]/bsvc:Request_References[1]/bsvc:Worker_Reference[1]",
+    )
+    with respx.mock:
+        respx.post(HR_URL).mock(return_value=httpx.Response(500, text=fault))
+        staffing = respx.post(STAFFING_URL).mock(
+            return_value=httpx.Response(200, text=staffing_response("Hire_Employee"))
+        )
+        result = await call_tool(
+            server_factory(),
+            "workday_hire_employee",
+            {
+                "organization_id": "SUP-ENG",
+                "hire_date": "2026-06-01",
+                "pre_hire_wid": "prehire-1",
+                "employee_id": "21001",
+            },
+        )
+
+    assert result["submitted"] is True
+    assert staffing.call_count == 1
 
 
 async def test_creating_a_duplicate_pre_hire_is_refused(server_factory) -> None:

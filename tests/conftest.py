@@ -137,6 +137,33 @@ def soap_auth_fault() -> str:
     )
 
 
+def soap_unknown_id_fault(value: str, id_type: str, xpath: str) -> str:
+    """Workday's answer to a lookup of an id that matches nothing: a validation fault.
+
+    Captured from a live implementation tenant on 2026-10-24 for workers,
+    organizations, positions and events. Skip_Non_Existing_Instances does not turn
+    it into an empty response.
+    """
+    message = (
+        f"Invalid ID value.  '{value}' is not a valid ID value for type = '{id_type}'"
+    )
+    return (
+        '<?xml version="1.0" encoding="utf-8"?>'
+        '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">'
+        "<SOAP-ENV:Body>"
+        '<SOAP-ENV:Fault xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" '
+        'xmlns:wd="urn:com.workday/bsvc">'
+        "<faultcode>SOAP-ENV:Client.validationError</faultcode>"
+        f"<faultstring>Validation error occurred. {message}</faultstring>"
+        "<detail><wd:Validation_Fault><wd:Validation_Error>"
+        f"<wd:Message>{message}</wd:Message>"
+        f"<wd:Detail_Message>{message}</wd:Detail_Message>"
+        f"<wd:Xpath>{xpath}</wd:Xpath>"
+        "</wd:Validation_Error></wd:Validation_Fault></detail>"
+        "</SOAP-ENV:Fault></SOAP-ENV:Body></SOAP-ENV:Envelope>"
+    )
+
+
 WORKER_XML = """
 <wd:Response_Data>
   <wd:Worker>
@@ -167,6 +194,10 @@ WORKER_XML = """
             <wd:Position_ID>POS-100</wd:Position_ID>
             <wd:Position_Title>Engineer</wd:Position_Title>
             <wd:Business_Title>Senior Engineer</wd:Business_Title>
+            <wd:Worker_Type_Reference wd:Descriptor="Regular">
+              <wd:ID wd:type="WID">worker-type-wid</wd:ID>
+              <wd:ID wd:type="Employee_Type_ID">Regular</wd:ID>
+            </wd:Worker_Type_Reference>
             <wd:Job_Profile_Summary_Data>
               <wd:Job_Profile_Reference wd:Descriptor="Engineer">
                 <wd:ID wd:type="WID">jp-wid</wd:ID>
@@ -181,10 +212,10 @@ WORKER_XML = """
           </wd:Position_Data>
           <wd:Position_Organizations_Data>
             <wd:Position_Organization_Data>
+              <wd:Organization_Reference wd:Descriptor="Engineering">
+                <wd:ID wd:type="Organization_Reference_ID">SUP-ENG</wd:ID>
+              </wd:Organization_Reference>
               <wd:Organization_Data>
-                <wd:Organization_Reference wd:Descriptor="Engineering">
-                  <wd:ID wd:type="Organization_Reference_ID">SUP-ENG</wd:ID>
-                </wd:Organization_Reference>
                 <wd:Organization_Type_Reference wd:Descriptor="Supervisory">
                   <wd:ID wd:type="Organization_Type_ID">Supervisory</wd:ID>
                 </wd:Organization_Type_Reference>
@@ -193,10 +224,10 @@ WORKER_XML = """
               </wd:Organization_Data>
             </wd:Position_Organization_Data>
             <wd:Position_Organization_Data>
+              <wd:Organization_Reference wd:Descriptor="R&amp;D">
+                <wd:ID wd:type="Cost_Center_Reference_ID">CC_100</wd:ID>
+              </wd:Organization_Reference>
               <wd:Organization_Data>
-                <wd:Organization_Reference wd:Descriptor="R&amp;D">
-                  <wd:ID wd:type="Cost_Center_Reference_ID">CC_100</wd:ID>
-                </wd:Organization_Reference>
                 <wd:Organization_Type_Reference wd:Descriptor="Cost Center">
                   <wd:ID wd:type="Organization_Type_ID">Cost_Center</wd:ID>
                 </wd:Organization_Type_Reference>
@@ -204,11 +235,11 @@ WORKER_XML = """
                 <wd:Organization_Reference_ID>CC_100</wd:Organization_Reference_ID>
               </wd:Organization_Data>
             </wd:Position_Organization_Data>
-              <wd:Position_Organization_Data>
+            <wd:Position_Organization_Data>
+              <wd:Organization_Reference wd:Descriptor="Acme Ltd">
+                <wd:ID wd:type="Company_Reference_ID">CO_1</wd:ID>
+              </wd:Organization_Reference>
               <wd:Organization_Data>
-                <wd:Organization_Reference wd:Descriptor="Acme Ltd">
-                  <wd:ID wd:type="Company_Reference_ID">CO_1</wd:ID>
-                </wd:Organization_Reference>
                 <wd:Organization_Type_Reference wd:Descriptor="Company">
                   <wd:ID wd:type="Organization_Type_ID">Company</wd:ID>
                 </wd:Organization_Type_Reference>

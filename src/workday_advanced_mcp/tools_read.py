@@ -19,6 +19,7 @@ from .client import (
     WorkdayClient,
     get_client,
 )
+from .errors import WorkdayFaultError, WorkdayNotFoundError
 from .operations import events, organizations, payment_elections, recruiting, workers
 from .pagination import at_entry_moment, entry_moment
 from .references import EMPLOYEE_ID, ORGANIZATION_TYPES, WID, WORKER_ID_TYPES
@@ -374,16 +375,7 @@ def register_read_tools(registrar: ToolRegistrar) -> None:
                 "are keyed by."
             )
 
-        request = payment_elections.build_get_enrollments_by_reference(worker_wid)
-        result = await client.call(
-            SERVICE_CASH_MANAGEMENT,
-            payment_elections.GET_ENROLLMENTS,
-            request,
-            is_read=True,
-        )
-        entries = payment_elections.enrollments_in(
-            result.response(payment_elections.GET_ENROLLMENTS)
-        )
+        entries = await _direct_enrollments(client, worker_wid)
 
         scan_complete = True
         if not entries and scan_if_not_found:
@@ -425,13 +417,17 @@ def register_read_tools(registrar: ToolRegistrar) -> None:
                 "Pass the event id returned by the write you are checking."
             )
         client = get_client()
-        result = await client.call(
-            SERVICE_INTEGRATIONS,
-            events.OPERATION,
-            events.build_get_event_request(identifier, id_type),
-            is_read=True,
-        )
-        parsed = events.parse_event(result.response(events.OPERATION))
+        try:
+            result = await client.call(
+                SERVICE_INTEGRATIONS,
+                events.OPERATION,
+                events.build_get_event_request(identifier, id_type),
+                is_read=True,
+            )
+        except WorkdayNotFoundError:
+            parsed: dict[str, Any] = {}
+        else:
+            parsed = events.parse_event(result.response(events.OPERATION))
         if not parsed:
             raise ValueError(
                 f"Workday returned no event for {identifier!r}. Check the id from the "
@@ -453,6 +449,31 @@ def register_read_tools(registrar: ToolRegistrar) -> None:
         ),
         read_only=True,
         idempotent=True,
+    )
+
+
+async def _direct_enrollments(
+    client: WorkdayClient, worker_wid: str
+) -> list[dict[str, Any]]:
+    """The worker's enrollments by reference, or none if the tenant cannot resolve it.
+
+    Some tenants answer a worker WID used as an enrollment reference with a
+    validation fault rather than an empty response. The capped scan takes over
+    either way.
+    """
+    try:
+        result = await client.call(
+            SERVICE_CASH_MANAGEMENT,
+            payment_elections.GET_ENROLLMENTS,
+            payment_elections.build_get_enrollments_by_reference(worker_wid),
+            is_read=True,
+        )
+    except WorkdayFaultError as exc:
+        if not exc.validation_errors:
+            raise
+        return []
+    return payment_elections.enrollments_in(
+        result.response(payment_elections.GET_ENROLLMENTS)
     )
 
 

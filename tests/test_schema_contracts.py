@@ -1,7 +1,9 @@
-"""Validate real request envelopes against published Workday v44.2 XSDs.
+"""Validate real request envelopes against published Workday XSDs.
 
 Unlike handwritten child-order expectations, these independent fixtures detect
 incorrect element names, nesting, choices, attributes, values and cardinality.
+Every committed version is checked, so a request that is valid for one release
+and not another fails here rather than at a tenant.
 """
 
 from __future__ import annotations
@@ -25,19 +27,25 @@ from workday_advanced_mcp.operations import (
 from workday_advanced_mcp.references import reference
 from workday_advanced_mcp.soap import build_envelope
 
-SCHEMAS = Path(__file__).parent / "fixtures/schemas/v44.2"
+SCHEMAS = Path(__file__).parent / "fixtures/schemas"
+VERSIONS = sorted(path.name for path in SCHEMAS.iterdir() if path.is_dir())
 DATE = "2026-10-01"
 
 
 @lru_cache
-def schema(service):
-    return etree.XMLSchema(etree.parse(str(SCHEMAS / f"{service}.xsd")))
+def schema(service, version):
+    return etree.XMLSchema(etree.parse(str(SCHEMAS / version / f"{service}.xsd")))
 
 
 def assert_schema(service, operation, request):
     root = etree.fromstring(build_envelope(operation, request).encode())
     body = root.find("{http://schemas.xmlsoap.org/soap/envelope/}Body")
-    schema(service).assertValid(body[0])
+    for version in VERSIONS:
+        try:
+            schema(service, version).assertValid(body[0])
+        except etree.DocumentInvalid as exc:
+            exc.add_note(f"against the Workday {version} schema")
+            raise
 
 
 def samples():

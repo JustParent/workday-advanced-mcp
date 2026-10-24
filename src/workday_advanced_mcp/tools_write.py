@@ -416,7 +416,7 @@ async def plan_set_payment_elections(
     back masked, so they cannot be silently carried forward; instead every current
     election that the new set does not reproduce is listed as ``removed``.
     """
-    from .tools_read import _scan_enrollments
+    from .tools_read import _direct_enrollments, _scan_enrollments
 
     if not country or not currency:
         raise ValueError(
@@ -436,16 +436,7 @@ async def plan_set_payment_elections(
             "keyed by."
         )
 
-    request = payment_elections.build_get_enrollments_by_reference(worker_wid)
-    result = await client.call(
-        SERVICE_CASH_MANAGEMENT,
-        payment_elections.GET_ENROLLMENTS,
-        request,
-        is_read=True,
-    )
-    entries = payment_elections.enrollments_in(
-        result.response(payment_elections.GET_ENROLLMENTS)
-    )
+    entries = await _direct_enrollments(client, worker_wid)
     complete = True
     if not entries:
         entries, complete = await _scan_enrollments(client, worker_wid, 5)

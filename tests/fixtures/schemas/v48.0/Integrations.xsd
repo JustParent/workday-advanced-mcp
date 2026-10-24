@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:wd="urn:com.workday/bsvc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+  <xsd:element name="Get_Event_Details_Request" type="wd:Get_Event_Details_RequestType"/>
+  <xsd:element name="Cancel_Business_Process_Request" type="wd:Cancel_Business_Process_RequestType"/>
+  <xsd:element name="Rescind_Business_Process_Request" type="wd:Rescind_Business_Process_RequestType"/>
+  <xsd:element name="Get_References_Request" type="wd:Get_References_RequestType"/>
+  <xsd:attribute name="version" type="xsd:string" wd:fixed="v48.0"/>
+  <xsd:simpleType name="Action_EventReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Reference_IndexReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:complexType name="Response_FilterType">
+    <xsd:sequence>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Page" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="12"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Count" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Event_Reference" type="wd:Action_EventObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Event_Details_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Event_Request_ReferencesType"/>
+      <xsd:element name="Request_Criteria" type="wd:Event_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Cancel_Business_Process_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Event_Reference" type="wd:Action_EventObjectType"/>
+      <xsd:element name="Cancel_Business_Process_Data" type="wd:Cancel_Business_Process_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Cancel_Business_Process_DataType">
+    <xsd:sequence>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Suppress_Notifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Rescind_Business_Process_DataType">
+    <xsd:sequence>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Suppress_Notifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Rescind_Business_Process_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Event_Reference" type="wd:Action_EventObjectType"/>
+      <xsd:element name="Rescind_Business_Process_Data" type="wd:Rescind_Business_Process_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Get_References_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Reference_ID_Type" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="128"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Include_Defaulted_Values_Only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_References_RequestType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Request_References" type="wd:References_Request_ReferencesType" minOccurs="0"/>
+        <xsd:element name="Request_Criteria" type="wd:Get_References_Request_CriteriaType" minOccurs="0"/>
+      </xsd:choice>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="References_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Reference_ID_Reference" type="wd:Reference_IndexObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Exclude_Process_History_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Remaining_Step_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Action_EventObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Action_EventReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Reference_IndexObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Reference_IndexReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Action_EventObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Action_EventObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Reference_IndexObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Reference_IndexObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

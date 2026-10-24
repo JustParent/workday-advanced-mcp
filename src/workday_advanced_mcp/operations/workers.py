@@ -1,6 +1,6 @@
 """Get_Workers: worker lookup and the detail every write needs first.
 
-Element order for Get_Workers_Request (Human_Resources / Staffing v44.2):
+Element order for Get_Workers_Request (Human_Resources / Staffing, v44.2 and v48.0):
     Request_References | Request_Criteria -> Response_Filter -> Response_Group
 """
 
@@ -186,7 +186,8 @@ def organization_assignments(worker: dict[str, Any]) -> list[dict[str, Any]]:
             org_type_ref, "Organization_Type_ID"
         ) or extract_descriptor(org_type_ref)
         summary = summarize_reference(
-            org_data.get("Organization_Reference"),
+            # Workday puts the reference beside the organization data, not inside it.
+            container.get("Organization_Reference"),
             preferred=("Organization_Reference_ID", WID),
         )
         key = (org_type, summary.get("id", ""))
@@ -296,7 +297,9 @@ def summarize_worker(
             "business_title": position_data.get("Business_Title") or "",
             "start_date": position_data.get("Start_Date") or "",
             "employee_type": summarize_reference(
-                position_data.get("Employee_Type_Reference"),
+                # Workday names it the worker type, and carries an Employee_Type_ID.
+                position_data.get("Employee_Type_Reference")
+                or position_data.get("Worker_Type_Reference"),
                 preferred=("Employee_Type_ID", WID),
             ),
             "position_time_type": summarize_reference(

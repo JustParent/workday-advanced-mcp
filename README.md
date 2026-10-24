@@ -49,6 +49,11 @@ tenant's requirements for an operation with **View Security for Securable Item**
 The host is the `-services` hostname in the address of any WSDL under **Public
 Web Services**.
 
+A missing task permission answers `The task submitted is not authorized`, but for
+personal data Workday leaves the field out without any fault. Workers that come
+back without emails or addresses mean the Person Data domains (Work Email, Home
+Address) are not granted to the group.
+
 Organization maintenance needs particular care: `Add_Update_Organization` uses
 **Manage: Organization Update Integration** and bypasses normal organization
 business-process approval policies. Org creation, reparenting and inactivation
@@ -69,7 +74,7 @@ fixed-egress proxy.
 
 | Environment variable | Required | Description |
 | --- | --- | --- |
-| `WORKDAY_HOST` | yes | API host, e.g. `wd3-impl-services1.workday.com` or `impl-services1.wd103.myworkday.com`. Tenant URLs are accepted; only the hostname is used. |
+| `WORKDAY_HOST` | yes | API host, e.g. `wd3-impl-services1.workday.com` or `impl-services1.wd5.myworkday.com`. Tenant URLs are accepted; only the hostname is used. |
 | `WORKDAY_TENANT` | yes | Tenant ID; inferred from a pasted URL when omitted. A bare hostname carries no tenant, so set this whenever `WORKDAY_HOST` is not a full tenant URL. |
 | `WORKDAY_AUTH_MODE` | no | `isu` (default) or `oauth`. A complete OAuth trio with no ISU password selects OAuth. |
 | `WORKDAY_ISU_USERNAME` | ISU | ISU name; `@tenant` is appended if missing. |
@@ -77,7 +82,7 @@ fixed-egress proxy.
 | `WORKDAY_CLIENT_ID` | OAuth | API client for integrations. |
 | `WORKDAY_CLIENT_SECRET` | OAuth | Client secret. |
 | `WORKDAY_REFRESH_TOKEN` | OAuth | Exchanged for a bearer token with the `soap_api` scope. |
-| `WORKDAY_API_VERSION` | no | Defaults to `v44.2`, validated by the committed schema tests. |
+| `WORKDAY_API_VERSION` | no | Defaults to `v48.0`. The committed schema tests cover `v44.2` and `v48.0`; pin an earlier version for a tenant that does not serve the default. |
 | `WORKDAY_READ_ONLY` | no | `true` omits all writes and preview. |
 | `WORKDAY_ENABLED_TOOLS` | no | Comma-separated exact tool allowlist. Include `workday_preview_write` and the reads used to reconcile writes. |
 | `WORKDAY_ALLOW_AUTO_COMPLETE` | no | `true` permits a caller to request `auto_complete`, bypassing normal BP routing. Off by default. |
@@ -221,11 +226,16 @@ does **not** preserve omitted elections.
 
 ## Schema validation and development
 
-The default remains **v44.2** for compatibility. Offline official-XSD subsets
+The default is **v48.0**, and **v44.2** is also covered. Offline schema subsets
 retain the transitive types and constraints for all implemented request operations
-across six services. Provenance and regeneration steps are in
+across six services, and every request builder is checked against both versions.
+Provenance and regeneration steps are in
 [tenant validation](docs/tenant-validation.md). Schema conformance does not prove
 tenant-specific rules, permissions or approval routing.
+
+A tenant serves only the versions its release supports, and a preview tenant can
+run the next release early, so a production tenant can lack the newest version.
+Set `WORKDAY_API_VERSION` to the highest version it lists under Public Web Services.
 
 ```bash
 uv venv

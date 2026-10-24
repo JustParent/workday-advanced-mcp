@@ -114,7 +114,7 @@ def test_unknown_worker_ids_do_not_fault_the_request() -> None:
 
 # --------------------------------------------------------------------------
 # Write operations. Each expected order is taken from the Workday Web Services
-# v44.2 schema for that operation.
+# schema for that operation, which is the same in v44.2 and v48.0.
 # --------------------------------------------------------------------------
 
 

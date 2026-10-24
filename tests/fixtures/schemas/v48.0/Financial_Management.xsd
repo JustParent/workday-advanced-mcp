@@ -1,0 +1,798 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:wd="urn:com.workday/bsvc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+  <xsd:element name="Submit_Accounting_Journal_Request" type="wd:Submit_Accounting_Journal_RequestRootType"/>
+  <xsd:element name="Get_Journals_Request" type="wd:Get_Journals_RequestType"/>
+  <xsd:attribute name="version" type="xsd:string" wd:fixed="v48.0"/>
+  <xsd:simpleType name="OrganizationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="WorkerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Ledger_AccountReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Account_SetReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_RateReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_CodeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Journal_EntryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Accounting_JournalReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Journal_SourceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Audited_Accounting_WorktagReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_ApplicabilityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Journal_Entry_StatusReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Ledger_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Unit_of_MeasureReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CustomerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="SupplierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CurrencyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Currency_Rate_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CompanyReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Accounting_WorktagReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Unique_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Book_CodeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="BookReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Balancing_WorktagReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_Recoverability_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Event_Attachment_CategoryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_RecoverabilityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Tax_Point_Date_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:complexType name="Submit_Accounting_Journal_RequestRootType">
+    <xsd:complexContent>
+      <xsd:extension base="wd:Submit_Accounting_Journal_RequestType">
+        <xsd:attribute ref="wd:version"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_Line_DataType">
+    <xsd:sequence>
+      <xsd:element name="Line_Order" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Line_Company_Reference" type="wd:CompanyObjectType" minOccurs="0"/>
+      <xsd:element name="Ledger_Account_Reference" type="wd:Ledger_AccountObjectType"/>
+      <xsd:element name="Alternate_Ledger_Account_Reference" type="wd:Ledger_AccountObjectType" minOccurs="0"/>
+      <xsd:element name="Debit_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="26"/>
+            <xsd:fractionDigits value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Credit_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="26"/>
+            <xsd:fractionDigits value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType" minOccurs="0"/>
+      <xsd:element name="Currency_Rate" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="24"/>
+            <xsd:fractionDigits value="12"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Ledger_Debit_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="18"/>
+            <xsd:fractionDigits value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Ledger_Credit_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="18"/>
+            <xsd:fractionDigits value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Quantity" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="18"/>
+            <xsd:fractionDigits value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Unit_of_Measure_Reference" type="wd:Unit_of_MeasureObjectType" minOccurs="0"/>
+      <xsd:element name="Quantity_2" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="18"/>
+            <xsd:fractionDigits value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Unit_of_Measure_2_Reference" type="wd:Unit_of_MeasureObjectType" minOccurs="0"/>
+      <xsd:element name="Memo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="External_Reference_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Budget_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worktags_Reference" type="wd:Accounting_WorktagObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Balancing_Worktag_Affiliate_Reference" type="wd:Balancing_WorktagObjectType" minOccurs="0"/>
+      <xsd:element name="Exclude_from_Spend_Report" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Tax_Detail_Data" type="wd:Journal_Line_Tax_Detail_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Journal_Line_Number" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="20"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_Journal_DataType">
+    <xsd:sequence>
+      <xsd:element name="Accounting_Journal_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Submit" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Disable_Optional_Worktag_Balancing" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Locked_in_Workday" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Round_Ledger_Amounts" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Journal_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Journal_Sequence_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Company_Reference" type="wd:CompanyObjectType"/>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType"/>
+      <xsd:element name="Ledger_Type_Reference" type="wd:Ledger_TypeObjectType"/>
+      <xsd:element name="Book_Code_Reference" type="wd:Book_CodeObjectType" minOccurs="0"/>
+      <xsd:element name="Accounting_Date" type="xsd:date" maxOccurs="1"/>
+      <xsd:element name="Journal_Source_Reference" type="wd:Journal_SourceObjectType"/>
+      <xsd:element name="Balancing_Worktag_Reference" type="wd:Balancing_WorktagObjectType" minOccurs="0"/>
+      <xsd:element name="Optional_Balancing_Worktags_Reference" type="wd:Audited_Accounting_WorktagObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Record_Quantity" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Journal_Entry_Memo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="External_Reference_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Document_Link" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Display_Account_Set_Reference" type="wd:Account_SetObjectType" minOccurs="0"/>
+      <xsd:element name="Adjustment_Journal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Tax_Lines" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Create_Reversal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Reversal_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Control_Total_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="26"/>
+            <xsd:fractionDigits value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Currency_Rate_Type_Reference" type="wd:Currency_Rate_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Journal_Entry_Line_Replacement_Data" type="wd:Journal_Entry_Line_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Attachment_Data" type="wd:Financial_Attachment_with_Intercompany_Attachment_Field_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Accounting_Journal_Intercompany_Sub_Process" type="wd:Accounting_Journal_Intercompany_Sub_ProcessType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Submit_Accounting_Journal_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Accounting_Journal_Reference" type="wd:Accounting_JournalObjectType" minOccurs="0"/>
+      <xsd:element name="Business_Process_Parameters" type="wd:Financials_Business_Process_ParametersType" minOccurs="0"/>
+      <xsd:element name="Accounting_Journal_Data" type="wd:Accounting_Journal_DataType"/>
+    </xsd:sequence>
+    <xsd:attribute name="Add_Only" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Reference" type="wd:OrganizationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Currency_Reference" type="wd:CurrencyObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Accounting_From_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Accounting_To_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Journal_Source_Reference" type="wd:Journal_SourceObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Updated_From_Date" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Updated_To_Date" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Journal_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Status_Reference" type="wd:Journal_Entry_StatusObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Originated_by_Person_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Approved_by_Person_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Ledger_Account_Reference" type="wd:Ledger_AccountObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Worktags_Reference" type="wd:Accounting_WorktagObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Book_Reference" type="wd:BookObjectType" minOccurs="0"/>
+      <xsd:element name="Adjustment_Journal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Reversed_Journal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Recurring_Journal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Intercompany_Journal" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Threshold_Met" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Journals_RequestType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Request_References" type="wd:Journal_Entry_Request_ReferencesType" minOccurs="0"/>
+        <xsd:element name="Request_Criteria" type="wd:Journal_Entry_Request_CriteriaType" minOccurs="0"/>
+      </xsd:choice>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Journal_Entry_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Response_FilterType">
+    <xsd:sequence>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Page" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="12"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Count" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="JournalEntryReference" type="wd:Journal_EntryObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_Comment_DataType">
+    <xsd:sequence>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Sub_Process_ParametersType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Auto_Complete" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="Skip" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      </xsd:choice>
+      <xsd:element name="Discard_On_Exit_Validation_Error" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Business_Process_Comment_Data" type="wd:Business_Process_Comment_DataType" minOccurs="0"/>
+      <xsd:element name="Business_Process_Attachment_Data" type="wd:Business_Process_Attachment_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Financials_Business_Process_ParametersType">
+    <xsd:sequence>
+      <xsd:element name="Auto_Complete" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Comment_Data" type="wd:Business_Process_Comment_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_Journal_Intercompany_Sub_ProcessType">
+    <xsd:sequence>
+      <xsd:element name="Business_Sub_Process_Parameters" type="wd:Business_Sub_Process_ParametersType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Attachment_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_Attachment_DataType">
+    <xsd:sequence>
+      <xsd:element name="File_Name" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Event_Attachment_Description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Event_Attachment_Category_Reference" type="wd:Event_Attachment_CategoryObjectType" minOccurs="0"/>
+      <xsd:element name="File" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Content_Type" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="80"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Line_Tax_Detail_DataType">
+    <xsd:sequence>
+      <xsd:element name="Transaction_Date" type="xsd:date" maxOccurs="1"/>
+      <xsd:element name="Tax_Type_Reference" type="wd:Tax_TypeObjectType"/>
+      <xsd:element name="Taxable_Amount" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="18"/>
+            <xsd:fractionDigits value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Tax_Code_Reference" type="wd:Tax_CodeObjectType"/>
+      <xsd:element name="Tax_Rate_Reference" type="wd:Tax_RateObjectType"/>
+      <xsd:element name="Tax_Applicability_Reference" type="wd:Tax_ApplicabilityObjectType" minOccurs="0"/>
+      <xsd:element name="Tax_Recoverability_Reference" type="wd:Tax_RecoverabilityObjectType" minOccurs="0"/>
+      <xsd:element name="Tax_Recoverability_Type_Reference" type="wd:Tax_Recoverability_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Tax_Point_Date_Type_Reference" type="wd:Tax_Point_Date_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Supplier_Reference" type="wd:SupplierObjectType" minOccurs="0"/>
+      <xsd:element name="Customer_Reference" type="wd:CustomerObjectType" minOccurs="0"/>
+      <xsd:element name="External_Business_Entity_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="External_Business_Entity_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="External_Business_Entity_Tax_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Taxable_Event_Line_Reference" type="wd:Taxable_Event_Line_ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Financial_Attachment_with_Intercompany_Attachment_Field_DataType">
+    <xsd:sequence>
+      <xsd:element name="File_Content" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Companies_Without_Access_Reference" type="wd:CompanyObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Content_Type">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="80"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="Filename">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="255"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="Encoding" type="xsd:string"/>
+    <xsd:attribute name="Compressed" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Taxable_Event_Line_ReferenceType">
+    <xsd:sequence>
+      <xsd:element name="Line_Order" type="xsd:string" maxOccurs="1"/>
+      <xsd:element name="Do_Not_Use" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:OrganizationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:WorkerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Ledger_AccountObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Ledger_AccountReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Account_SetObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Account_SetReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_RateObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_RateReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_CodeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_CodeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_EntryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Journal_EntryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_JournalObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Accounting_JournalReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_SourceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Journal_SourceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Audited_Accounting_WorktagObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Audited_Accounting_WorktagReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_ApplicabilityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_ApplicabilityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_StatusObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Journal_Entry_StatusReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Ledger_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Ledger_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Unit_of_MeasureObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Unit_of_MeasureReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CustomerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CustomerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="SupplierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:SupplierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CurrencyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Currency_Rate_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Currency_Rate_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CompanyObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CompanyReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_WorktagObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Accounting_WorktagReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Unique_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Book_CodeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Book_CodeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="BookObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:BookReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Balancing_WorktagObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Balancing_WorktagReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_Recoverability_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_Recoverability_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Attachment_CategoryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Event_Attachment_CategoryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_RecoverabilityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_RecoverabilityReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_Point_Date_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Tax_Point_Date_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:OrganizationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:WorkerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Ledger_AccountObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Ledger_AccountObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Account_SetObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Account_SetObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_RateObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_RateObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_CodeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_CodeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_EntryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Journal_EntryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_JournalObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Accounting_JournalObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_SourceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Journal_SourceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Audited_Accounting_WorktagObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Audited_Accounting_WorktagObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_ApplicabilityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_ApplicabilityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Journal_Entry_StatusObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Journal_Entry_StatusObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Ledger_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Ledger_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Unit_of_MeasureObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Unit_of_MeasureObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CustomerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CustomerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="SupplierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:SupplierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CurrencyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Currency_Rate_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Currency_Rate_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CompanyObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CompanyObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Accounting_WorktagObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Accounting_WorktagObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Unique_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Book_CodeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Book_CodeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="BookObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:BookObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Balancing_WorktagObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Balancing_WorktagObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_Recoverability_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_Recoverability_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Attachment_CategoryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Event_Attachment_CategoryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_RecoverabilityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_RecoverabilityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Tax_Point_Date_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Tax_Point_Date_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,4 +1,4 @@
-"""Schema-checked v44.2 organization roles, positions and home addresses."""
+"""Schema-checked organization roles, positions and home addresses."""
 
 from __future__ import annotations
 

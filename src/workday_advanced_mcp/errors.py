@@ -7,6 +7,8 @@ are rendered straight into the agent's prompt, so they never carry a traceback.
 
 from __future__ import annotations
 
+import re
+
 import httpx
 
 from .config import (
@@ -24,6 +26,7 @@ __all__ = [
     "WorkdayApiError",
     "WorkdayAuthError",
     "WorkdayFaultError",
+    "WorkdayNotFoundError",
     "WorkdayTimeoutError",
     "format_exception",
     "raise_for_http_error",
@@ -87,6 +90,15 @@ class WorkdayFaultError(WorkdayApiError):
         super().__init__(message, status_code=status_code)
         self.fault_code = fault_code
         self.validation_errors = validation_errors or []
+
+
+class WorkdayNotFoundError(WorkdayFaultError):
+    """A reference in the request matched nothing in this tenant."""
+
+
+# Workday answers a lookup of an id it does not hold with a validation fault, not an
+# empty response, whatever Skip_Non_Existing_Instances says.
+_UNKNOWN_ID = re.compile(r"is not a valid ID value for type")
 
 
 class WorkdayTimeoutError(WorkdayApiError):
@@ -197,8 +209,11 @@ def fault_to_error(
     """Turn a parsed SOAP fault into an actionable exception."""
     detail = "; ".join(validation_errors) or (fault_string or "").strip()
     code = (fault_code or "").strip()
+    error_type = WorkdayFaultError
 
     if validation_errors:
+        if all(_UNKNOWN_ID.search(error) for error in validation_errors):
+            error_type = WorkdayNotFoundError
         message = (
             f"Workday rejected {operation}: {detail} Confirm reference IDs with the "
             "workday_list_* tools and that every field the tenant's business process "
@@ -213,7 +228,7 @@ def fault_to_error(
         reason = detail or code or "no detail"
         message = f"Workday returned a SOAP fault for {operation}: {reason}"
 
-    return WorkdayFaultError(
+    return error_type(
         message,
         status_code=status_code,
         fault_code=code or None,

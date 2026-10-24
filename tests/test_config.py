@@ -27,12 +27,12 @@ def test_host_accepts_a_pasted_tenant_url() -> None:
     "url",
     [
         # The address Workday lists for a WSDL under Public Web Services.
-        "https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2",
-        "https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2?wsdl",
+        "https://impl-services1.wd5.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2",
+        "https://impl-services1.wd5.myworkday.com/ccx/service/acme_preview/Human_Resources/v44.2?wsdl",
         # The same address with the ccx context root dropped.
-        "https://impl-services1.wd103.myworkday.com/service/acme_preview/Human_Resources/v48.0",
-        "https://impl-services1.wd103.myworkday.com/ccx/oauth2/acme_preview/token",
-        "https://impl.wd103.myworkday.com/acme_preview/d/home.htmld",
+        "https://impl-services1.wd5.myworkday.com/service/acme_preview/Human_Resources/v48.0",
+        "https://impl-services1.wd5.myworkday.com/ccx/oauth2/acme_preview/token",
+        "https://impl.wd5.myworkday.com/acme_preview/d/home.htmld",
     ],
 )
 def test_tenant_is_read_from_the_tenant_segment_of_any_workday_url(url: str) -> None:
@@ -41,17 +41,17 @@ def test_tenant_is_read_from_the_tenant_segment_of_any_workday_url(url: str) -> 
 
 def test_a_pasted_web_service_address_configures_host_and_tenant(set_env) -> None:
     set_env(
-        WORKDAY_HOST="https://impl-services1.wd103.myworkday.com/service/acme_preview/Human_Resources/v48.0",
+        WORKDAY_HOST="https://impl-services1.wd5.myworkday.com/service/acme_preview/Human_Resources/v48.0",
         WORKDAY_TENANT=None,
     )
     settings = load_settings()
-    assert settings.host == "impl-services1.wd103.myworkday.com"
+    assert settings.host == "impl-services1.wd5.myworkday.com"
     assert settings.tenant == "acme_preview"
     assert settings.qualified_isu_username == "isu_harriet@acme_preview"
 
 
 def test_a_bare_hostname_has_no_tenant() -> None:
-    assert tenant_from_url("impl-services1.wd103.myworkday.com") == ""
+    assert tenant_from_url("impl-services1.wd5.myworkday.com") == ""
 
 
 def test_host_accepts_a_bare_hostname() -> None:
@@ -65,7 +65,7 @@ def test_host_accepts_a_bare_hostname() -> None:
     [
         "wd3-impl-services1.workday.com",
         # Newer data centres serve web services from myworkday.com.
-        "impl-services1.wd103.myworkday.com",
+        "impl-services1.wd5.myworkday.com",
         "services1.wd3.myworkday.com",
     ],
 )
@@ -135,11 +135,18 @@ def test_service_url_uses_the_configured_version(set_env) -> None:
     assert settings.token_url.endswith("/ccx/oauth2/acme_preview/token")
 
 
-def test_defaults_match_the_first_party_integration(set_env) -> None:
+def test_defaults_apply_when_nothing_is_set(set_env) -> None:
     set_env(WORKDAY_API_VERSION=None, WORKDAY_HTTP_TIMEOUT=None)
     settings = load_settings()
     assert settings.api_version == DEFAULT_API_VERSION
     assert settings.http_timeout == DEFAULT_HTTP_TIMEOUT
+
+
+def test_the_default_api_version_has_committed_schemas() -> None:
+    """The README promises the default is validated by the committed schema tests."""
+    from test_schema_contracts import VERSIONS
+
+    assert DEFAULT_API_VERSION in VERSIONS
 
 
 def test_enabled_tools_parses_a_comma_list(set_env) -> None:

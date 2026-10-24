@@ -1,0 +1,63 @@
+{
+  "Human_Resources": {
+    "source": "Workday Web Services v48.0 Human_Resources WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "04f7570c9248090409eccb9980da5e8e04551fe4167674e5465d371141032a52",
+    "request_elements": [
+      "Get_Workers_Request",
+      "Get_Organizations_Request",
+      "Get_Job_Profiles_Request",
+      "Get_Locations_Request",
+      "Organization_Add_Update",
+      "Organization_Inactivate",
+      "Worker_Event_History_Get",
+      "Maintain_Contact_Information_for_Person_Event_Request"
+    ]
+  },
+  "Staffing": {
+    "source": "Workday Web Services v48.0 Staffing WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "f7fa641cde7dba32b969ec9c1089328a4f43363f5a6f90da18a810fcd7c5e18f",
+    "request_elements": [
+      "Change_Job_Request",
+      "Change_Organization_Assignments_Request",
+      "Hire_Employee_Request",
+      "Terminate_Employee_Request",
+      "Assign_Roles_Request",
+      "Get_Positions_Request",
+      "Create_Position_Request"
+    ]
+  },
+  "Recruiting": {
+    "source": "Workday Web Services v48.0 Recruiting WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "cda8724b9253d18b7292da508203a6f6f86071f83a92afd483402ac716df77e4",
+    "request_elements": [
+      "Get_Applicants_Request",
+      "Put_Applicant_Request"
+    ]
+  },
+  "Cash_Management": {
+    "source": "Workday Web Services v48.0 Cash_Management WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "96771e6b3e902a37f3f65f1cbc3d4b97178b093aef787844e80304ff9d6d7913",
+    "request_elements": [
+      "Get_Payment_Election_Enrollments_Request",
+      "Submit_Payment_Election_Enrollment_Request"
+    ]
+  },
+  "Integrations": {
+    "source": "Workday Web Services v48.0 Integrations WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "5cbc589104ead98800b61f957bad2aa74d36d3b8ddda5f9194b62d145ef5d255",
+    "request_elements": [
+      "Get_Event_Details_Request",
+      "Get_References_Request",
+      "Cancel_Business_Process_Request",
+      "Rescind_Business_Process_Request"
+    ]
+  },
+  "Financial_Management": {
+    "source": "Workday Web Services v48.0 Financial_Management WSDL (Public Web Services), embedded schema; sha256 is of the canonical schema, not the whole WSDL",
+    "sha256": "4dc6048a426a328556b81820f63217f241d539edcbfe404adca40b0b0d5f1304",
+    "request_elements": [
+      "Get_Journals_Request",
+      "Submit_Accounting_Journal_Request"
+    ]
+  }
+}

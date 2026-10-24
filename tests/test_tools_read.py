@@ -5,12 +5,20 @@ from __future__ import annotations
 import httpx
 import respx
 
-from conftest import call_tool, service_url, soap_response
+from conftest import (
+    call_tool,
+    service_url,
+    soap_fault,
+    soap_response,
+    soap_unknown_id_fault,
+)
 from workday_advanced_mcp.client import (
     SERVICE_CASH_MANAGEMENT,
     SERVICE_HUMAN_RESOURCES,
     SERVICE_INTEGRATIONS,
+    SERVICE_STAFFING,
 )
+from workday_advanced_mcp.soap import parse_envelope
 
 HR_URL = service_url(SERVICE_HUMAN_RESOURCES)
 
@@ -110,6 +118,7 @@ async def test_get_worker_surfaces_what_a_write_needs(
     assert worker["position"]["position_id"] == "POS-100"
     assert worker["supervisory_organization"]["id"] == "SUP-ENG"
     assert worker["cost_center"]["id"] == "CC_100"
+    assert worker["position"]["employee_type"]["id"] == "Regular"
     assert worker["status"]["active"] is True
 
 
@@ -181,6 +190,130 @@ async def test_an_unknown_worker_is_reported_not_raised(server_factory) -> None:
     assert "99999" in result
 
 
+# A live tenant faults a lookup of an id it does not hold, even with
+# Skip_Non_Existing_Instances set, instead of returning an empty page.
+WORKER_XPATH = (
+    "/bsvc:Get_Workers_Request[1]/bsvc:Request_References[1]/bsvc:Worker_Reference[1]"
+)
+
+
+def unknown_worker(id_type: str, value: str = "99999") -> httpx.Response:
+    return httpx.Response(500, text=soap_unknown_id_fault(value, id_type, WORKER_XPATH))
+
+
+def worker_lookup(**by_id_type: httpx.Response):
+    """Answer each Get_Workers lookup according to the id type it asks for."""
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        body = parse_envelope(request.content.decode()).body["Get_Workers_Request"]
+        reference = body["Request_References"]["Worker_Reference"]
+        return by_id_type[reference["ID"]["@type"]]
+
+    return handle
+
+
+async def test_find_worker_tries_the_next_id_type_when_workday_faults_an_unknown_id(
+    server_factory, worker_response
+) -> None:
+    with respx.mock:
+        route = respx.post(HR_URL).mock(
+            side_effect=worker_lookup(
+                Employee_ID=unknown_worker("Employee_ID", "worker-wid-1"),
+                WID=httpx.Response(200, text=worker_response),
+            )
+        )
+        found = await call_tool(
+            server_factory(), "workday_find_worker", {"query": "worker-wid-1"}
+        )
+
+    assert found["match_type"] == "WID"
+    assert found["candidates"][0]["worker_id"] == "21001"
+    assert route.call_count == 2
+
+
+async def test_find_worker_reports_no_match_when_every_id_type_is_unknown(
+    server_factory,
+) -> None:
+    with respx.mock:
+        respx.post(HR_URL).mock(
+            side_effect=worker_lookup(
+                Employee_ID=unknown_worker("Employee_ID"),
+                WID=unknown_worker("WID"),
+                Contingent_Worker_ID=unknown_worker("Contingent_Worker_ID"),
+            )
+        )
+        found = await call_tool(
+            server_factory(), "workday_find_worker", {"query": "99999"}
+        )
+
+    assert found["match_type"] == "none"
+    assert found["candidates"] == []
+
+
+async def test_an_unknown_worker_id_is_reported_as_not_found(server_factory) -> None:
+    with respx.mock:
+        respx.post(HR_URL).mock(
+            side_effect=worker_lookup(Employee_ID=unknown_worker("Employee_ID"))
+        )
+        result = await call_tool(
+            server_factory(), "workday_get_worker", {"worker_id": "99999"}
+        )
+
+    assert result.startswith("Error: No Workday worker has Employee_ID '99999'")
+
+
+async def test_an_unknown_organization_is_reported_as_not_found(server_factory) -> None:
+    fault = soap_unknown_id_fault(
+        "NOPE",
+        "Organization_Reference_ID",
+        "/bsvc:Get_Organizations_Request[1]/bsvc:Request_References[1]"
+        "/bsvc:Organization_Reference[1]",
+    )
+    with respx.mock:
+        respx.post(HR_URL).mock(return_value=httpx.Response(500, text=fault))
+        result = await call_tool(
+            server_factory(), "workday_get_organization", {"organization_id": "NOPE"}
+        )
+
+    assert "Organization 'NOPE' was not found" in result
+
+
+async def test_an_unknown_position_id_lists_no_positions(server_factory) -> None:
+    fault = soap_unknown_id_fault(
+        "NOPE",
+        "Position_ID",
+        "/bsvc:Get_Positions_Request[1]/bsvc:Request_References[1]"
+        "/bsvc:Positions_Reference[1]",
+    )
+    with respx.mock:
+        respx.post(service_url(SERVICE_STAFFING)).mock(
+            return_value=httpx.Response(500, text=fault)
+        )
+        result = await call_tool(
+            server_factory(), "workday_list_positions", {"position_id": "NOPE"}
+        )
+
+    assert result["positions"] == []
+
+
+async def test_an_unknown_event_id_is_reported_as_no_event(server_factory) -> None:
+    fault = soap_unknown_id_fault(
+        "NOPE",
+        "WID",
+        "/bsvc:Get_Event_Details_Request[1]/bsvc:Request_References[1]"
+        "/bsvc:Event_Reference[1]",
+    )
+    with respx.mock:
+        respx.post(service_url(SERVICE_INTEGRATIONS)).mock(
+            return_value=httpx.Response(500, text=fault)
+        )
+        result = await call_tool(
+            server_factory(), "workday_get_event", {"event_id": "NOPE"}
+        )
+
+    assert "Workday returned no event for 'NOPE'" in result
+
+
 async def test_list_organizations_filters_locally(server_factory) -> None:
     with respx.mock:
         respx.post(HR_URL).mock(return_value=httpx.Response(200, text=ORGANIZATIONS))
@@ -216,6 +349,32 @@ async def test_get_event_reports_state_and_awaiting_tasks(server_factory) -> Non
 
     assert event["state"] == "In Progress"
     assert event["awaiting_tasks"][0]["task"]["descriptor"] == "Approval by Manager"
+
+
+async def test_payment_elections_scan_when_workday_faults_the_direct_lookup(
+    server_factory, worker_response
+) -> None:
+    """A live tenant rejects a worker WID used as an enrollment reference."""
+    message = (
+        "Invalid instance 1$1 for "
+        "Payment_Election_Enrollment_Request_References__Secured_--IS (2$2)"
+    )
+    with respx.mock:
+        respx.post(HR_URL).mock(return_value=httpx.Response(200, text=worker_response))
+        cash = respx.post(service_url(SERVICE_CASH_MANAGEMENT)).mock(
+            side_effect=[
+                httpx.Response(500, text=soap_fault(message, message)),
+                httpx.Response(200, text=ENROLLMENTS),
+            ]
+        )
+        result = await call_tool(
+            server_factory(), "workday_get_payment_elections", {"worker_id": "21001"}
+        )
+
+    assert cash.call_count == 2
+    assert result["scan_complete"] is True
+    election = result["enrollments"][0]["rule_groups"][0]["elections"][0]
+    assert election["bank_account"]["account_number_masked"] == "****5678"
 
 
 async def test_payment_elections_are_returned_masked(

@@ -30,16 +30,18 @@ ENV_HTTP_TIMEOUT = "WORKDAY_HTTP_TIMEOUT"
 AUTH_MODE_ISU = "isu"
 AUTH_MODE_OAUTH = "oauth"
 
-# Harriet's first-party Workday integration pins v44.2; keep the same default so a
-# tenant that works there works here.
-DEFAULT_API_VERSION = "v44.2"
+# Every version with a schema under tests/fixtures/schemas is checked against the
+# request builders, and the default must be one of them. A tenant has to serve the
+# version it is asked for; pin an earlier one with WORKDAY_API_VERSION when it does
+# not. Harriet's first-party integration still pins v44.2.
+DEFAULT_API_VERSION = "v48.0"
 # Must stay well below the host's per-RPC sandbox timeout (the README's Harriet
 # config uses 240) so a slow call returns a structured error instead of the RPC
 # dying mid-write.
 DEFAULT_HTTP_TIMEOUT = 90.0
 
 # Workday serves web services from workday.com and, in newer data centres, from
-# myworkday.com (for example ``impl-services1.wd103.myworkday.com``).
+# myworkday.com (for example ``impl-services1.wd5.myworkday.com``).
 WORKDAY_DOMAINS = (".workday.com", ".myworkday.com")
 
 # Path prefixes after which a Workday web-service or OAuth address names its tenant.
@@ -80,7 +82,7 @@ def tenant_from_url(raw: str) -> str:
     which mirrors how the first-party integration parses ``Integration.domain``.
     A web-service address, such as the WSDL address listed under Public Web
     Services, carries it after the service path instead:
-    ``https://impl-services1.wd103.myworkday.com/ccx/service/acme_preview/...``.
+    ``https://impl-services1.wd5.myworkday.com/ccx/service/acme_preview/...``.
     """
     s = (raw or "").strip()
     if "://" not in s and not s.startswith("//"):

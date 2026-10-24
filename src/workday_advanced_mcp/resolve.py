@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any
 
 from .client import SERVICE_HUMAN_RESOURCES, WorkdayClient
+from .errors import WorkdayNotFoundError
 from .operations import workers
 from .pagination import at_entry_moment, entry_moment
 from .references import EMPLOYEE_ID, WORKER_ID_TYPES
@@ -47,15 +48,19 @@ async def fetch_worker(
         response_group=workers.GROUP_FULL if detailed else workers.GROUP_IDENTITY,
         as_of_effective_date=as_of_effective_date,
     )
-    result = await client.call(
-        SERVICE_HUMAN_RESOURCES, workers.OPERATION, request, is_read=True
+    not_found = (
+        f"No Workday worker has {id_type} {identifier!r}. Check the id, or search "
+        "by email with workday_find_worker."
     )
+    try:
+        result = await client.call(
+            SERVICE_HUMAN_RESOURCES, workers.OPERATION, request, is_read=True
+        )
+    except WorkdayNotFoundError as exc:
+        raise WorkerNotFound(not_found) from exc
     found = workers.workers_in(result.response(workers.OPERATION))
     if not found:
-        raise WorkerNotFound(
-            f"No Workday worker has {id_type} {identifier!r}. Check the id, or search "
-            "by email with workday_find_worker."
-        )
+        raise WorkerNotFound(not_found)
     return workers.summarize_worker(found[0], detailed=detailed)
 
 

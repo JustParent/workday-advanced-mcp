@@ -9,7 +9,7 @@ import httpx
 import pytest
 import respx
 
-from conftest import call_tool, service_url, soap_response
+from conftest import call_tool, service_url, soap_fault, soap_response
 from test_tools_write import staffing_response
 from workday_advanced_mcp.client import reset_client
 from workday_advanced_mcp.operations import payment_elections
@@ -74,6 +74,30 @@ def payment_response(arguments=None):
 
 def mock_worker(worker_response):
     return respx.post(HR).mock(return_value=httpx.Response(200, text=worker_response))
+
+
+async def test_payment_replacement_plans_from_a_scan_when_workday_faults_the_lookup(
+    server_factory, worker_response
+):
+    """A live tenant rejects a worker WID used as an enrollment reference."""
+    message = (
+        "Invalid instance 1$1 for "
+        "Payment_Election_Enrollment_Request_References__Secured_--IS (2$2)"
+    )
+    with respx.mock:
+        mock_worker(worker_response)
+        route = respx.post(CASH).mock(
+            side_effect=[
+                httpx.Response(500, text=soap_fault(message, message)),
+                httpx.Response(200, text=payment_response()),
+            ]
+        )
+        result = await call_tool(
+            server_factory(), "workday_set_payment_elections", PAYMENT
+        )
+
+    assert route.call_count == 2
+    assert result["no_change"] is True
 
 
 @pytest.mark.parametrize(

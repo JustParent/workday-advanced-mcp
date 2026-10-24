@@ -1,0 +1,1247 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:wd="urn:com.workday/bsvc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+  <xsd:element name="Organization_Inactivate" type="wd:Organization_InactivateType"/>
+  <xsd:element name="Organization_Add_Update" type="wd:Organization_Add_UpdateType"/>
+  <xsd:element name="Get_Locations_Request" type="wd:Get_Locations_RequestType"/>
+  <xsd:element name="Worker_Event_History_Get" type="wd:Worker_Event_History_GetType"/>
+  <xsd:element name="Get_Workers_Request" type="wd:Get_Workers_RequestType"/>
+  <xsd:element name="Get_Organizations_Request" type="wd:Get_Organizations_RequestType"/>
+  <xsd:element name="Get_Job_Profiles_Request" type="wd:Get_Job_Profiles_RequestType"/>
+  <xsd:element name="Maintain_Contact_Information_for_Person_Event_Request" type="wd:Maintain_Contact_Information_for_Person_Event_RequestType"/>
+  <xsd:attribute name="version" type="xsd:string" wd:fixed="v48.0"/>
+  <xsd:simpleType name="LocationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_ProfileReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_ClassificationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_Classification_GroupReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="OrganizationReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Organization_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Instant_Messenger_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="WorkerReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Location_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_LevelReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Management_LevelReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Benefit_PlanReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Phone_Device_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_BehaviorReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="CountryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_RegionReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Company_Insider_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Work_Hours_ProfileReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Transaction_LogReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Transaction_Log_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="SubscriberReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_CategoryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="National_ID_TypeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Unique_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Workers_Compensation_CodeReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="External_Field_and_Parameter_Initialization_ProviderReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Position_ElementReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Integration_Document_FieldReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Location_UsageReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Address_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Communication_Usage_Behavior_TenantedReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Event_Attachment_CategoryReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Country_CityReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Job_Family_BaseReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Email_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Universal_IdentifierReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Phone_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Web_Address_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="Instant_Messenger_ReferenceReferenceEnumeration">
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <xsd:complexType name="Organization_DataType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Reference_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Organization_ID_in_Name" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Integration_ID_Data" type="wd:External_Integration_ID_DataType" minOccurs="0"/>
+      <xsd:element name="Organization_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Availability_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Organization_Code_In_Name" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Organization_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Leader_In_Name" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Frozen_Status" type="xsd:boolean" minOccurs="0"/>
+      <xsd:element name="Job_Management_Enabled" type="xsd:boolean" minOccurs="0"/>
+      <xsd:element name="Position_Management_Enabled" type="xsd:boolean" minOccurs="0"/>
+      <xsd:element name="Superior_Organization_Reference" type="wd:OrganizationObjectType" minOccurs="0"/>
+      <xsd:element name="Organization_Type_Reference" type="wd:Organization_Type_Reference_DataType" minOccurs="0"/>
+      <xsd:element name="Organization_Subtype_Reference" type="wd:Organization_Subtype_Reference_DataType" minOccurs="0"/>
+      <xsd:element name="Organization_Visibility_Reference" type="wd:Organization_Visibility_Reference_DataType" minOccurs="0"/>
+      <xsd:element name="Primary_Business_Site_Reference" type="wd:LocationObjectType" minOccurs="0"/>
+      <xsd:element name="Add_Container_Organization_Reference" type="wd:OrganizationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Remove_All_Containers" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Remove_Container_Organization_Reference" type="wd:OrganizationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Effective_Date" type="xsd:date"/>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Type_Reference_DataType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Type_Name" type="xsd:string" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_ReferenceType">
+    <xsd:sequence>
+      <xsd:element name="Integration_ID_Reference" type="wd:External_Integration_ID_Reference_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Visibility_Reference_DataType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Visibility_Name" type="xsd:string" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Subtype_Reference_DataType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Subtype_Name" type="xsd:string" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Employee_ReferenceType">
+    <xsd:sequence>
+      <xsd:element name="Integration_ID_Reference" type="wd:External_Integration_ID_Reference_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contingent_Worker_Reference_DataType">
+    <xsd:sequence>
+      <xsd:element name="Integration_ID_Reference" type="wd:External_Integration_ID_Reference_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="External_Integration_ID_Reference_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:IDType"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_InactivateType">
+    <xsd:sequence>
+      <xsd:element name="Validate_Only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Organization_Reference_Data" type="wd:Organization_ReferenceType"/>
+      <xsd:element name="Organization_Inactivate_Data" type="wd:Organization_Inactivate_DataType"/>
+      <xsd:element name="Keep_in_Hierarchy" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Organization_for_Subordinates_Reference" type="wd:OrganizationObjectType" minOccurs="0"/>
+      <xsd:element name="Organization_for_Included_Organizations_Reference" type="wd:OrganizationObjectType" minOccurs="0"/>
+      <xsd:element name="Remove_All_Role_Assignments" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Inactivate_DataType">
+    <xsd:attribute name="Effective_Date" type="xsd:date"/>
+  </xsd:complexType>
+  <xsd:complexType name="External_Integration_ID_DataType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:IDType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="IDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="System_ID" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Add_UpdateType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Data" type="wd:Organization_DataType"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Locations_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Location_Request_ReferencesType" minOccurs="0"/>
+      <xsd:element name="Request_Criteria" type="wd:Location_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Location_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_ReferenceType">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="Employee_Reference" type="wd:Employee_ReferenceType"/>
+        <xsd:element name="Contingent_Worker_Reference" type="wd:Contingent_Worker_Reference_DataType"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_Event_History_GetType">
+    <xsd:sequence>
+      <xsd:element name="Worker_Reference" type="wd:Worker_ReferenceType"/>
+      <xsd:element name="Event_Date_Range_Data" type="wd:Effective_And_Updated_DateTime_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Effective_And_Updated_DateTime_DataType">
+    <xsd:sequence>
+      <xsd:element name="Updated_From" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Updated_Through" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Effective_From" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Effective_Through" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Response_FilterType">
+    <xsd:sequence>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Page" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="12"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Count" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="3"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_Log_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Transaction_Date_Range_Data" type="wd:Effective_And_Updated_DateTime_DataType" minOccurs="0"/>
+      <xsd:choice>
+        <xsd:element name="Transaction_Type_References" type="wd:Transaction_Type_ReferencesType" minOccurs="0"/>
+        <xsd:element name="Subscriber_Reference" type="wd:SubscriberObjectType" minOccurs="0"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_Comment_DataType">
+    <xsd:sequence>
+      <xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Workers_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Worker_Request_ReferencesType" minOccurs="0"/>
+      <xsd:element name="Request_Criteria" type="wd:Worker_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Worker_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Transaction_Log_Criteria_Data" type="wd:Transaction_Log_CriteriaType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Organization_Reference" type="wd:OrganizationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Include_Subordinate_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Position_Reference" type="wd:Position_ElementObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Event_Reference" type="wd:Transaction_LogObjectType" minOccurs="0"/>
+      <xsd:element name="Benefit_Plan_Reference" type="wd:Benefit_PlanObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_And_Parameter_Criteria_Data" type="wd:Field_And_Parameter_Criteria_DataType" minOccurs="0"/>
+      <xsd:element name="National_ID_Criteria_Data" type="wd:Worker_by_National_ID_Request_CriteriaType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Exclude_Inactive_Workers" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Employees" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Contingent_Workers" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Eligibility_Criteria_Data" type="wd:Eligibility_Criteria_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Universal_ID_Reference" type="wd:Universal_IdentifierObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Skip_Non_Existing_Instances" type="xsd:boolean"/>
+    <xsd:attribute name="Ignore_Invalid_References" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Reference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Personal_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Show_All_Personal_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Additional_Jobs" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Employment_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Compensation" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Organization_Support_Role_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Location_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Cost_Centers" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Cost_Center_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Companies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Company_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Matrix_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Pay_Groups" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Regions" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Region_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Supervisory_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Teams" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Custom_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Roles" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Management_Chain_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Multiple_Managers_in_Management_Chain_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Benefit_Enrollments" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Benefit_Eligibility" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Related_Persons" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Employee_Review" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Goals" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Development_Items" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Skills" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Photo" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Worker_Documents" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Transaction_Log_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Subevents_for_Corrected_Transaction" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Subevents_for_Rescinded_Transaction" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Succession_Profile" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Talent_Assessment" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Employee_Contract_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Contracts_for_Terminated_Workers" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Collective_Agreement_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Probation_Period_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Extended_Employee_Contract_Details" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Feedback_Received" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_User_Account" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Career" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Account_Provisioning" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Background_Check_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Contingent_Worker_Tax_Authority_Form_Information" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Funds" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Fund_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Grants" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Grant_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Business_Units" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Business_Unit_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Programs" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Program_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Gifts" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Gift_Hierarchies" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Exclude_Retiree_Organizations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_ParametersType">
+    <xsd:sequence>
+      <xsd:element name="Auto_Complete" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Run_Now" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Discard_On_Exit_Validation_Error" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Comment_Data" type="wd:Business_Process_Comment_DataType" minOccurs="0"/>
+      <xsd:element name="Business_Process_Attachment_Data" type="wd:Business_Process_Attachment_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contact_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Address_Data" type="wd:Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Phone_Data" type="wd:Phone_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Email_Address_Data" type="wd:Email_Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Instant_Messenger_Data" type="wd:Instant_Messenger_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Web_Address_Data" type="wd:Web_Address_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_Reference" type="wd:CountryObjectType" minOccurs="0"/>
+      <xsd:element name="Last_Modified" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Address_Line_Data" type="wd:Address_Line_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Municipality" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Country_City_Reference" type="wd:Country_CityObjectType" minOccurs="0"/>
+      <xsd:element name="Submunicipality_Data" type="wd:Submunicipality_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Country_Region_Reference" type="wd:Country_RegionObjectType" minOccurs="0"/>
+      <xsd:element name="Country_Region_Descriptor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Subregion_Data" type="wd:Subregion_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Postal_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Number_of_Days" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:decimal">
+            <xsd:totalDigits value="1"/>
+            <xsd:minInclusive value="0"/>
+            <xsd:fractionDigits value="0"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Municipality_Local" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Address_Reference" type="wd:Address_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="Address_ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Formatted_Address" type="xsd:string"/>
+    <xsd:attribute name="Address_Format_Type" type="xsd:string"/>
+    <xsd:attribute name="Defaulted_Business_Site_Address" type="xsd:boolean"/>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+    <xsd:attribute name="Effective_Date" type="xsd:date"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Country_ISO_Code" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="International_Phone_Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Number" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Extension" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Phone_Device_Type_Reference" type="wd:Phone_Device_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Phone_Reference" type="wd:Phone_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Area_Code" type="xsd:string"/>
+    <xsd:attribute name="Tenant_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="International_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Phone_Number_Without_Area_Code" type="xsd:string"/>
+    <xsd:attribute name="National_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="E164_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Workday_Traditional_Formatted_Phone" type="xsd:string"/>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Email_Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Email_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Email_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Email_Reference" type="wd:Email_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Instant_Messenger_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Instant_Messenger_Type_Reference" type="wd:Instant_Messenger_TypeObjectType" minOccurs="0"/>
+      <xsd:element name="Instant_Messenger_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Instant_Messenger_Reference" type="wd:Instant_Messenger_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Web_Address" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Web_Address_Comment" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Usage_Data" type="wd:Communication_Method_Usage_Information_DataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Web_Address_Reference" type="wd:Web_Address_ReferenceObjectType" minOccurs="0"/>
+      <xsd:element name="ID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Delete" type="xsd:boolean"/>
+    <xsd:attribute name="Do_Not_Replace_All" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Address_Line_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Descriptor" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Submunicipality_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Address_Component_Name" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Subregion_Information_DataType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Descriptor" type="xsd:string"/>
+        <xsd:attribute name="Type" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Method_Usage_Information_DataType">
+    <xsd:sequence>
+      <xsd:element name="Type_Data" type="wd:Communication_Usage_Type_DataType" maxOccurs="unbounded"/>
+      <xsd:element name="Use_For_Reference" type="wd:Communication_Usage_BehaviorObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Use_For_Tenanted_Reference" type="wd:Communication_Usage_Behavior_TenantedObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Comments" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="Public" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Type_DataType">
+    <xsd:sequence>
+      <xsd:element name="Type_Reference" type="wd:Communication_Usage_TypeObjectType"/>
+    </xsd:sequence>
+    <xsd:attribute name="Primary" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_Type_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Transaction_Type_Reference" type="wd:Transaction_Log_TypeObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Worker_by_National_ID_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Identifier_ID" type="xsd:string" maxOccurs="1"/>
+      <xsd:choice>
+        <xsd:element name="National_ID_Type_Reference" type="wd:National_ID_TypeObjectType"/>
+        <xsd:element name="Country_Reference" type="wd:CountryObjectType"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Type_Reference" type="wd:Organization_TypeObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Include_Inactive" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Enable_Transaction_Log_Lite" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Transaction_Log_Criteria" type="wd:Transaction_Log_CriteriaType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_And_Parameter_Criteria_Data" type="wd:Field_And_Parameter_Criteria_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Roles_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Hierarchy_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Supervisory_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Staffing_Restrictions_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Organizations_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Contextually_Secured_Organization_Request_ReferencesType" minOccurs="0"/>
+      <xsd:element name="Request_Criteria" type="wd:Organization_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Organization_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Field_And_Parameter_Criteria_DataType">
+    <xsd:sequence>
+      <xsd:element name="Provider_Reference" type="wd:External_Field_and_Parameter_Initialization_ProviderObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Profile_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Job_Profile_Reference" type="wd:Job_ProfileObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Skip_Non_Existing_Instances" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Profile_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Transaction_Log_Criteria_Data" type="wd:Transaction_Log_CriteriaType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Event_Reference" type="wd:Unique_IdentifierObjectType" minOccurs="0"/>
+      <xsd:element name="Job_Family_Reference" type="wd:Job_Family_BaseObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Management_Level_Reference" type="wd:Management_LevelObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Job_Level_Reference" type="wd:Job_LevelObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Job_Category_Reference" type="wd:Job_CategoryObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Company_Insider_Type_Reference" type="wd:Company_Insider_TypeObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Job_Classification_Reference" type="wd:Job_ClassificationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Job_Classification_Group_Reference" type="wd:Job_Classification_GroupObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Workers_Compensation_Code_Reference" type="wd:Workers_Compensation_CodeObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Work_Hours_Profile_Reference" type="wd:Work_Hours_ProfileObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Field_And_Parameter_Criteria_Data" type="wd:Field_And_Parameter_Criteria_DataType" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Profile_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Reference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Profile_Basic_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Classifications_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Profile_Pay_Rate_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Profile_Exempt_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Workers_Compensation_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Responsibility_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Work_Experience_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Education_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Language_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Competency_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Certification_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Certification_Reference_Only" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Training_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Profile_Compensation_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Skill_Qualifications" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Job_Profile_Work_Task_Assignments_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Get_Job_Profiles_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Request_References" type="wd:Job_Profile_Request_ReferencesType" minOccurs="0"/>
+      <xsd:element name="Request_Criteria" type="wd:Job_Profile_Request_CriteriaType" minOccurs="0"/>
+      <xsd:element name="Response_Filter" type="wd:Response_FilterType" minOccurs="0"/>
+      <xsd:element name="Response_Group" type="wd:Job_Profile_Response_GroupType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Location_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Location_Reference" type="wd:LocationObjectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Skip_Non_Existing_Instances" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="Location_Request_CriteriaType">
+    <xsd:sequence>
+      <xsd:element name="Location_Name" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Location_Usage_Reference" type="wd:Location_UsageObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="Location_Type_Reference" type="wd:Location_TypeObjectType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:choice>
+        <xsd:element name="Exclude_Inactive_Locations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="Exclude_Active_Locations" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      </xsd:choice>
+      <xsd:element name="Field_And_Parameter_Criteria_Data" type="wd:Field_And_Parameter_Criteria_DataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Location_Response_GroupType">
+    <xsd:sequence>
+      <xsd:element name="Include_Reference" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Include_Location_Data" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contact_Information_for_Person_Event_DataType">
+    <xsd:sequence>
+      <xsd:element name="Worker_Reference" type="wd:WorkerObjectType"/>
+      <xsd:element name="Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Worker_Contact_Information_Data" type="wd:Contact_Information_DataType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Maintain_Contact_Information_for_Person_Event_RequestType">
+    <xsd:sequence>
+      <xsd:element name="Business_Process_Parameters" type="wd:Business_Process_ParametersType" minOccurs="0"/>
+      <xsd:element name="Maintain_Contact_Information_Data" type="wd:Contact_Information_for_Person_Event_DataType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="Add_Only" type="xsd:boolean"/>
+    <xsd:attribute ref="wd:version"/>
+  </xsd:complexType>
+  <xsd:complexType name="Business_Process_Attachment_DataType">
+    <xsd:sequence>
+      <xsd:element name="File_Name" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="255"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="Event_Attachment_Description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Event_Attachment_Category_Reference" type="wd:Event_Attachment_CategoryObjectType" minOccurs="0"/>
+      <xsd:element name="File" type="xsd:base64Binary" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="Content_Type" minOccurs="0" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="80"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Eligibility_Criteria_DataType">
+    <xsd:sequence>
+      <xsd:element name="Field_Reference" type="wd:Integration_Document_FieldObjectType"/>
+      <xsd:element name="As_Of_Effective_Date" type="xsd:date" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="As_Of_Entry_DateTime" type="xsd:dateTime" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Contextually_Secured_Organization_Request_ReferencesType">
+    <xsd:sequence>
+      <xsd:element name="Organization_Reference" type="wd:OrganizationObjectType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Skip_Non_Existing_Instances" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="LocationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:LocationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_ProfileObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_ProfileReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_ClassificationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_ClassificationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Classification_GroupObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_Classification_GroupReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:OrganizationReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Organization_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Instant_Messenger_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:WorkerReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Location_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Location_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_LevelObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_LevelReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Management_LevelObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Management_LevelReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Benefit_PlanObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Benefit_PlanReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Device_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Phone_Device_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_BehaviorObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_BehaviorReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:CountryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_RegionObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_RegionReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Company_Insider_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Company_Insider_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Hours_ProfileObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Work_Hours_ProfileReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_LogObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Transaction_LogReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_Log_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Transaction_Log_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="SubscriberObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:SubscriberReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_CategoryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_CategoryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="National_ID_TypeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:National_ID_TypeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Unique_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Workers_Compensation_CodeObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Workers_Compensation_CodeReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="External_Field_and_Parameter_Initialization_ProviderObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:External_Field_and_Parameter_Initialization_ProviderReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Position_ElementObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Position_ElementReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Integration_Document_FieldObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Integration_Document_FieldReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Location_UsageObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Location_UsageReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Address_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Address_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Behavior_TenantedObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Communication_Usage_Behavior_TenantedReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Attachment_CategoryObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Event_Attachment_CategoryReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Country_CityObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Country_CityReferenceEnumeration" use="required"/>
+        <xsd:attribute name="parent_id" type="xsd:string"/>
+        <xsd:attribute name="parent_type">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Family_BaseObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Job_Family_BaseReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Email_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Email_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Universal_IdentifierObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Universal_IdentifierReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Phone_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Web_Address_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_ReferenceObjectIDType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="type" type="wd:Instant_Messenger_ReferenceReferenceEnumeration" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="LocationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:LocationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_ProfileObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_ProfileObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_ClassificationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_ClassificationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Classification_GroupObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_Classification_GroupObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="OrganizationObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:OrganizationObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Organization_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Organization_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Instant_Messenger_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="WorkerObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:WorkerObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Location_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Location_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_LevelObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_LevelObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Management_LevelObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Management_LevelObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Benefit_PlanObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Benefit_PlanObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_Device_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Phone_Device_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_BehaviorObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_BehaviorObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="CountryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:CountryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_RegionObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_RegionObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Company_Insider_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Company_Insider_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Work_Hours_ProfileObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Work_Hours_ProfileObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_LogObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Transaction_LogObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Transaction_Log_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Transaction_Log_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="SubscriberObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:SubscriberObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_CategoryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_CategoryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="National_ID_TypeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:National_ID_TypeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Unique_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Unique_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Workers_Compensation_CodeObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Workers_Compensation_CodeObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="External_Field_and_Parameter_Initialization_ProviderObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:External_Field_and_Parameter_Initialization_ProviderObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Position_ElementObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Position_ElementObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Integration_Document_FieldObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Integration_Document_FieldObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Location_UsageObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Location_UsageObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Address_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Address_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Communication_Usage_Behavior_TenantedObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Communication_Usage_Behavior_TenantedObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Event_Attachment_CategoryObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Event_Attachment_CategoryObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Country_CityObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Country_CityObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Job_Family_BaseObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Job_Family_BaseObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Email_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Email_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Universal_IdentifierObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Universal_IdentifierObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Phone_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Phone_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Web_Address_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Web_Address_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="Instant_Messenger_ReferenceObjectType">
+    <xsd:sequence>
+      <xsd:element name="ID" type="wd:Instant_Messenger_ReferenceObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="Descriptor" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

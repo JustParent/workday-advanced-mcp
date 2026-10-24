@@ -5,7 +5,7 @@ rejects a request whose children are out of order with a validation fault that
 does not say which element is misplaced, so the order is asserted by
 ``tests/test_envelopes.py`` rather than trusted.
 
-Schema reference: Workday Web Services v44.2, Staffing service.
+Schema reference: Workday Web Services v44.2 and v48.0, Staffing service.
 """
 
 from __future__ import annotations
@@ -296,7 +296,7 @@ def build_hire_employee_request(
 ) -> dict[str, Any]:
     """Hire a pre-hire into a supervisory organization.
 
-    Document order from the published Staffing v44.2 schema:
+    Document order from the Staffing schema (valid for both v44.2 and v48.0):
         Business_Process_Parameters
         Hire_Employee_Data
             Applicant_Reference | Applicant_Data | Former_Worker_Reference

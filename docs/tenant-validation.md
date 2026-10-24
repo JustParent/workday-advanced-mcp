@@ -3,7 +3,9 @@
 ## Official sources
 
 The implementation was reviewed against the official [production API directory](https://community.workday.com/sites/default/files/file-hosting/productionapi/index.html?lang=en-us)
-and these **v44.2** schemas/WSDLs. The default stays v44.2 for compatibility.
+and these **v44.2** schemas/WSDLs. The default is **v48.0**, whose schemas the
+directory had not published (it listed up to v47.0); they were taken from an
+implementation tenant's WSDLs instead, see Offline fixtures. Both versions are tested.
 
 | Service | Official schema | Operations |
 | --- | --- | --- |
@@ -47,15 +49,24 @@ ISU visibility or expense approval routing.
 
 ## Offline fixtures
 
-`tests/fixtures/schemas/v44.2/` contains the transitive declaration closure for
-tested request roots. Only annotations and unused declarations are removed;
-sequence, choice, cardinality, attributes, restrictions and referenced types
-remain. `sources.json` records official URLs, full-source SHA-256 hashes and roots.
+`tests/fixtures/schemas/<version>/` contains the transitive declaration closure for
+tested request roots, one directory per supported version. Only annotations and
+unused declarations are removed; sequence, choice, cardinality, attributes,
+restrictions and referenced types remain. `sources.json` records each source,
+its full-source SHA-256 hash and the roots. Every request builder is validated
+against every committed version.
 
-To regenerate, download each full `<Service>.xsd` above into one directory:
+v44.2 comes from the official XSDs. v48.0 comes from the six Public Web Services
+WSDLs of an implementation tenant: a WSDL embeds the same schema, is served
+without credentials, and the tenant (a preview tenant can run the next release
+early) offered a version the public directory did not list yet. Replace it with
+the official XSDs when they are published.
+
+To regenerate, put each full `<Service>.xsd` (or `<Service>.wsdl`) from the sources
+above into one directory:
 
 ```bash
-python scripts/extract_schema_fixtures.py /path/to/downloaded/schemas
+python scripts/extract_schema_fixtures.py <version> /path/to/downloaded/files
 pytest tests/test_schema_contracts.py tests/test_pagination.py -q
 ```
 
@@ -109,3 +120,6 @@ implementation tenant before enabling production writes.
 
 Record sanitized request/response samples and configuration assumptions. Keep
 real names, bank details, credentials and production records out of tests.
+`tests/test_fixture_hygiene.py` fails on real-looking email addresses, IP
+addresses, Workday ids, request ids, and tenant or data-centre names anywhere in
+the repository, so scrub a live capture before it goes into a fixture.
